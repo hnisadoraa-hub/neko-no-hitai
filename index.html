@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Atlas do corpus Neko no Hitai: microlotes, domesticidade e regra urbana nos 23 wards de Tóquio.">
+  <title>Neko no Hitai · Atlas do microlote</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2310264a'/%3E%3Cpath d='M14 42V27l18-13 18 13v15H38V31H26v11z' fill='%23d8e3ec'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Ir direto ao conteúdo</a>
+
+  <header class="masthead">
+    <div class="masthead-top">
+      <p class="eyebrow" data-i18n="kicker">Neko no Hitai · atlas do microlote</p>
+      <span class="privacy-badge"><span data-i18n="badge">194 fichas completas</span></span>
+    </div>
+    <div class="masthead-body">
+      <div>
+        <h1 data-i18n="title">Casas, território<br>e regra urbana.</h1>
+        <p class="lede" data-i18n="lede">Compare apenas fichas completas, leia a distribuição das casas nos 23 wards e veja, lado a lado, as regras que desenham o envelope do microlote. Campo sem dado não vira número: ele some da ficha.</p>
+        <p class="masthead-hint" data-i18n="hint">Passe o cursor sobre os termos sublinhados para ver o original em japonês. Aperte <kbd>?</kbd> para os atalhos de teclado. Tudo o que está aqui pode ser citado com data e recorte.</p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="section-bar" id="section-bar" aria-label="Seções do atlas">
+    <div class="read-progress" id="read-progress" aria-hidden="true"><span></span></div>
+    <div class="section-bar-inner">
+      <button class="section-bar-menu" id="section-menu-toggle" type="button" aria-expanded="false" aria-controls="section-links">
+        <span class="section-bar-current" id="section-current">Abertura</span>
+        <span class="section-bar-caret" aria-hidden="true">▾</span>
+      </button>
+      <ol class="section-links" id="section-links"></ol>
+      <div class="section-bar-tools">
+        <button class="bar-button" id="cite-view" type="button" data-i18n="citeButton">Citar este recorte</button>
+        <button class="bar-button" id="present-toggle" type="button" data-i18n="presentButton">Apresentar</button>
+        <button class="bar-button lang" id="lang-toggle" type="button" aria-label="Switch to English">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="conteudo">
+    <!-- 00 PREÂMBULO -->
+    <section class="section preamble-section" id="preambulo" aria-labelledby="preamble-title" data-section-label="Glossário">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">00 · glossário</p>
+          <h2 id="preamble-title">Os termos que ficam em japonês</h2>
+        </div>
+        <span class="data-rule">猫の額 · testa de gato</span>
+      </div>
+      <p class="section-lede">Os termos que o atlas mantém em japonês, porque traduzir por casa, lote ou norma apagaria a diferença que eles carregam. No resto da página eles aparecem sublinhados: o cursor abre a mesma ficha que está aqui.</p>
+      <div class="glossary-grid" id="glossary-grid"></div>
+    </section>
+
+    <!-- 01 A CIDADE -->
+    <section class="section city-section" id="cidade" aria-labelledby="city-title" data-section-label="A cidade">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">01 · a cidade</p>
+          <h2 id="city-title">O chão que encolhe</h2>
+        </div>
+        <span class="data-rule">東京の土地 · 国勢調査 · 住宅・土地統計調査</span>
+      </div>
+      <p class="section-lede" id="city-lede"></p>
+      <div id="city-blocks" class="city-blocks"></div>
+    </section>
+
+    <!-- 02 ACHADOS -->
+    <section class="section findings-section" id="achados" aria-labelledby="findings-title" data-section-label="Achados">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">02 · achados</p>
+          <h2 id="findings-title">O que o corpus diz</h2>
+        </div>
+        <span class="data-rule">194 fichas · 1966 a 2025</span>
+      </div>
+      <p class="findings-lede" id="findings-lede"></p>
+      <div id="findings-list" class="findings-list"></div>
+
+      <article class="scale-strip panel" id="scale-strip">
+        <div class="panel-title">
+          <div><p>régua</p><h3 id="scale-title"></h3></div>
+        </div>
+        <p class="scale-lede" id="scale-lede"></p>
+        <div id="scale-rows" class="scale-rows"></div>
+        <figure class="scale-cat-figure">
+          <img src="assets/illo/gato-deitado.png" alt="Um gato deitado." class="scale-cat-img" loading="lazy">
+          <p class="scale-cat" id="scale-cat"></p>
+        </figure>
+      </article>
+
+      <article class="yours panel" id="yours">
+        <div class="panel-title">
+          <div><p>escala</p><h3>Uma área que você conhece</h3></div>
+        </div>
+        <p class="yours-lede">Se quiser, escolha uma área abaixo ou escreva uma que você conheça bem. O atlas desenha essa medida na mesma escala das fichas e mostra onde ela ficaria entre as 194. Serve para dar tamanho aos números desta página, e nada do que você escrever sai do seu navegador.</p>
+        <form class="yours-form" id="yours-form">
+          <div class="yours-presets">
+            <button type="button" class="chip-button" data-yours="9">um quarto, 9 m²</button>
+            <button type="button" class="chip-button" data-yours="20">uma sala, 20 m²</button>
+            <button type="button" class="chip-button" data-yours="50">um apartamento, 50 m²</button>
+            <button type="button" class="chip-button" data-yours="200">um lote, 200 m²</button>
+          </div>
+          <label class="yours-field">
+            <span>ou escreva outra, em m²</span>
+            <input id="yours-input" type="number" inputmode="decimal" step="0.1" min="1" max="2000" placeholder="ex.: 12">
+          </label>
+        </form>
+        <div class="yours-result" id="yours-result" aria-live="polite"></div>
+      </article>
+
+      <article class="corpus-shape panel">
+        <div class="panel-title">
+          <div><p>distribuição</p><h3>A forma do corpus</h3></div>
+          <button class="icon-button" type="button" data-export-svg="lot-histogram">Baixar SVG</button>
+        </div>
+        <div class="plot-wrap">
+          <svg id="lot-histogram" viewBox="0 0 860 300" role="img" aria-label="Histograma da área de lote das 194 fichas"></svg>
+          <div class="plot-tooltip" id="hist-tooltip" hidden></div>
+        </div>
+        <p class="plot-note" id="hist-note"></p>
+      </article>
+    </section>
+
+    <!-- 02 EXPLORAR -->
+    <section class="section explorer-section" id="explorar" aria-labelledby="explorer-title" data-section-label="Explorar">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">03 · explorar</p>
+          <h2 id="explorer-title">Recorte comparável</h2>
+        </div>
+        <div class="heading-actions">
+          <span class="data-rule" id="data-rule">seis campos comparáveis</span>
+          <button class="quiet-button" id="reset-filters" type="button">Limpar filtros</button>
+        </div>
+      </div>
+
+      <div class="stat-strip" id="stat-strip" aria-live="polite"></div>
+
+      <div class="workbench">
+        <aside class="filters panel" aria-label="Filtros do corpus">
+          <label class="field field-wide">
+            <span>Casa ou arquiteto</span>
+            <input id="query" type="search" placeholder="Ex.: Plum Grove, Sejima…" autocomplete="off">
+          </label>
+          <p class="filter-error" id="filter-error" role="alert" hidden>Revise os intervalos: o mínimo não pode ultrapassar o máximo.</p>
+
+          <div class="range-filters" id="range-filters"></div>
+
+          <details class="exact-ranges">
+            <summary>Digitar valores exatos</summary>
+          <div class="filter-grid">
+            <fieldset class="range-field">
+              <legend>Ano</legend>
+              <label><span>de</span><input id="year-min" inputmode="numeric" type="number"></label>
+              <label><span>até</span><input id="year-max" inputmode="numeric" type="number"></label>
+            </fieldset>
+            <fieldset class="range-field">
+              <legend>Lote · m²</legend>
+              <label><span>mín.</span><input id="lotArea-min" inputmode="decimal" type="number" step="0.01" min="0"></label>
+              <label><span>máx.</span><input id="lotArea-max" inputmode="decimal" type="number" step="0.01" min="0"></label>
+            </fieldset>
+            <fieldset class="range-field">
+              <legend>Construída · m²</legend>
+              <label><span>mín.</span><input id="builtArea-min" inputmode="decimal" type="number" step="0.01" min="0"></label>
+              <label><span>máx.</span><input id="builtArea-max" inputmode="decimal" type="number" step="0.01" min="0"></label>
+            </fieldset>
+            <fieldset class="range-field">
+              <legend>FAR observado</legend>
+              <label><span>mín.</span><input id="far-min" inputmode="decimal" type="number" step="0.01" min="0"></label>
+              <label><span>máx.</span><input id="far-max" inputmode="decimal" type="number" step="0.01" min="0"></label>
+            </fieldset>
+            <fieldset class="range-field">
+              <legend>BCR observado · %</legend>
+              <label><span>mín.</span><input id="bcr-min" inputmode="decimal" type="number" step="1" min="0" max="100"></label>
+              <label><span>máx.</span><input id="bcr-max" inputmode="decimal" type="number" step="1" min="0" max="100"></label>
+            </fieldset>
+            <fieldset class="range-field">
+              <legend>Pavimentos</legend>
+              <label><span>mín.</span><input id="floors-min" inputmode="numeric" type="number" step="1" min="0"></label>
+              <label><span>máx.</span><input id="floors-max" inputmode="numeric" type="number" step="1" min="0"></label>
+            </fieldset>
+          </div>
+          </details>
+
+          <div class="quick-filters">
+            <button class="chip-button" type="button" id="filter-ch9">Casos do capítulo 9</button>
+            <button class="chip-button" type="button" id="filter-tiny">Lotes abaixo de 40 m²</button>
+          </div>
+
+          <label class="switch-field">
+            <input type="checkbox" id="only-floors">
+            <span>Só casas com pavimentos documentados <strong id="floors-count"></strong></span>
+          </label>
+
+          <p class="filter-note">Um campo sem dado nunca é lido como zero. Filtrar por pavimentos reduz o recorte porque a planilha não registra esse campo em todas as fichas.</p>
+        </aside>
+
+        <article class="plot-panel panel">
+          <div class="panel-title plot-title">
+            <div><p>dispersão</p><h3>Relações dentro do recorte</h3></div>
+            <div class="axis-selectors">
+              <label>X <select id="x-axis"></select></label>
+              <label>Y <select id="y-axis"></select></label>
+            </div>
+          </div>
+          <div class="plot-wrap">
+            <svg id="scatter" viewBox="0 0 860 410" role="img" aria-label="Gráfico de dispersão das casas filtradas"></svg>
+            <div class="plot-tooltip" id="plot-tooltip" hidden></div>
+          </div>
+          <p class="plot-note">Cada ponto é uma ficha completa. Clique para levá-la à mesa comparativa.</p>
+        </article>
+      </div>
+
+      <div class="results-panel panel">
+        <div class="results-toolbar">
+          <div><p class="mini-label">fichas</p><h3 id="result-count">0 casas</h3></div>
+          <button type="button" class="quiet-button" id="random-house">Me surpreenda</button>
+          <div class="view-switch" role="group" aria-label="Formato da lista">
+            <button type="button" class="view-button" data-view="cards" aria-pressed="true">fichas</button>
+            <button type="button" class="view-button" data-view="table" aria-pressed="false">tabela</button>
+          </div>
+          <label class="sort-field">Ordenar
+            <select id="sort">
+              <option value="lotArea:asc">lote, menor primeiro</option>
+              <option value="lotArea:desc">lote, maior primeiro</option>
+              <option value="far:desc">FAR, maior primeiro</option>
+              <option value="bcr:desc">BCR, maior primeiro</option>
+              <option value="year:desc">ano, mais recente</option>
+              <option value="year:asc">ano, mais antiga</option>
+              <option value="name:asc">nome, A a Z</option>
+            </select>
+          </label>
+        </div>
+        <div class="active-wards" id="active-wards"></div>
+        <div class="house-list" id="house-list"></div>
+        <button id="load-more" class="load-more" type="button" hidden>Mostrar mais</button>
+        <div class="footer-actions">
+          <button id="export-filtered" class="primary-button" type="button">Exportar recorte · CSV</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 TERRITÓRIO -->
+    <section class="section territory-section" id="territorio" aria-labelledby="territory-title" data-section-label="Território">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">04 · território</p>
+          <h2 id="territory-title">A geografia do corpus</h2>
+        </div>
+        <label class="map-metric-control">Colorir mapa por
+          <select id="map-metric">
+            <optgroup label="Corpus">
+              <option value="count">número de casas</option>
+              <option value="share">participação no recorte</option>
+              <option value="perCapita">casas por 100 mil habitantes</option>
+              <option value="perArea">casas por km²</option>
+              <option value="lotMedian">lote mediano</option>
+              <option value="farMedian">FAR mediano observado</option>
+              <option value="bcrMedian">BCR mediano observado</option>
+            </optgroup>
+            <optgroup label="Contexto territorial">
+              <option value="population">população</option>
+              <option value="area">área do ward</option>
+              <option value="density">densidade populacional</option>
+            </optgroup>
+            <optgroup label="Referência normativa">
+              <option value="bcrRefMin">menor BCR designado · A29-2019</option>
+              <option value="farRefMin">menor FAR designado · A29-2019</option>
+              <option value="farRefMax">maior FAR designado · A29-2019</option>
+              <option value="regime">regime de lote mínimo</option>
+            </optgroup>
+          </select>
+        </label>
+      </div>
+
+      <div class="territory-insights" id="territory-insights"></div>
+
+      <div class="territory-grid">
+        <div class="territory-col">
+        <article class="geo-panel panel">
+          <div class="panel-title">
+            <div><p>23 wards</p><h3 id="geo-title">Distribuição geográfica</h3></div>
+            <button class="icon-button" type="button" data-export-svg="geo-map">Baixar SVG</button>
+          </div>
+          <div class="geo-wrap">
+            <svg id="geo-map" viewBox="0 0 820 530" role="img" aria-label="Mapa interativo dos 23 wards de Tóquio"></svg>
+            <div class="plot-tooltip geo-tooltip" id="geo-tooltip" hidden></div>
+          </div>
+          <div class="map-legend" id="map-legend"></div>
+          <p class="map-source" id="map-source"></p>
+        </article>
+
+        </div>
+
+        <div class="territory-col">
+        <article class="distribution-panel panel">
+          <div class="panel-title">
+            <div><p>ranking</p><h3 id="bars-title">Casas por ward</h3></div>
+            <button class="icon-button" type="button" data-export-svg="ward-bars">Baixar SVG</button>
+          </div>
+          <div class="bar-scroll">
+            <svg id="ward-bars" viewBox="0 0 620 693" role="img" aria-label="Gráfico de barras por ward"></svg>
+          </div>
+          <p class="plot-note">Clique numa barra para aplicar ou retirar o filtro territorial.</p>
+        </article>
+
+        <article class="ward-profile panel" id="ward-profile" aria-live="polite"></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 TIPOLOGIAS -->
+    <section class="section typology-section" id="tipologias" aria-labelledby="typology-title" data-section-label="Tipologias">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">05 · tipologias</p>
+          <h2 id="typology-title">Quatro formas de lote</h2>
+        </div>
+        <span class="data-rule">forma do solo antes da forma da casa</span>
+      </div>
+      <p class="typology-lede" id="typology-note"></p>
+      <div id="typology-cards" class="typology-cards"></div>
+    </section>
+
+        <!-- 06 RETRATOS -->
+    <section class="section cats-section" id="retratos" aria-labelledby="cats-title" data-section-label="Retratos">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">06 · retratos</p>
+          <h2 id="cats-title">O corpus desenhado</h2>
+        </div>
+        <span class="data-rule">proporção · cara · jogo</span>
+      </div>
+      <p class="section-lede" id="cats-lede"></p>
+      <div id="cats-blocks" class="city-blocks"></div>
+    </section>
+
+<!-- 05 A NORMA -->
+    <section class="section rules-section" id="norma" aria-labelledby="rules-title" data-section-label="A norma">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">07 · a norma</p>
+          <h2 id="rules-title">A regra, desenhada</h2>
+        </div>
+        <span class="data-rule">建築基準法 · 都市計画法</span>
+      </div>
+      <div id="rules-defs"></div>
+
+      <div id="norma-extra" class="norma-extra"></div>
+
+      <div class="law-callout">
+        <strong>Não existe um único FAR ou BCR máximo por ward.</strong>
+        <p>O teto é parcelário. Depende da zona de uso, da largura da via frontal, da prevenção contra incêndio, do plano de distrito e das exceções aplicáveis. Em vez de afirmar um máximo que a base não sustenta, esta seção deixa você montar o lote e ver a regra operar. Todos os desenhos estão em escala e trazem escala gráfica.</p>
+      </div>
+
+      <div class="tabs" data-tabs="norma">
+        <div class="tab-strip" role="tablist" aria-label="A norma">
+          <button role="tab" id="tab-calc" aria-controls="panel-calc" aria-selected="true" class="tab">Calculadora</button>
+          <button role="tab" id="tab-comp" aria-controls="panel-comp" aria-selected="false" class="tab">Comparações</button>
+          <button role="tab" id="tab-zonas" aria-controls="panel-zonas" aria-selected="false" class="tab">Tabela das zonas</button>
+          <button role="tab" id="tab-regras" aria-controls="panel-regras" aria-selected="false" class="tab">Regras que não são medida</button>
+        </div>
+
+        <div role="tabpanel" id="panel-calc" aria-labelledby="tab-calc" class="tab-panel">
+      <article class="law-lab panel">
+        <div class="panel-title">
+          <div><p>calculadora</p><h3>Monte um lote e veja o envelope</h3></div>
+          <span>Resultado hipotético: depende dos parâmetros escolhidos, não de designação verificada da parcela.</span>
+        </div>
+
+        <div class="law-lab-grid">
+          <form class="law-controls" id="law-controls" aria-label="Parâmetros do lote">
+            <label class="law-field law-field-wide">
+              <span>Zona de uso</span>
+              <select id="law-zone"></select>
+            </label>
+            <label class="law-field">
+              <span>Frente · m</span>
+              <input id="law-front" type="number" step="0.1" min="1.5" max="30">
+            </label>
+            <label class="law-field">
+              <span>Profundidade · m</span>
+              <input id="law-depth" type="number" step="0.1" min="2" max="40">
+            </label>
+            <label class="law-field">
+              <span>Via frontal · m</span>
+              <input id="law-road" type="number" step="0.1" min="1.8" max="20">
+            </label>
+            <label class="law-field">
+              <span>Área do lote</span>
+              <output id="law-area" class="law-output"></output>
+            </label>
+            <label class="law-field">
+              <span>建ぺい率 designado</span>
+              <select id="law-bcr"></select>
+            </label>
+            <label class="law-field">
+              <span>容積率 designado</span>
+              <select id="law-far"></select>
+            </label>
+            <label class="law-field" id="law-height-field">
+              <span>Altura absoluta</span>
+              <select id="law-height"><option value="10">10 m</option><option value="12">12 m</option></select>
+            </label>
+            <label class="law-check">
+              <input type="checkbox" id="law-corner">
+              <span>Lote de esquina reconhecido · art. 53, § 3</span>
+            </label>
+            <label class="law-check">
+              <input type="checkbox" id="law-fire">
+              <span>Resistente ao fogo em zona de prevenção · art. 53, § 3</span>
+            </label>
+            <label class="law-field law-field-wide">
+              <span>Carregar um lote do corpus</span>
+              <select id="law-case"></select>
+            </label>
+            <p class="law-zone-note" id="law-zone-note"></p>
+          </form>
+
+          <div class="law-figures">
+            <div class="law-figure" id="law-section"></div>
+            <div class="law-figure" id="law-plan"></div>
+          </div>
+        </div>
+
+        <div class="law-results" id="law-results"></div>
+        <div class="law-table-wrap">
+          <table class="law-table" id="law-table"></table>
+        </div>
+        <p class="law-disclaimer">Os valores designados de ocupação e aproveitamento são escolhidos por você entre os admitidos na classe de zona. O atlas não sabe a designação real de nenhuma parcela: zona de uso, largura de via, prevenção contra incêndio e plano de distrito não constam da planilha, em 194 de 194 fichas.</p>
+      </article>
+        </div>
+
+        <div role="tabpanel" id="panel-comp" aria-labelledby="tab-comp" class="tab-panel" hidden>
+          <p class="panel-lede">Três comparações desenhadas na mesma escala. Elas mostram o que muda quando uma variável da norma muda, mantendo o resto fixo.</p>
+          <div class="law-comparisons" id="law-comparisons"></div>
+        </div>
+
+        <div role="tabpanel" id="panel-zonas" aria-labelledby="tab-zonas" class="tab-panel" hidden>
+      <article class="legal-zoning panel">
+        <div class="panel-title">
+          <div><p>referência</p><h3>Parâmetros por classe de zona</h3></div>
+          <span>Valores designáveis pelo plano urbano, não tetos de lote</span>
+        </div>
+        <div id="zone-table" class="legal-matrix"></div>
+        <div class="legal-actions">
+          <a href="https://laws.e-gov.go.jp/law/325AC0000000201" target="_blank" rel="noreferrer">Texto japonês vigente · e-Gov ↗</a>
+          <a href="https://www.japaneselawtranslation.go.jp/en/laws/view/4024/en" target="_blank" rel="noreferrer">Tradução oficial em inglês ↗</a>
+          <a href="https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-A29-2019.html" target="_blank" rel="noreferrer">Referência A29-2019 ↗</a>
+          <a href="https://www.toshiseibi.metro.tokyo.lg.jp/web/keikaku/map/" target="_blank" rel="noreferrer">Mapa urbanístico de Tóquio ↗</a>
+        </div>
+      </article>
+        </div>
+
+        <div role="tabpanel" id="panel-regras" aria-labelledby="tab-regras" class="tab-panel" hidden>
+          <div class="rule-group-head rules-cards-head">
+            <h3>As regras que não são medida</h3>
+            <p>Estas quatro descrevem uma relação, não uma dimensão, e por isso continuam como esquema.</p>
+          </div>
+          <div id="rules-cards" class="rule-cards"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 COMPARAR -->
+    <section class="section compare-section" id="comparar" aria-labelledby="compare-title" data-section-label="Comparar">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">08 · comparar</p>
+          <h2 id="compare-title">Mesa de casos</h2>
+        </div>
+        <span class="selection-count" id="selection-count">0 de 4 selecionadas</span>
+      </div>
+      <div class="compare-empty" id="compare-empty">
+        <p>Escolha até quatro casas na lista ou no gráfico.</p>
+        <span>A mesa aproxima forma construída, ocupação observada e a faixa normativa do ward.</span>
+      </div>
+      <div class="compare-wrap" id="compare-wrap" hidden>
+        <div class="compare-cards" id="compare-cards"></div>
+        <div class="compare-chart-wrap"><svg id="compare-chart" viewBox="0 0 900 260" role="img" aria-label="Comparação gráfica das casas selecionadas"></svg></div>
+        <div class="comparison-table-wrap"><table class="comparison-table" id="comparison-table"></table></div>
+        <div class="compare-actions">
+          <button id="clear-selection" class="quiet-button" type="button">Esvaziar mesa</button>
+          <button id="export-compare-svg" class="quiet-button" type="button">Exportar figura · SVG</button>
+          <button id="export-selection" class="primary-button" type="button">Exportar seleção · JSON</button>
+        </div>
+      </div>
+
+      <div class="evidence-grid">
+        <article class="coverage-panel evidence-card">
+          <h3>Como as 194 foram escolhidas</h3>
+          <div id="coverage-bars" class="coverage-bars"></div>
+        </article>
+        <article class="legal-gap-panel evidence-card">
+          <h3>O que a base não sustenta</h3>
+          <div id="legal-gap-list" class="legal-gap-list"></div>
+          <p>Sem estes campos, dizer que uma casa está acima ou abaixo do máximo legal seria inferência indevida. Por isso essas linhas foram retiradas da ficha e da mesa, em vez de exibidas vazias.</p>
+        </article>
+        <article class="method-copy evidence-card">
+          <h3>Regras de leitura</h3>
+          <ul>
+            <li><strong>FAR observado</strong> = área construída ÷ área do lote.</li>
+            <li><strong>BCR observado</strong> = projeção da edificação ÷ área do lote.</li>
+            <li><strong>Faixa do ward</strong> reúne valores designados por zona em 2019. Não é teto de casa.</li>
+            <li><strong>Ausência</strong> significa lacuna na fonte, nunca zero.</li>
+            <li><strong>Casa publicada</strong> não é amostra da cidade. O corpus mede o arquivo, não a frequência urbana.</li>
+          </ul>
+          <p class="source-note" id="source-note"></p>
+        </article>
+      </div>
+    </section>
+    <!-- 09 BIBLIOGRAFIA -->
+    <section class="section biblio-section" id="bibliografia" aria-labelledby="biblio-title" data-section-label="Bibliografia">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">09 · bibliografia</p>
+          <h2 id="biblio-title">Quem conversa com quem</h2>
+        </div>
+        <span class="data-rule" id="biblio-rule">75 obras · 10 eixos</span>
+      </div>
+      <p class="section-lede" id="biblio-lede"></p>
+
+      <div class="tabs" data-tabs="biblio">
+        <div class="tab-strip" role="tablist" aria-label="Bibliografia">
+          <button role="tab" id="tab-rede" aria-controls="panel-rede" aria-selected="true" class="tab">Rede por eixo</button>
+          <button role="tab" id="tab-conversa" aria-controls="panel-conversa" aria-selected="false" class="tab">Conversa no tempo</button>
+          <button role="tab" id="tab-linha" aria-controls="panel-linha" aria-selected="false" class="tab">Linha do tempo</button>
+          <button role="tab" id="tab-matriz" aria-controls="panel-matriz" aria-selected="false" class="tab">Eixo × capítulo</button>
+        </div>
+        <div role="tabpanel" id="panel-rede" aria-labelledby="tab-rede" class="tab-panel"></div>
+        <div role="tabpanel" id="panel-conversa" aria-labelledby="tab-conversa" class="tab-panel" hidden></div>
+        <div role="tabpanel" id="panel-linha" aria-labelledby="tab-linha" class="tab-panel" hidden></div>
+        <div role="tabpanel" id="panel-matriz" aria-labelledby="tab-matriz" class="tab-panel" hidden></div>
+      </div>
+    </section>
+
+    <!-- 10 BASTIDORES -->
+    <section class="section backstage-section" id="bastidores" aria-labelledby="backstage-title" data-section-label="Bastidores">
+      <div class="section-heading">
+        <div>
+          <p class="section-index">10 · bastidores</p>
+          <h2 id="backstage-title">O que sustenta o atlas</h2>
+        </div>
+        <span class="data-rule">correspondência · normas · cobertura</span>
+      </div>
+      <div id="backstage-blocks" class="city-blocks"></div>
+      <p class="city-note" id="pending-tally"></p>
+    </section>
+  </main>
+
+  <aside class="house-drawer" id="house-drawer" hidden></aside>
+
+  <div class="cite-dialog" id="cite-dialog" hidden>
+    <div class="cite-inner" role="dialog" aria-modal="true" aria-labelledby="cite-title">
+      <div class="cite-head">
+        <h3 id="cite-title">Citar este recorte</h3>
+        <button type="button" class="drawer-close" id="cite-close" aria-label="Fechar">×</button>
+      </div>
+      <p class="cite-note">O endereço guarda os filtros, a ordenação, a seleção da mesa e a métrica do mapa. Copie a referência com a data de consulta.</p>
+      <label class="cite-field"><span>Referência</span><textarea id="cite-text" rows="4" readonly></textarea></label>
+      <label class="cite-field"><span>Endereço</span><textarea id="cite-url" rows="2" readonly></textarea></label>
+      <div class="cite-actions">
+        <button type="button" class="primary-button" id="cite-copy">Copiar referência</button>
+        <span class="cite-feedback" id="cite-feedback" role="status"></span>
+      </div>
+    </div>
+  </div>
+
+
+  <footer>
+    <span>Neko no Hitai · Isadora Helena Nogueira · UFPB</span>
+    <span id="footer-build"></span>
+    <div class="cursor-pick" id="cursor-pick" aria-label="Escolha do cursor"></div>
+  </footer>
+
+  <script src="assets/data.js"></script>
+  <script src="assets/geo.js"></script>
+  <script src="assets/legal.js"></script>
+  <script src="assets/context.js"></script>
+  <script src="assets/findings.js"></script>
+  <script src="assets/law.js"></script>
+  <script src="assets/draw.js"></script>
+  <script src="assets/rules.js"></script>
+  <script src="assets/typologies.js"></script>
+  <script src="assets/photos.js"></script>
+  <script src="assets/city.js"></script>
+  <script src="assets/biblio.js"></script>
+  <script src="assets/neko.js"></script>
+  <script src="assets/core.js"></script>
+  <script src="assets/app.js"></script>
+  <script src="assets/ui.js"></script>
+  <script src="assets/cityviz.js"></script>
+  <script src="assets/cats.js"></script>
+  <script src="assets/world.js"></script>
+  <script src="assets/envelope.js"></script>
+  <script src="assets/bibviz.js"></script>
+  <script src="assets/vozes.js"></script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+Coloque aqui as fotos das casas, nomeadas pelo id da casa.
+Exemplo: h017-house-in-a-plum-grove.jpg
+Depois registre cada uma em ../photos.js, com crédito e autorização.
