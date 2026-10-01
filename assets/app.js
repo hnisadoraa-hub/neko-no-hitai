@@ -19,6 +19,7 @@
   const { houses, metadata } = data;
   const wardLegal = legalReference.wards;
   const wardCtx = context.wards;
+  const wardHousing = (window.NEKO_CITY && window.NEKO_CITY.wardHousing) || {};
   const cityData = window.NEKO_CITY || null;
 
   /* Regime de lote mínimo. A exportação antiga da planilha deixou nove wards
@@ -118,6 +119,16 @@
     population: { label: "população", value: (_, w) => ctx(w)?.pop ?? null, format: (v) => Number.isFinite(v) ? fmt(v, 0) : "—" },
     area: { label: "área do ward", value: (_, w) => ctx(w)?.area ?? null, format: (v) => Number.isFinite(v) ? `${fmt(v, 2)} km²` : "—" },
     density: { label: "densidade populacional", value: (_, w) => density(w), format: (v) => Number.isFinite(v) ? `${fmt(v, 0)} hab./km²` : "—" },
+    income: { label: "renda média por contribuinte (FY2024)", value: (_, w) => wardHousing[w]?.income ?? null, format: (v) => Number.isFinite(v) ? `¥${fmt(v, 2)} mi` : "—", short: (v) => Number.isFinite(v) ? `¥${fmt(v, 1)}` : "—", housing: true,
+      warn: "A renda é a média fiscal tributável por contribuinte, não per capita e não renda do domicílio. Quem não declara imposto fica de fora do denominador." },
+    owners: { label: "domicílios proprietários (2023)", value: (_, w) => wardHousing[w]?.owners ?? null, format: (v) => Number.isFinite(v) ? `${fmt(v, 1)}%` : "—", housing: true,
+      warn: "Proprietários e inquilinos não somam 100%: o restante são domicílios sem condição de ocupação declarada." },
+    renters: { label: "domicílios inquilinos (2023)", value: (_, w) => wardHousing[w]?.renters ?? null, format: (v) => Number.isFinite(v) ? `${fmt(v, 1)}%` : "—", housing: true,
+      warn: "Proprietários e inquilinos não somam 100%: o restante são domicílios sem condição de ocupação declarada." },
+    dwellArea: { label: "área média da moradia (2023)", value: (_, w) => wardHousing[w]?.dwellArea ?? null, format: (v) => Number.isFinite(v) ? `${fmt(v, 1)} m²` : "—", housing: true,
+      warn: "Área média de todas as moradias do ward, apartamentos incluídos. Não é a área das casas do corpus." },
+    onePerson: { label: "domicílios de uma pessoa (2020)", value: (_, w) => wardHousing[w]?.onePerson ?? null, format: (v) => Number.isFinite(v) ? `${fmt(v, 1)}%` : "—", housing: true },
+    aged: { label: "população de 65 anos ou mais (2020)", value: (_, w) => wardHousing[w]?.aged ?? null, format: (v) => Number.isFinite(v) ? `${fmt(v, 1)}%` : "—", housing: true },
     bcrRefMin: { label: "menor BCR designado no ward", value: (_, w) => wardLegal[w]?.bcrMin ?? null, format: (v) => Number.isFinite(v) ? `${v}%` : "ausente do A29" },
     farRefMin: { label: "menor FAR designado no ward", value: (_, w) => wardLegal[w]?.farMin ?? null, format: (v) => Number.isFinite(v) ? `${fmt(v / 100, 1)}×` : "ausente do A29" },
     farRefMax: { label: "maior FAR designado no ward", value: (_, w) => wardLegal[w]?.farMax ?? null, format: (v) => Number.isFinite(v) ? `${fmt(v / 100, 1)}×` : "ausente do A29" },
@@ -223,9 +234,27 @@
 
   const CH9 = ["h017-house-in-a-plum-grove", "h089-small-house-unemori-architects", "h094-tsubomi-house-tokyo-bud-house",
     "h117-tunnel-house", "h124-1-8-m-width-house", "h192-milk-carton-house", "h203-open-sky-house",
-    "h202-love-house", "h206-6-tsubo-house", "h244-m-residence", "h217-flagpole-in-nakameguro"];
+    "h202-love-house", "h206-6-tsubo-house", "h244-m-residence", "h217-flagpole-in-nakameguro",
+    "h256-building-frame-of-the-house", "h267-nakano-house"];
 
   const stackOf = (h) => (h.footprintArea > 0 ? h.builtArea / h.footprintArea : NaN);
+
+  /* Pavimentos: o número registrado na planilha. Quando ela separa subsolo (B1)
+     ou loft, o número conta só os pavimentos e a anotação original fica em
+     floorsNote. Registro que não se reduz a inteiro (níveis escalonados, meio
+     pavimento) fica fora da contagem, mas aparece na ficha. */
+  const levelsOf = (h) => (Number.isFinite(h.floors) ? h.floors + (h.basement || 0) : NaN);
+  const isFloorsOdd = (h) => Number.isFinite(h.floors) && stackOf(h) > levelsOf(h) + 0.35;
+  function compactFloors(h) {
+    if (!Number.isFinite(h.floors)) return "";
+    if (h.basement) return `B${h.basement}+${h.floors}`;
+    if (h.loft) return `${h.floors}+loft`;
+    return String(h.floors);
+  }
+  function floorsFull(h) {
+    if (h.floorsNote) return escapeHtml(h.floorsNote);
+    return Number.isFinite(h.floors) ? String(h.floors) : '<span class="lacuna">não registrado</span>';
+  }
 
   function corpusStats() {
     const all = houses;
@@ -273,6 +302,7 @@
       floors3: String(CS.floorCounts[3] || 0),
       floors234: String((CS.floorCounts[2] || 0) + (CS.floorCounts[3] || 0) + (CS.floorCounts[4] || 0)),
       floorsShare: fmt(((CS.floorCounts[3] || 0) / CS.withFloors.length) * 100, 0),
+      floorsOdd: String(houses.filter(isFloorsOdd).length),
     };
     return t;
   }
@@ -337,7 +367,7 @@
 
   function renderFindings() {
     const t = findingTokens();
-    $("findings-lede").textContent = findings.lede;
+    $("findings-lede").textContent = fill(findings.lede, t);
     $("findings-list").innerHTML = findings.items.map((f) => `
       <article class="finding panel">
         <div class="finding-head">
@@ -362,7 +392,7 @@
     const medLot = core.median(houses.map((h) => h.lotArea));
     const resolved = sc.items.map((it) => {
       const value = it.field === "minLot" ? minLot : it.field === "medLot" ? medLot : it.value;
-      const note = it.field === "minLot" ? `${minHouse.name} · ${minHouse.ward} ${minHouse.year}` : it.note;
+      const note = it.field === "minLot" ? `${minHouse.name} · ${minHouse.ward} ${minHouse.year}` : fill(it.note, { n: String(houses.length) });
       return { ...it, value, note };
     }).sort((a, b) => a.value - b.value);
     const max = Math.max(...resolved.map((r) => r.value));
@@ -419,7 +449,7 @@
     svg.insertAdjacentHTML("beforeend", `<line x1="${m.l}" x2="${m.l + iw}" y1="${m.t + ih}" y2="${m.t + ih}" class="axis-line"/>`
       + `<text x="${m.l + iw / 2}" y="${H - 12}" class="axis-text">área do lote · m², faixas de 10 em 10</text>`);
     const q1 = core.median(houses.map((h) => h.lotArea));
-    $("hist-note").innerHTML = `Mediana em <strong>${fmt(q1, 1)} m²</strong>. Abaixo de 60 m² estão ${houses.filter((h) => h.lotArea < 60).length} das ${houses.length} fichas; abaixo de 40 m², apenas ${houses.filter((h) => h.lotArea < 40).length}. O corte de 100 m² é operacional e não uma fronteira encontrada no dado. Clique numa barra para levar a faixa ao explorador.`;
+    $("hist-note").innerHTML = `Mediana em <strong>${fmt(q1, 1)} m²</strong>. Abaixo de 60 m² estão ${houses.filter((h) => h.lotArea < 60).length} das ${houses.length} fichas; abaixo de 40 m², apenas ${houses.filter((h) => h.lotArea < 40).length}. O corte de 100 m² é operacional e não uma fronteira encontrada no dado. Clique numa barra para levar a faixa ao explorador. Fonte: aba 01 casas base.`;
   }
 
   /* ---------- 02 explorar ---------- */
@@ -503,7 +533,7 @@
     { key: "lotArea", label: "lote m²", cell: (h) => fmt(h.lotArea, 1), num: true },
     { key: "builtArea", label: "constr. m²", cell: (h) => fmt(h.builtArea, 1), num: true },
     { key: "footprintArea", label: "projeção m²", cell: (h) => fmt(h.footprintArea, 1), num: true },
-    { key: "floors", label: "pav.", cell: (h) => Number.isFinite(h.floors) ? String(h.floors) : '<span class="lacuna">—</span>', num: true },
+    { key: "floors", label: "pav.", cell: (h) => compactFloors(h) ? escapeHtml(compactFloors(h)) : `<span class="lacuna"${h.floorsNote ? ` title="${escapeHtml(h.floorsNote)}"` : ""}>—</span>`, num: true },
     { key: "far", label: "FAR", cell: (h) => fmt(h.far, 2), num: true },
     { key: "bcr", label: "BCR", cell: (h) => `${fmt(h.bcr * 100, 1)}%`, num: true },
   ];
@@ -566,7 +596,7 @@
     const medPos = max > min ? ((med - min) / (max - min)) * 100 : 50;
     return `<div class="dist-row">
       <div class="dist-head"><span>${escapeHtml(metricConfig[field].short)}</span><strong>${formatMetric(field, value)}</strong></div>
-      <div class="dist-track" role="img" aria-label="Posição de ${escapeHtml(metricConfig[field].short)} entre as 194 fichas: percentil ${p}">
+      <div class="dist-track" role="img" aria-label="Posição de ${escapeHtml(metricConfig[field].short)} entre as ${houses.length} fichas: percentil ${p}">
         <span class="dist-median" style="left:${medPos.toFixed(1)}%"></span>
         <span class="dist-dot" style="left:${pos.toFixed(1)}%"></span>
       </div>
@@ -618,7 +648,7 @@
           ${field("lote", formatMetric("lotArea", house.lotArea))}
           ${field("área construída", formatMetric("builtArea", house.builtArea))}
           ${field("projeção", formatMetric("footprintArea", house.footprintArea))}
-          ${field("pavimentos", Number.isFinite(house.floors) ? house.floors : '<span class="lacuna">não registrado</span>')}
+          ${field("pavimentos", floorsFull(house))}
           ${field("FAR observado", formatMetric("far", house.far))}
           ${field("BCR observado", formatMetric("bcr", house.bcr))}
           ${field("empilhamento equivalente", stack ? `${fmt(stack, 2)}×` : '<span class="lacuna">sem projeção</span>')}
@@ -627,6 +657,7 @@
         <div class="drawer-dists">
           <h4>Onde esta casa cai, entre as ${houses.length} fichas</h4>
           ${["lotArea", "builtArea", "far", "bcr"].map((f) => distributionRow(f, house)).join("")}
+          <p class="muted drawer-src">Medidas e posição: aba 01 casas base. FAR e BCR são calculados aqui, construída e projeção sobre o lote.</p>
         </div>
         <div class="drawer-ward">
           ${drawerWardMap(house.ward)}
@@ -637,7 +668,7 @@
               : '<span class="lacuna">ward ausente do A29-2019</span>'}</p>
             <p class="drawer-norm">${norm && norm.status === "registrado"
               ? `Lote mínimo: ${escapeHtml(norm.minimumLot || "não registrado")} · ${escapeHtml(norm.regime || "")}`
-              : "Regime de lote mínimo a verificar"}</p>
+              : "Regime de lote mínimo a verificar"}<br><span class="muted">Faixas designadas: A29-2019 (MLIT), fora da planilha. Regime: aba 11 normas wards.</span></p>
           </div>
         </div>
         <div class="drawer-similar">
@@ -699,11 +730,11 @@
         const selected = state.selected.has(house.id);
         const atLimit = state.selected.size >= 4 && !selected;
         const tags = candidateTags(house);
-        const stackH = house.footprintArea > 0 ? house.builtArea / house.footprintArea : 0;
-        const floorsOdd = Number.isFinite(house.floors) && stackH > house.floors + 0.35;
+        const floorsOdd = isFloorsOdd(house);
+        const noteAttr = house.floorsNote ? ` title="${escapeHtml(house.floorsNote)}"` : "";
         const floors = Number.isFinite(house.floors)
-          ? `<div><span>pav.</span><strong${floorsOdd ? ' class="flagged" title="O empilhamento equivalente supera os pavimentos registrados. Conferir na planilha."' : ""}>${house.floors}${floorsOdd ? " ⚑" : ""}</strong></div>`
-          : `<div><span>pav.</span><strong class="soft">—</strong></div>`;
+          ? `<div><span>pav.</span><strong${floorsOdd ? ' class="flagged" title="O empilhamento equivalente supera os pavimentos registrados, subsolo incluído. Conferir na planilha."' : noteAttr}>${escapeHtml(compactFloors(house))}${floorsOdd ? " ⚑" : ""}</strong></div>`
+          : `<div><span>pav.</span><strong class="soft"${noteAttr}>—</strong></div>`;
         return `<article class="house-card ${selected ? "selected" : ""}" data-card-id="${escapeHtml(house.id)}">
           <div class="house-card-head">
             <span class="house-number">${String(house.n).padStart(3, "0")}</span>
@@ -909,6 +940,7 @@
     const summaries = core.wardSummaries(territoryBase(), metadata.wards);
     const config = mapMetrics[state.mapMetric];
     const values = metadata.wards.map((w) => metricValueFor(w, summaries));
+    const labels = [];
     $("geo-title").textContent = config.categorical ? "Regime de lote mínimo" : config.label.charAt(0).toUpperCase() + config.label.slice(1);
 
     for (const feature of geo.features) {
@@ -942,12 +974,16 @@
       const [x, y] = labelPoint(feature, project);
       const label = svgEl("text", { x, y: y - 2, class: "geo-label" });
       const name = svgEl("tspan", { x, dy: 0 }); name.textContent = ward;
-      const amount = svgEl("tspan", { x, dy: 11, class: "geo-label-value" }); amount.textContent = config.format(value);
+      const amount = svgEl("tspan", { x, dy: 11, class: "geo-label-value" }); amount.textContent = (config.short || config.format)(value);
       label.append(name, amount);
-      svg.appendChild(label);
+      labels.push(label);
     }
+    labels.forEach((l) => svg.appendChild(l));
     renderMapLegend(values);
-    $("map-source").innerHTML = `Limites administrativos N03-2021 (MLIT), simplificados por SmartNews Media Research Institute. ${escapeHtml(context.source.note)} População e área: ${escapeHtml(context.source.demography)}. As casas aparecem agregadas por ward porque a planilha não traz coordenadas.`;
+    const warn = $("map-warn");
+    if (warn) { warn.hidden = !config.warn; warn.textContent = config.warn || ""; }
+    const housingSrc = config.housing ? ` ${escapeHtml(config.label.charAt(0).toUpperCase() + config.label.slice(1))}: aba 23 painel renda habitação, seção 5, conferida com a aba 07 contexto wards (${escapeHtml(config === mapMetrics.income ? "Governo Metropolitano de Tóquio, tributação municipal FY2024, tabela 12" : config === mapMetrics.onePerson ? "Censo 2020" : config === mapMetrics.aged ? "projeção populacional de Tóquio 2023, dados de 2020" : "Housing and Land Survey 2023")}).` : "";
+    $("map-source").innerHTML = `Limites administrativos N03-2021 (MLIT), simplificados por SmartNews Media Research Institute. ${escapeHtml(context.source.note)} População e área: ${escapeHtml(context.source.demography)}. As casas aparecem agregadas por ward porque a planilha não traz coordenadas. Fonte das casas: aba 01 casas base; regime de lote mínimo: aba 11 normas wards; população e área não vêm da planilha.${housingSrc}`;
   }
 
   function renderWardBars() {
@@ -1029,6 +1065,10 @@
     const norm = wardNorms[ward];
     const legal = wardLegal[ward];
 
+    /* números das notas de contexto: sempre sobre o recorte comparável inteiro */
+    const wardAll = houses.filter((h) => h.ward === ward).length;
+    const noteTokens = { wardCount: String(wardAll), corpusTotal: String(houses.length), wardShare: fmt((wardAll / houses.length) * 100, 1) };
+
     const allLots = base.map((h) => h.lotArea).filter(Number.isFinite);
     const medianAll = core.median(allLots);
     const comparison = s.lotMedian != null && medianAll != null
@@ -1040,7 +1080,8 @@
            <div><span class="regime-code">${escapeHtml(norm.regimeCode)}</span><strong>${escapeHtml(norm.regime)}</strong></div>
            <p><strong>Lote mínimo:</strong> ${escapeHtml(norm.minimumLot || "não registrado")}<br>
               <strong>Escopo:</strong> ${escapeHtml(norm.scope || "não registrado")}<br>
-              <strong>Adoção:</strong> ${escapeHtml(norm.adoptionDate || "não registrada")}</p>
+              <strong>Adoção:</strong> ${escapeHtml(norm.adoptionDate || "não registrada")}<br>
+              <span class="muted">Fonte: aba 11 normas wards.</span></p>
          </div>`
       : `<div class="norm-card alert">
            <div><span class="regime-code alert">?</span><strong>Regime de lote mínimo a verificar</strong></div>
@@ -1067,7 +1108,7 @@
         <div><span>densidade</span><strong>${c ? fmt(density(ward), 0) : "—"}</strong></div>
       </div>
       ${c ? `<p class="profile-text">${escapeHtml(c.profile)}</p>` : ""}
-      ${c && c.notes ? `<ul class="profile-notes">${c.notes.map((n) => `<li>${escapeHtml(n)}</li>`).join("")}</ul>` : ""}
+      ${c && c.notes ? `<ul class="profile-notes">${c.notes.map((n) => `<li>${escapeHtml(fill(n, noteTokens))}</li>`).join("")}</ul>` : ""}
       ${normBlock}
       <div class="ward-legal-range"><strong>Faixa de zoneamento A29 · 2019</strong>${legalBlock}</div>`;
   }
@@ -1109,13 +1150,13 @@
           ${photoFor(house)}
           ${stats}
           <p class="typology-basis"><span>critério</span>${escapeHtml(t.basis)}</p>
-          <p class="typology-reading">${escapeHtml(t.reading)}</p>
+          <p class="typology-reading">${escapeHtml(t.reading.replace("{medBcr}", `${fmt(medianBcr * 100, 1)}%`))}</p>
           ${link}
         </div>` : `<p class="typology-basis">Caso não localizado no recorte comparável.</p>`}
         </div>
       </article>`;
     }).join("")
-      + `<p class="typology-footnote">Medianas do recorte para referência: lote ${fmt(medianLot, 1)} m², BCR ${fmt(medianBcr * 100, 1)}%.</p>`;
+      + `<p class="typology-footnote">Medianas do recorte para referência: lote ${fmt(medianLot, 1)} m², BCR ${fmt(medianBcr * 100, 1)}%. Fonte: aba 01 casas base; a planilha não classifica tipologia de lote.</p>`;
   }
 
   /* ---------- 05 a norma: calculadora, comparações, referência ---------- */
@@ -1201,7 +1242,6 @@
           ${c.view === "plan"
             ? DRAW.plan(r, { w: 420, h: 290, caption: "planta · escala real" })
             : DRAW.section(r, { w: 420, h: 280, caption: "corte · escala real" })}
-          ${r.absoluteHeight ? "" : '<p class="law-compare-warn">Sem altura absoluta nesta zona. A regulação de sombra do art. 56-2, que não está modelada aqui, costuma ser o limite efetivo.</p>'}
           <div class="law-compare-stats">
             <div><span>projeção</span><strong>${fmt(r.maxFootprint, 1)} m²</strong></div>
             <div><span>construída</span><strong>${fmt(r.maxFloorArea, 1)} m²</strong></div>
@@ -1218,6 +1258,7 @@
         </div>
         <p class="law-compare-lede">${escapeHtml(c.lede)}</p>
         <div class="law-compare-grid">${side(c.a.label, ra, c.key + ":a")}${side(c.b.label, rb, c.key + ":b")}</div>
+        ${ra.absoluteHeight && rb.absoluteHeight ? "" : `<p class="law-compare-warn">${ra.absoluteHeight || rb.absoluteHeight ? `Em ${escapeHtml((ra.absoluteHeight ? c.b : c.a).label)}, a zona não tem altura absoluta` : "Nenhum dos dois casos tem altura absoluta"}: a regulação de sombra do art. 56-2, que não está modelada aqui, costuma ser o limite efetivo.</p>`}
         <p class="law-compare-delta"><strong>${delta >= 0 ? "+" : ""}${fmt(delta, 1)} m²</strong> ${escapeHtml(deltaLabel)} entre os dois casos.</p>
         <p class="law-compare-read">${escapeHtml(c.read)}</p>
       </article>`;
@@ -1368,7 +1409,7 @@
       ["Lote", (h) => formatMetric("lotArea", h.lotArea) + percentileNote("lotArea", h.lotArea)],
       ["Construída", (h) => formatMetric("builtArea", h.builtArea) + percentileNote("builtArea", h.builtArea)],
       ["Projeção", (h) => formatMetric("footprintArea", h.footprintArea)],
-      ["Pavimentos", (h) => Number.isFinite(h.floors) ? String(h.floors) : '<span class="lacuna">não registrado</span>'],
+      ["Pavimentos", (h) => floorsFull(h)],
       ["FAR observado", (h) => formatMetric("far", h.far) + percentileNote("far", h.far)],
       ["BCR observado", (h) => formatMetric("bcr", h.bcr) + percentileNote("bcr", h.bcr)],
       ["Faixa de FAR no ward · A29-2019", (h) => rangeCell(h.ward, "far")],
@@ -1424,9 +1465,14 @@
   function renderEvidence() {
     const fields = [["year", "Ano"], ["ward", "Ward"], ["lotArea", "Lote"], ["builtArea", "Construída"], ["bcr", "BCR"], ["far", "FAR"]];
     const total = metadata.sourceRecords;
+    /* cada campo traz a própria base: ano e ward vêm das abas-resumo da
+       planilha, os demais das abas de casas; o denominador aparece junto */
     $("coverage-bars").innerHTML = fields.map(([field, label]) => {
-      const count = metadata.coverageSource[field];
-      return `<div class="coverage-row"><span>${label}</span><div class="coverage-track"><div class="coverage-fill" style="width:${(count / total) * 100}%"></div></div><strong>${count}/${total}</strong></div>`;
+      const cov = metadata.coverageSource[field];
+      const count = typeof cov === "object" ? cov.count : cov;
+      const base = typeof cov === "object" ? cov.total : total;
+      const from = typeof cov === "object" && cov.from ? ` title="${escapeHtml(cov.from)}"` : "";
+      return `<div class="coverage-row"${from}><span>${label}</span><div class="coverage-track"><div class="coverage-fill" style="width:${(count / base) * 100}%"></div></div><strong>${count}/${base}</strong></div>`;
     }).join("")
       + `<div class="coverage-row highlight"><span>seis campos</span><div class="coverage-track"><div class="coverage-fill" style="width:${(metadata.eligibleRecords / total) * 100}%"></div></div><strong>${metadata.eligibleRecords}/${total}</strong></div>`
       + `<p class="coverage-split">dentro das ${metadata.eligibleRecords} fichas comparáveis</p>`
@@ -1439,13 +1485,26 @@
       ["largura da via frontal", `0/${metadata.eligibleRecords}`],
       ["zona de prevenção contra incêndio", `0/${metadata.eligibleRecords}`],
       ["plano de distrito", `0/${metadata.eligibleRecords}`],
-      ["regime de lote mínimo por ward", `${23 - metadata.corruptedWardNorms.length}/23 registrados`],
+      ["regime de lote mínimo por ward", `${metadata.wards.filter((w) => wardNorms[w] && wardNorms[w].status === "registrado").length}/23 registrados`],
     ];
     $("legal-gap-list").innerHTML = gaps.map(([label, value]) =>
       `<div class="legal-gap-item"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("");
 
-    $("source-note").innerHTML = `Fonte: <strong>${escapeHtml(metadata.sourceFile)}</strong>. Das ${metadata.sourceRecords} fichas localizadas, ${metadata.excludedIncomplete} ficaram fora por faltar ao menos um dos seis campos comparáveis, e ${metadata.missingFromTarget} registros do corpus-alvo de ${metadata.targetCorpus} não constam da planilha. IDP, IPE-Pico e limites legais por casa estavam vazios em 194 de 194 fichas e foram retirados da interface em vez de exibidos como lacuna.`;
+    const tabs = (metadata.sourceTabs || []).map((t) => `<em>${escapeHtml(t)}</em>`);
+    const tabsText = tabs.length > 1 ? `${tabs.slice(0, -1).join(", ")} e ${tabs[tabs.length - 1]}` : tabs.join("");
+    const readAt = metadata.sourceReadAt ? new Date(`${metadata.sourceReadAt}T12:00:00`).toLocaleDateString("pt-BR") : "";
+    $("source-note").innerHTML = `Fonte: <strong>${escapeHtml(metadata.sourceFile)}</strong>${tabsText ? `, abas ${tabsText}` : ""}${readAt ? `, lidas em ${readAt}` : ""}. `
+      + (metadata.declaredRecords && metadata.declaredRecords !== metadata.sourceRecords
+        ? `A planilha declara ${metadata.declaredRecords} registros na base, e ${metadata.sourceRecords} obras distintas aparecem nessas abas. `
+        : "")
+      + `Das ${metadata.sourceRecords} obras do corpus, ${metadata.excludedIncomplete} ficaram fora por faltar ao menos um dos seis campos comparáveis${metadata.missingFromTarget ? `, e ${metadata.missingFromTarget} registros do corpus-alvo de ${metadata.targetCorpus} não constam da planilha` : ""}. `
+      + `As barras contam as ${metadata.sourceRecords} linhas da aba <em>01 casas base</em>; projeção e área construída só entram quando a taxa de ocupação e o coeficiente de aproveitamento da aba <em>90 aux casas indicadores</em> batem com elas. `
+      + `IDP, IPE-Pico e limites legais por casa não constam dessas abas e ficaram fora da interface em vez de aparecer como lacuna.`;
     $("footer-build").textContent = `corpus de ${metadata.sourceFile} · atlas reconstruído em ${new Date(metadata.rebuiltAt).toLocaleDateString("pt-BR")}`;
+    document.querySelectorAll('[data-count="eligible"]').forEach((node) => { node.textContent = String(houses.length); });
+    const years = houses.map((h) => h.year).filter(Number.isFinite);
+    if ($("findings-rule") && years.length) $("findings-rule").textContent = `${houses.length} fichas · ${Math.min(...years)} a ${Math.max(...years)}`;
+    if ($("lot-histogram")) $("lot-histogram").setAttribute("aria-label", `Histograma da área de lote das ${houses.length} fichas`);
     $("floors-count").textContent = `(${metadata.coverageInCorpus.floors} de ${metadata.eligibleRecords})`;
     $("data-rule").textContent = `${metadata.eligibleRecords} fichas de ${metadata.sourceRecords}`;
   }
@@ -1461,14 +1520,14 @@
   }
 
   function exportFilteredCsv() {
-    const columns = ["n", "id", "name", "architect", "year", "ward", "wardJa", "lotArea", "builtArea", "footprintArea", "floors", "bcrObserved", "farObserved", "wardBcrRange2019", "wardFarRange2019", "wardPopulation", "wardAreaKm2", "wardDensity", "sourceUrl"];
+    const columns = ["n", "id", "name", "architect", "year", "ward", "wardJa", "lotArea", "builtArea", "footprintArea", "floors", "floorsNote", "bcrObserved", "farObserved", "wardBcrRange2019", "wardFarRange2019", "wardPopulation", "wardAreaKm2", "wardDensity", "sourceUrl"];
     const rows = [columns.join(";"), ...state.filtered.map((h) => {
       const ref = wardLegal[h.ward] || {};
       const c = ctx(h.ward) || {};
       const range = (vals) => (vals && vals.length ? `${vals[0]}-${vals[vals.length - 1]}` : "");
       return [
         h.n, h.id, h.name, h.architect, h.year, h.ward, c.ja || "",
-        h.lotArea, h.builtArea, h.footprintArea, Number.isFinite(h.floors) ? h.floors : "",
+        h.lotArea, h.builtArea, h.footprintArea, Number.isFinite(h.floors) ? h.floors : "", h.floorsNote || "",
         h.bcr, h.far, range(ref.bcrValues), range(ref.farValues),
         c.pop || "", c.area || "", Number.isFinite(density(h.ward)) ? Math.round(density(h.ward)) : "",
         h.sourceUrl || "",

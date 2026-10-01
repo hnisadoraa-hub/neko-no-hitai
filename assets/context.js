@@ -1,4 +1,8 @@
 /* Contexto territorial dos 23 wards especiais de Tóquio.
+   Notas com {wardCount}, {corpusTotal} e {wardShare} são preenchidas na página
+   a partir das fichas comparáveis. O regime de lote mínimo de cada ward não
+   fica aqui: vem da aba de normas da planilha (city.js) e aparece no cartão
+   de norma do perfil.
    População e área: síntese do 令和7年国勢調査 (censo de 1º de outubro de 2025,
    valores preliminares) e do levantamento de área do 国土地理院 para a mesma data,
    compilados em uub.jp. Densidade calculada aqui a partir dos dois campos.
@@ -108,7 +112,6 @@ window.WARD_CONTEXT = {
       belt: "yamanote",
       profile: "Residencial do Yamanote organizado pelo vale do rio Meguro, com Nakameguro, Jiyugaoka e Yutenji. A valorização contínua da terra sustenta um ciclo de desmembramento de lotes maiores em parcelas menores, que é justamente o mecanismo estudado pelo trabalho.",
       notes: [
-        "Ward citado com frequência nas discussões de lote mínimo, mas o valor registrado na base está corrompido e precisa ser reconferido.",
         "Small House, de Unemori Architects, e Flagpole in Nakameguro, de SALHAUS, estão aqui.",
         "Lotes em bandeira, com acesso por corredor estreito, são recorrentes no tecido de encosta.",
       ],
@@ -121,6 +124,7 @@ window.WARD_CONTEXT = {
         "Os dois extremos do espectro fundiário de Tóquio convivem dentro do mesmo ward.",
         "O único lote mínimo registrado é de 250 m² em Tokai 3-chome, área portuária, e não se aplica ao tecido residencial comum.",
         "Den-en-chofu é o contraexemplo útil: o microlote não é destino inevitável da cidade japonesa.",
+        "Building Frame of the House, de IGArchitects, está aqui.",
       ],
     },
     Setagaya: {
@@ -128,10 +132,9 @@ window.WARD_CONTEXT = {
       belt: "oeste",
       profile: "Ward mais populoso dos 23. Formou-se pela conversão de terras agrícolas ao longo das linhas férreas privadas no entreguerras e, sobretudo, no pós-guerra. O resultado é uma extensão contínua de habitação unifamiliar em lotes médios, submetida desde os anos 1990 a desmembramento sucessivo.",
       notes: [
-        "Concentra 43 das 194 casas do recorte comparável, 22,2% do total, a maior participação isolada.",
+        "Concentra {wardCount} das {corpusTotal} casas do recorte comparável, {wardShare}% do total, a maior participação isolada.",
         "Padrão histórico de lote da área ronda 120 m², segundo registro do trabalho, o que torna o desmembramento em duas parcelas a operação decisiva.",
         "House in a Plum Grove, House M e Tokyo Bud House estão aqui.",
-        "Valor de lote mínimo registrado na base está corrompido e precisa ser reconferido.",
       ],
     },
     Shibuya: {
@@ -151,7 +154,6 @@ window.WARD_CONTEXT = {
       notes: [
         "Alta incidência de vias abaixo de 4 m, o que aciona o recuo do artigo 42, parágrafo 2, e reduz o lote edificável.",
         "Nakano House, de Suzuko Yamada Architects, está aqui.",
-        "Valor de lote mínimo registrado na base está corrompido e precisa ser reconferido.",
       ],
     },
     Suginami: {
@@ -161,7 +163,6 @@ window.WARD_CONTEXT = {
       notes: [
         "Ausente do pacote público A29-2019, o que impede a leitura da faixa de zoneamento por este atlas.",
         "Tunnel House, de Makiko Tsukada, e Open Sky House, de Zajirogh, estão aqui.",
-        "Valor de lote mínimo registrado na base está corrompido e precisa ser reconferido.",
       ],
     },
     Toshima: {
@@ -189,7 +190,6 @@ window.WARD_CONTEXT = {
       profile: "Pequeno, denso e industrial em escala miúda. Nippori concentra o comércio têxtil e Machiya mantém tecido de machikoba com lotes muito pequenos, herdados do parcelamento do início do século XX.",
       notes: [
         "Entre os wards com maior proporção de lotes abaixo de 100 m² no tecido comum, condição a confirmar em fonte fundiária. [VERIFICAR]",
-        "Valor de lote mínimo registrado na base está corrompido e precisa ser reconferido.",
       ],
     },
     Itabashi: {
@@ -198,7 +198,6 @@ window.WARD_CONTEXT = {
       profile: "Antiga estação de posta do Nakasendo, depois área industrial e militar, convertida no pós-guerra em grandes conjuntos habitacionais e residencial de baixa altura ao longo do rio Shakujii. Densidade alta, preço da terra moderado para os padrões do centro.",
       notes: [
         "Takashimadaira é um dos maiores conjuntos habitacionais públicos do país e serve de contraponto de escala.",
-        "Valor de lote mínimo registrado na base está corrompido e precisa ser reconferido.",
       ],
     },
     Nerima: {
@@ -207,7 +206,6 @@ window.WARD_CONTEXT = {
       profile: "Último dos 23 a ser criado, desmembrado de Itabashi em 1947. A conversão agrícola foi tardia e parcial, e ainda restam parcelas produtivas dentro do perímetro urbano. O lote médio é maior e a densidade menor que a dos wards centrais.",
       notes: [
         "A agricultura urbana remanescente é um caso raro de reserva fundiária dentro da cidade consolidada.",
-        "Valor de lote mínimo registrado na base está corrompido e precisa ser reconferido.",
       ],
     },
     Adachi: {
@@ -217,7 +215,6 @@ window.WARD_CONTEXT = {
       notes: [
         "Preço da terra mais baixo reduz a pressão de desmembramento, hipótese que o corpus pode testar.",
         "Apenas uma casa do recorte comparável está aqui.",
-        "Valor de lote mínimo registrado na base está corrompido e precisa ser reconferido.",
       ],
     },
     Katsushika: {
@@ -234,8 +231,7 @@ window.WARD_CONTEXT = {
       belt: "nordeste",
       profile: "Extremo leste, entre o rio Edogawa e a baía. Grande parte do território está em cota zero, abaixo do nível da maré alta, o que condiciona fundação, drenagem e risco. O crescimento é pós-guerra e majoritariamente de baixa altura.",
       notes: [
-        "As áreas de cota zero impõem custo de fundação que interfere na economia do lote pequeno.",
-        "Valor de lote mínimo registrado na base está corrompido e precisa ser reconferido.",
+        "As áreas de cota zero impõem custo de fundação que interfere na economia do microlote.",
       ],
     },
   },

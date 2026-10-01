@@ -9,7 +9,7 @@
    mostrar. Onde isso importa, o achado traz a ressalva junto. */
 
 window.NEKO_FINDINGS = {
-  lede: "Quatro leituras que saem das 194 fichas comparáveis. Cada uma traz o método e a ressalva, porque um corpus de casas publicadas mede o arquivo e não a frequência urbana. As correlações são de postos, de Spearman, e descrevem associação monotônica: não estabelecem causa.",
+  lede: "Quatro leituras que saem das {n} fichas comparáveis da aba 01 casas base. Cada uma traz o método e a ressalva, porque um corpus de casas publicadas mede o arquivo e não a frequência urbana. As correlações são de postos, de Spearman, e descrevem associação monotônica: não estabelecem causa.",
 
   items: [
     {
@@ -44,8 +44,8 @@ window.NEKO_FINDINGS = {
       number: "04",
       claim: "Três pavimentos é a regra, não a exceção.",
       body: "Entre as {floorsN} fichas que registram pavimentos, {floors3} são de três pavimentos, {floorsShare}% do subconjunto. Somadas as de dois a quatro, chega-se a {floors234}. A verticalização do microlote é baixa e consistente, o que faz sentido sob a altura absoluta de 10 ou 12 m das zonas exclusivas de baixa altura, e sob o plano inclinado do lado norte.",
-      method: "contagem direta no campo de pavimentos, documentado em {floorsN} de {n} fichas",
-      caveat: "O campo não está preenchido em {floorsMissing} fichas, e em quatro delas o empilhamento equivalente supera os pavimentos registrados, o que sugere subsolo ou mezanino não contados. Essas quatro estão sinalizadas na lista.",
+      method: "contagem direta do número de pavimentos registrado na planilha, inteiro em {floorsN} de {n} fichas",
+      caveat: "Em {floorsMissing} fichas o campo está vazio ou descreve níveis que não se reduzem a um número inteiro, e essas ficam fora da conta. Quando a planilha separa subsolo (B1) ou loft, conta-se só o número de pavimentos e o resto fica anotado na ficha. Em {floorsOdd} fichas o empilhamento equivalente supera os pavimentos registrados, subsolo incluído, o que sugere mezanino ou nível não anotado; elas estão sinalizadas na lista.",
       chart: "floors",
     }
   ],
@@ -54,7 +54,7 @@ window.NEKO_FINDINGS = {
      trabalho; as brasileiras são medidas correntes, sem norma citada. */
   scale: {
     title: "O tamanho de que estamos falando",
-    lede: "Neko no hitai, testa de gato, é o modo japonês de dizer que um terreno é pequeno demais para ser levado a sério. Metro quadrado não diz nada sozinho, então aqui estão as medidas ao lado das quais o corpus deve ser lido.",
+    lede: "Metro quadrado não diz nada sozinho, então aqui estão as medidas ao lado das quais o corpus deve ser lido.",
     items: [
       { label: "1K inicial da JHC, Aichi", value: 12.12, note: "1955 a 1960, banho e sanitário coletivos · Miyazaki, 1993, p. 33", kind: "ref" },
       { label: "Vaga de garagem", value: 12.0, note: "2,40 × 5,00 m · medida corrente", kind: "ref" },
@@ -62,9 +62,9 @@ window.NEKO_FINDINGS = {
       { label: "Menor lote do corpus", value: null, field: "minLot", note: "{minLotName}", kind: "corpus" },
       { label: "Modelo 51C, 1951", value: 35.0, note: "área privativa aproximada · DK, pais e filhos", kind: "ref" },
       { label: "Referência do Jūseikatsu Kihon Keikaku", value: 40.0, note: "acima de aproximadamente 40 m² · MLIT, 2026 [VERIFICAR]", kind: "ref" },
-      { label: "Lote mediano do corpus", value: null, field: "medLot", note: "194 fichas comparáveis", kind: "corpus" },
+      { label: "Lote mediano do corpus", value: null, field: "medLot", note: "{n} fichas comparáveis · aba 01 casas base", kind: "corpus" },
       { label: "Corte do recorte", value: 100.0, note: "limite operacional da pesquisa", kind: "cut" },
     ],
-    catNote: "Um gato doméstico deitado ocupa algo perto de 0,1 m². O menor lote do corpus, com {minLot} m², caberia {catCount} vezes essa área. A expressão não é uma medida, é um desdém.",
+    catNote: "Um gato doméstico deitado ocupa algo perto de 0,1 m². O menor lote do corpus, com {minLot} m², caberia {catCount} vezes essa área. Neko no hitai (猫の額), literalmente “testa de gato”, é uma expressão japonesa para lugares de área muito pequena. Como a testa do gato é estreita, a imagem serve para qualquer espaço apertado, de um jardim a um terreno, como em 猫の額ほどの庭, “um jardim do tamanho da testa de um gato”.",
   },
 };

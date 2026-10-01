@@ -170,7 +170,7 @@ window.NEKO_RULES = {
     {
       ja: "既存不適格", romaji: "kizon futekikaku", pt: "Edificação legalmente desconforme",
       article: "Lei de Padrões de Construção, art. 3, § 2",
-      summary: "Edificações e lotes que eram regulares quando construídos e deixaram de sê-lo por mudança da norma continuam legais, mas ficam sujeitos às regras vigentes quando se reconstrói ou amplia.",
+      summary: "Edificações que eram regulares quando construídas e deixaram de sê-lo por mudança da norma continuam legais, mas ficam sujeitas às regras vigentes quando se reconstrói ou amplia. Por extensão, a expressão se aplica também a lotes.",
       micro: "Muitos lotes abaixo do mínimo atual estão nessa condição. É o que explica a existência de microlotes onde a norma vigente não permitiria criá-los, e por que a reconstrução é o momento crítico.",
       figure: {
         kind: "static",

@@ -1,7 +1,7 @@
 /* Retratos: a seção em que o corpus vira figura.
 
-   1. Os que cobrem e os que guardam: o recorte partido ao meio pela mediana
-      do solo coberto, e as outras medidas comparadas entre as duas metades.
+   1. O passeio de gato pela Building Frame of the House (assets/frame.js,
+      carregado só quando a seção se aproxima da tela).
    2. O jogo do lote menor.
    3. O olhômetro.
 
@@ -18,9 +18,6 @@
   const fmt = A.fmt;
   const esc = A.escapeHtml;
 
-  const INDIGO = "#3b3f8f";
-  const PINK = "#d5476a";
-  const PAPER = "#f7f4ec";
   const INK = "#10264a";
 
   let tipEl = null;
@@ -44,87 +41,7 @@
   document.addEventListener("scroll", hideTip, { passive: true });
 
   /* =====================================================================
-     1. Os que cobrem e os que guardam
-
-     Padrão do Pudding: partir o conjunto em dois grupos por uma variável e
-     comparar todas as outras. Aqui o corte é a mediana do BCR observado, e
-     por construção o próprio BCR fica de fora das linhas.
-     ===================================================================== */
-
-  const SPLIT_FIELDS = [
-    { key: "lotArea", label: "área do lote", unit: "m²", d: 1 },
-    { key: "builtArea", label: "área construída", unit: "m²", d: 1 },
-    { key: "footprintArea", label: "projeção no solo", unit: "m²", d: 1 },
-    { key: "far", label: "FAR observado", unit: "", d: 2 },
-    { key: "floors", label: "pavimentos", unit: "", d: 1 },
-    { key: "year", label: "ano da obra", unit: "", d: 0, disp: (v) => String(Math.round(v)) },
-  ];
-
-  function dividedBlock() {
-    const withB = A.houses.filter((h) => Number.isFinite(h.bcr));
-    if (withB.length < 40) return "";
-    const med = A.core.median(withB.map((h) => h.bcr));
-    const cover = withB.filter((h) => h.bcr > med);
-    const keep = withB.filter((h) => h.bcr <= med);
-
-    const W = 780, ROW = 66, PAD = { t: 34, b: 26, l: 156, r: 92 };
-    const H = PAD.t + SPLIT_FIELDS.length * ROW + PAD.b;
-
-    const rows = SPLIT_FIELDS.map((f, i) => {
-      const all = withB.map((h) => h[f.key]).filter(Number.isFinite).sort((a, b) => a - b);
-      if (all.length < 10) return "";
-      const lo = all[Math.floor(all.length * 0.02)];
-      const hi = all[Math.ceil(all.length * 0.98) - 1];
-      const span = hi - lo || 1;
-      const x = (v) => PAD.l + ((Math.max(lo, Math.min(hi, v)) - lo) / span) * (W - PAD.l - PAD.r);
-      const y = PAD.t + i * ROW + ROW / 2;
-
-      const aVals = cover.map((h) => h[f.key]).filter(Number.isFinite);
-      const bVals = keep.map((h) => h[f.key]).filter(Number.isFinite);
-      const a = A.core.median(aVals), b = A.core.median(bVals);
-      const show = (v) => (f.disp ? f.disp(v) : fmt(v, f.d)) + (f.unit ? ` ${f.unit}` : "");
-      const diff = b ? (a / b - 1) * 100 : 0;
-      const diffText = f.key === "year"
-        ? `${a - b > 0 ? "+" : ""}${fmt(a - b, 0)} ${Math.abs(a - b) === 1 ? "ano" : "anos"}`
-        : `${diff > 0 ? "+" : ""}${fmt(diff, 0)}%`;
-
-      const dots = (vals, cls) => vals.map((v) =>
-        `<circle cx="${x(v).toFixed(1)}" cy="${y}" r="2.4" class="${cls}"></circle>`).join("");
-
-      return `<g class="split-row" data-field="${f.key}">
-        <text x="${PAD.l - 14}" y="${y - 4}" text-anchor="end" class="split-label">${esc(f.label)}</text>
-        <text x="${PAD.l - 14}" y="${y + 11}" text-anchor="end" class="split-n">${aVals.length} e ${bVals.length} fichas</text>
-        <line x1="${PAD.l}" y1="${y}" x2="${W - PAD.r}" y2="${y}" class="split-track"></line>
-        <g class="split-cloud">${dots(bVals, "split-dot keep")}${dots(aVals, "split-dot cover")}</g>
-        <line x1="${x(a).toFixed(1)}" y1="${y}" x2="${x(b).toFixed(1)}" y2="${y}" class="split-link"></line>
-        <circle cx="${x(b).toFixed(1)}" cy="${y}" r="7" class="split-med keep"></circle>
-        <circle cx="${x(a).toFixed(1)}" cy="${y}" r="7" class="split-med cover"></circle>
-        <text x="${x(a).toFixed(1)}" y="${y - 15}" text-anchor="middle" class="split-value cover">${show(a)}</text>
-        <text x="${x(b).toFixed(1)}" y="${y + 24}" text-anchor="middle" class="split-value keep">${show(b)}</text>
-        <text x="${W - PAD.r + 12}" y="${y + 4}" class="split-diff ${diff > 0 ? "up" : diff < 0 ? "down" : ""}">${diffText}</text>
-      </g>`;
-    }).join("");
-
-    return `<article class="city-block panel" id="block-split">
-      <div class="panel-title"><div><p>duas metades</p><h3>Os que cobrem e os que guardam</h3></div></div>
-      <p class="panel-lede">O recorte partido ao meio pela mediana do solo coberto, ${fmt(med * 100, 1)}%: de um lado as ${cover.length} casas que cobrem mais do que isso, do outro as ${keep.length} que guardam mais chão livre. O BCR fica de fora das linhas, porque é ele que faz o corte. O que aparece é o resto.</p>
-      <div class="split-wrap">
-        <svg viewBox="0 0 ${W} ${H}" class="split-svg" role="img"
-          aria-label="Comparação das medianas dos dois grupos em seis medidas">
-          <text x="${PAD.l}" y="20" class="split-head cover">● os que cobrem, acima da mediana</text>
-          <text x="${PAD.l + 300}" y="20" class="split-head keep">● os que guardam, abaixo</text>
-          <text x="${W - PAD.r + 12}" y="20" class="split-head">diferença</text>
-          ${rows}
-        </svg>
-      </div>
-      <p class="city-note">Cada linha é uma medida, na escala do próprio recorte entre o percentil 2 e o 98; os pontinhos são as fichas e os círculos grandes são as medianas de cada grupo. A leitura que salta: cobrir mais do lote acompanha lote menor e área construída maior, com o mesmo número de pavimentos e no mesmo período. Isso descreve o arquivo publicado, não prova causa: o corte é feito pelo próprio BCR, e casa sem o campo não entra na linha que depende dele, por isso pavimentos compara menos fichas que as outras.</p>
-    </article>`;
-  }
-
-  const r1 = (n) => Math.round(n * 10) / 10;
-
-  /* =====================================================================
-     3. O jogo do lote menor
+     2. O jogo do lote menor
      ===================================================================== */
 
   const ROUNDS = 6;
@@ -132,13 +49,13 @@
   function gameBlock() {
     return `<article class="city-block panel game" id="block-game">
       <div class="panel-title"><div><p>jogo</p><h3>Neko no hitai: qual está no lote menor?</h3></div></div>
-      <p class="panel-lede">Seis rodadas. Você vê duas casas do corpus, com a área construída, os pavimentos e o ward, e aponta a que está no terreno menor. A área construída ajuda menos do que parece: no recorte comparável, a correlação de postos entre lote e área construída é <span id="game-rho">…</span>.</p>
+      <p class="panel-lede">Seis rodadas. Você vê duas casas do corpus, com a área construída, os pavimentos e o ward, e aponta a que está no terreno menor. A área construída ajuda menos do que parece: entre as fichas do jogo, a correlação de postos entre lote e área construída é <span id="game-rho">…</span>.</p>
       <div class="game-board" id="game-board"></div>
       <div class="game-foot">
         <span class="game-score" id="game-score"></span>
         <button type="button" class="quiet-button" id="game-restart" hidden>Jogar de novo</button>
       </div>
-      <p class="city-note">As casas são sorteadas entre as fichas com lote, área construída e pavimentos registrados, e cada rodada garante pelo menos 6 m² de diferença entre os dois lotes. Metade das rodadas é montada de propósito com a casa de maior área construída no lote menor: é o caso que quebra a intuição, e ele existe no corpus.</p>
+      <p class="city-note">As casas são sorteadas entre as fichas com lote, área construída e pavimentos registrados, e cada rodada garante pelo menos 6 m² de diferença entre os dois lotes. Metade das rodadas é montada de propósito com a casa de maior área construída no lote menor: é o caso que quebra a intuição, e ele existe no corpus. Fonte: aba 01 casas base.</p>
     </article>`;
   }
 
@@ -148,7 +65,7 @@
     const pool = A.houses.filter((h) => Number.isFinite(h.lotArea) && Number.isFinite(h.builtArea) && Number.isFinite(h.floors));
     const sp = A.core.spearman(pool.map((h) => [h.lotArea, h.builtArea]));
     const rhoEl = $("game-rho");
-    if (rhoEl) rhoEl.textContent = sp ? `${fmt(sp.rho, 2)}, em ${sp.n} fichas` : "não calculada";
+    if (rhoEl) rhoEl.textContent = sp ? `${fmt(sp.rho, 2)}, nas ${sp.n} que também registram pavimentos` : "não calculada";
 
     let round = 0, score = 0, rounds = [];
 
@@ -254,7 +171,7 @@
   }
 
   /* =====================================================================
-     4. O olhômetro
+     3. O olhômetro
      ===================================================================== */
 
   const EYE_ROUNDS = 5;
@@ -269,7 +186,7 @@
         <li>Compare os dois, arraste o controle até o número que você acha que é a área do terreno e responda. São cinco rodadas.</li>
       </ol>
       <div class="eye-board" id="eye-board"></div>
-      <p class="city-note">As casas são sorteadas entre as fichas que têm a área do lote registrada e que ficam entre 12 e 100 m², que é a faixa em que a régua da vaga ainda ajuda. A planilha registra a área do lote, não as suas dimensões: o terreno é desenhado como um quadrado de mesma área, o que é convenção de leitura e não a forma real da parcela. Um lote de 50 m² pode ser um retângulo de 4 por 12,5.</p>
+      <p class="city-note">As casas são sorteadas entre as fichas que têm a área do lote registrada e que ficam entre 12 e 100 m², que é a faixa em que a régua da vaga ainda ajuda. A planilha registra a área do lote, não as suas dimensões: o terreno é desenhado como um quadrado de mesma área, o que é convenção de leitura e não a forma real da parcela. Um lote de 50 m² pode ser um retângulo de 4 por 12,5. Fonte: aba 01 casas base.</p>
     </article>`;
   }
 
@@ -396,13 +313,13 @@
     const host = $("cats-blocks");
     if (!host) return;
     if (CAT.defs) CAT.defs();
-    host.innerHTML = [dividedBlock(), gameBlock(), eyeBlock()].filter(Boolean).join("");
+    host.innerHTML = [gameBlock(), eyeBlock()].filter(Boolean).join("");
 
     initGame();
     initEye();
 
     const lede = $("cats-lede");
-    if (lede) lede.textContent = "As peças desta seção usam as mesmas 194 fichas das outras, só que desenhadas. O recorte se parte ao meio, o arquivo inteiro vira uma fileira que se percorre, e o que a planilha não consegue dizer vira jogo.";
+    if (lede) lede.textContent = `As peças desta seção usam as mesmas ${A.houses.length} fichas das outras, só que desenhadas. Uma casa do capítulo 9 vira passeio de gato, o que a planilha não consegue dizer vira jogo, e o olho é posto à prova contra a medida.`;
   }
 
   mount();

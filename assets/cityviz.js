@@ -145,7 +145,7 @@
         </div>
       </div>`;
 
-    const note = `Solo residencial por proprietário pessoa física, nos 23 wards: ${nf(first.wards, 0)} m² em ${first.year} e ${nf(last.wards, 0)} m² em ${last.year}, uma queda de ${nf((1 - last.wards / first.wards) * 100, 1)}%. Os pontos em rosa são a mediana do lote das fichas do corpus por década, que anda em outro patamar: o arquivo publicado já nasce abaixo da média da cidade e quase não se move. Fonte: ${esc(C.source.landPerOwner)} O corpus é o levantamento da autora, ${A.metadata.eligibleRecords} fichas comparáveis. As duas séries medem coisas diferentes: uma é propriedade, a outra é lote de obra publicada.`;
+    const note = `Solo residencial por proprietário pessoa física, nos 23 wards: ${nf(first.wards, 0)} m² em ${first.year} e ${nf(last.wards, 0)} m² em ${last.year}, uma queda de ${nf((1 - last.wards / first.wards) * 100, 1)}%. Os pontos em rosa são a mediana do lote das ${A.metadata.eligibleRecords} fichas comparáveis, por década. Que fiquem abaixo da linha é consequência do recorte, que só aceita lotes menores que 100 m²; o que o gráfico compara é a inclinação: a cidade perde quase metade do solo por dono, e a mediana do arquivo quase não se move. As duas séries medem coisas diferentes, uma é propriedade, a outra é lote de obra publicada. Fonte: cidade, ${esc(C.source.landPerOwner)} Fichas, aba 01 casas base.`;
 
     return { html: block("landowner", "a cidade e o arquivo", "A cidade encolhe, o arquivo não", body, note), init: () => initGuess(X, Y, first, last, segs) };
   }
@@ -280,8 +280,8 @@
         <p class="drawit-verdict" id="drawit-verdict"></p>
       </div>`;
 
-    const note = "Série 東京の土地, posição em 1º de janeiro de cada ano, proprietários pessoas físicas com terreno residencial abaixo de 100 m² nos 23 wards. Desenhar antes de ver é recurso de leitura, não medida: o seu traço não entra em conta nenhuma e nada do que você desenha sai do seu navegador.";
-    return { html: block("drawit", "palpite", "Você desenha: quantos donos de lote pequeno, de 2016 a 2024", body, note), init: initDrawIt };
+    const note = `Proprietários pessoas físicas com terreno residencial abaixo de 100 m² nos 23 wards, em 1º de janeiro de cada ano. Desenhar antes de ver é recurso de leitura, não medida: o seu traço não entra em conta nenhuma e nada do que você desenha sai do seu navegador. Fonte: ${esc(C.source.micro)}`;
+    return { html: block("drawit", "palpite", "Você desenha: quantos donos de microlote, de 2016 a 2024", body, note), init: initDrawIt };
   }
 
   function initDrawIt() {
@@ -444,7 +444,7 @@
         </div>
       </div>`;
 
-    const note = `Proprietários pessoa física de lotes menores que 100 m² nos 23 wards, por ano, em 1º de janeiro. Fonte: ${esc(C.source.micro)} A série conta proprietários, não lotes nem domicílios: um proprietário pode ter mais de um lote e um lote pode ter mais de um dono. Crescimento não é prova de novos parcelamentos, porque herança e venda também movem o número.`;
+    const note = `Proprietários pessoa física de lotes menores que 100 m² nos 23 wards, por ano, em 1º de janeiro. A série conta proprietários, não lotes nem domicílios: um proprietário pode ter mais de um lote e um lote pode ter mais de um dono. Crescimento não é prova de novos parcelamentos, porque herança e venda também movem o número. Fonte: ${esc(C.source.micro)}`;
 
     return { html: block("micro", "solo", "Microlotes, 2016 a 2024", body, note), init: initMicro };
   }
@@ -500,81 +500,61 @@
      ===================================================================== */
 
   function archiveCityBlock() {
+    /* obras do corpus por ward: as 249 da aba 01 casas base, que estão na
+       clientela; proprietários de microlote em 2024: aba 08 */
     const corpusByWard = {};
-    for (const h of A.houses) corpusByWard[h.ward] = (corpusByWard[h.ward] || 0) + 1;
-    const sheetTotal = Object.values(C.microByWard).reduce((s, d) => s + (d.sheetWorks || 0), 0);
-
+    for (const c of C.clientela) if (c.ward) corpusByWard[c.ward] = (corpusByWard[c.ward] || 0) + 1;
+    const comparable = {};
+    for (const h of A.houses) comparable[h.ward] = (comparable[h.ward] || 0) + 1;
+    const total = Object.values(corpusByWard).reduce((a, b) => a + b, 0);
     const rows = Object.entries(C.microByWard).map(([ward, d]) => {
       const owners = d.owners[d.owners.length - 1];
-      const atlas = corpusByWard[ward] || 0;
-      return {
-        ward, owners, regime: d.landRegime,
-        sheetWorks: d.sheetWorks || 0, sheetRate: d.sheetWorksPer10k,
-        atlasWorks: atlas, atlasRate: owners ? (atlas / owners) * 10000 : null,
-      };
-    });
+      const works = corpusByWard[ward] || 0;
+      return { ward, owners, works, rate: owners ? (works / owners) * 10000 : null, up: d.ownersDeltaPct >= 0, delta: d.ownersDeltaPct };
+    }).filter((r) => Number.isFinite(r.rate)).sort((a, b) => b.rate - a.rate);
 
     const W = 860, H = 40 + rows.length * 26, m = { t: 30, r: 230, b: 10, l: 110 };
-    const draw = (key) => {
-      const rateKey = key === "atlas" ? "atlasRate" : "sheetRate";
-      const workKey = key === "atlas" ? "atlasWorks" : "sheetWorks";
-      const list = rows.filter((r) => Number.isFinite(r[rateKey])).sort((a, b) => b[rateKey] - a[rateKey]);
-      const max = Math.max(...list.map((r) => r[rateKey])) || 1;
-      const X = scale([0, max], [m.l, W - m.r]);
-      return list.map((r, i) => {
-        const y = m.t + i * 26;
-        const w = Math.max(1, X(r[rateKey]) - m.l);
-        return `<g class="archive-row" data-ward="${esc(r.ward)}">
-          <text x="${m.l - 10}" y="${y + 13}" text-anchor="end" class="axis-text">${esc(r.ward)}</text>
-          <rect x="${m.l}" y="${y}" width="${w.toFixed(1)}" height="17" rx="3" class="archive-bar ${r.regime === "Fragmenta" ? "frag" : "cons"}"></rect>
-          <text x="${(m.l + w + 8).toFixed(1)}" y="${y + 13}" class="archive-value">${nf(r[rateKey], 2)} por 10 mil · ${intBr(r[workKey])} obra${r[workKey] === 1 ? "" : "s"}</text>
-        </g>`;
-      }).join("");
-    };
+    const max = Math.max(...rows.map((r) => r.rate)) || 1;
+    const X = scale([0, max], [m.l, W - m.r]);
+    const bars = rows.map((r, i) => {
+      const y = m.t + i * 26;
+      const w = Math.max(1, X(r.rate) - m.l);
+      return `<g class="archive-row" data-ward="${esc(r.ward)}">
+        <text x="${m.l - 10}" y="${y + 13}" text-anchor="end" class="axis-text">${esc(r.ward)}</text>
+        <rect x="${m.l}" y="${y}" width="${w.toFixed(1)}" height="17" rx="3" class="archive-bar ${r.up ? "frag" : "cons"}"></rect>
+        <text x="${(m.l + w + 8).toFixed(1)}" y="${y + 13}" class="archive-value">${nf(r.rate, 2)} por 10 mil · ${intBr(r.works)} obra${r.works === 1 ? "" : "s"}</text>
+      </g>`;
+    }).join("");
 
     const body = `
-      <div class="archive-switch" role="group" aria-label="Fonte da contagem de obras">
-        <button type="button" class="chip-button active" data-source="atlas">fichas do atlas · ${A.metadata.eligibleRecords}</button>
-        <button type="button" class="chip-button" data-source="sheet">aba da planilha · ${intBr(sheetTotal)}</button>
-      </div>
       <div class="plot-wrap"><svg id="chart-archive-city" viewBox="0 0 ${W} ${H}" role="img"
-        aria-label="Obras por 10 mil proprietários de microlote, por ward">
+        aria-label="Obras do corpus por 10 mil proprietários de microlote, por ward">
         <text x="${m.l - 10}" y="${m.t - 12}" text-anchor="end" class="axis-text">ward</text>
-        <g id="archive-bars">${draw("atlas")}</g>
+        <g id="archive-bars">${bars}</g>
       </svg></div>
       <div class="archive-legend">
-        <span><i class="swatch frag"></i>ward que fragmenta o solo</span>
-        <span><i class="swatch cons"></i>ward que consolida</span>
+        <span><i class="swatch frag"></i>donos de microlote aumentaram de 2016 a 2024</span>
+        <span><i class="swatch cons"></i>diminuíram</span>
       </div>`;
 
-    const note = `Obras por 10 mil proprietários de microlote, ward a ward, e a classificação de solo do mesmo ward. As duas contagens não batem: o corpus comparável do atlas tem ${A.metadata.eligibleRecords} fichas, ${corpusByWard.Setagaya || 0} delas em Setagaya, enquanto a aba da planilha soma ${intBr(sheetTotal)} obras, ${intBr(C.microByWard.Setagaya ? C.microByWard.Setagaya.sheetWorks : 0)} em Setagaya. A divergência é de recorte, não de cálculo, e precisa ser resolvida na planilha antes de qualquer citação [VERIFICAR]. A conta cruza um arquivo editorial com um cadastro tributário: mede densidade de publicação, nunca frequência de microcasas na cidade.`;
+    const top = rows[0], topCount = rows.slice().sort((a, b) => b.works - a.works)[0];
+    const note = `Obras do corpus, as ${total} da aba 01 casas base, para cada 10 mil proprietários de lote abaixo de 100 m² em 2024, ward a ward. ${esc(topCount.ward)} tem mais obras em número, ${intBr(topCount.works)}, mas ${esc(top.ward)} lidera a conta relativa, com ${nf(top.rate, 2)} por 10 mil. A cor diz se o número de donos de microlote subiu ou caiu desde 2016, o que não é o mesmo que dizer que o solo foi parcelado: herança e venda também mexem nesse número. A conta cruza um arquivo editorial com um cadastro tributário e mede densidade de publicação, nunca frequência de microcasas na cidade. Fonte: obras, aba 01 casas base; proprietários, ${esc(C.source.micro)} A mesma razão aparece na aba 07 contexto wards.`;
 
     return { html: block("archive-city", "arquivo × cidade", "Onde se publica não é onde se constrói", body, note), init: () => {
-      const bind = () => {
-        document.querySelectorAll("#chart-archive-city .archive-row").forEach((node) => {
-          node.addEventListener("mousemove", (e) => {
-            const ward = node.dataset.ward;
-            const d = C.microByWard[ward];
-            tip(node, e, `<strong>${esc(ward)}</strong>${intBr(d.owners[d.owners.length - 1])} proprietários de microlote em 2024<br>${nf(d.ownersDeltaPct, 1)}% desde 2016<br>${corpusByWard[ward] || 0} ficha${(corpusByWard[ward] || 0) === 1 ? "" : "s"} no corpus comparável<br>${intBr(d.sheetWorks || 0)} obra${(d.sheetWorks || 0) === 1 ? "" : "s"} na aba da planilha`);
-          });
-          node.addEventListener("mouseleave", hideTip);
-          node.addEventListener("click", () => A.toggleWard(node.dataset.ward));
+      document.querySelectorAll("#chart-archive-city .archive-row").forEach((node) => {
+        node.addEventListener("mousemove", (e) => {
+          const ward = node.dataset.ward;
+          const d = C.microByWard[ward];
+          tip(node, e, `<strong>${esc(ward)}</strong>${intBr(d.owners[d.owners.length - 1])} proprietários de microlote em 2024<br>${nf(d.ownersDeltaPct, 1)}% desde 2016<br>${corpusByWard[ward] || 0} obra${(corpusByWard[ward] || 0) === 1 ? "" : "s"} no corpus, ${comparable[ward] || 0} no recorte comparável`);
         });
-      };
-      bind();
-      const group = document.querySelector(".archive-switch");
-      if (group) group.addEventListener("click", (e) => {
-        const b = e.target.closest("[data-source]");
-        if (!b) return;
-        group.querySelectorAll("button").forEach((x) => x.classList.toggle("active", x === b));
-        document.getElementById("archive-bars").innerHTML = draw(b.dataset.source);
-        bind();
+        node.addEventListener("mouseleave", hideTip);
+        node.addEventListener("click", () => A.toggleWard(node.dataset.ward));
       });
     } };
   }
 
   /* =====================================================================
-     4. Regime de lote mínimo
+     4. Quando cada ward passou a exigir lote mínimo
      ===================================================================== */
 
   function regimeBlock() {
@@ -615,7 +595,7 @@
           <text x="${m.l}" y="${m.t - 16}" class="axis-text">ano de adoção da regra de área mínima</text>
         </svg></div>`;
 
-    const note = `Regime de área mínima de lote nos 23 wards, com a data de adoção registrada. ${dated.length} wards têm data; os demais não definem mínimo ou não registram adoção. Onde há duas datas, a mais antiga entra na linha e o ward aparece com asterisco; a ficha traz as duas. Fonte: ${esc(C.source.wardNorms)} O mínimo vale para lotes novos: lotes anteriores continuam existindo como 既存不適格.`;
+    const note = `Regime de área mínima de lote nos 23 wards, com a data de adoção registrada. ${dated.length} wards têm data; os demais não definem mínimo ou não registram adoção. Onde há duas datas, a mais antiga entra na linha e o ward aparece com asterisco; a ficha traz as duas. O mínimo vale para lotes novos: lotes anteriores continuam existindo como 既存不適格. Fonte: ${esc(C.source.wardNorms)}`;
 
     return { html: block("regime", "norma", "Quando cada ward passou a exigir um lote mínimo", body, note), init: () => {
       document.querySelectorAll("#chart-regime .regime-dot").forEach((node) => {
@@ -623,6 +603,136 @@
         node.addEventListener("mousemove", (e) => tip(node, e,
           `<strong>${esc(node.dataset.ward)}</strong>${esc(n.regime || "")}<br>Lote mínimo: ${esc(n.minimumLot || "não registrado")} m²<br>Escopo: ${esc(n.scope || "não registrado")}<br>Adoção: ${esc(n.adoptionDate || "não registrada")}`));
         node.addEventListener("mouseleave", hideTip);
+      });
+    } };
+  }
+
+  /* =====================================================================
+     Solo em movimento: quem vende e quem herda terreno pequeno, 2024.
+     Fonte: aba 17 análise fluxo lotes 2024. Transações por faixa de área
+     da parcela, não subdivisões; a nota diz as duas contas, em número e em
+     área, para o microlote não parecer maior do que é.
+     ===================================================================== */
+  function landFlowBlock() {
+    const F = C.landFlow;
+    if (!F) return null;
+    const wards = Object.keys(F);
+    const sum = (k) => wards.reduce((s, w) => s + F[w][k], 0);
+    const sS = sum("salesSmall"), sT = sum("salesTotal"), hS = sum("inhSmall"), hT = sum("inhTotal");
+    const aS = sum("salesSmallM2"), aT = sum("salesTotalM2");
+    const rows = wards.map((w) => Object.assign({ ward: w }, F[w])).sort((a, b) => b.salesPct - a.salesPct);
+    const minSale = rows.reduce((a, b) => (b.salesPct < a.salesPct ? b : a));
+    const minInh = rows.reduce((a, b) => (b.inhPct < a.inhPct ? b : a));
+    const allMajority = rows.every((r) => r.salesPct > 50 && r.inhPct > 50);
+    const W = 860, rowH = 22, m = { t: 38, r: 28, b: 34, l: 112 };
+    const H = m.t + rows.length * rowH + m.b;
+    /* a escala começa em 40%: todos os valores passam de 60%, e a linha de
+       metade continua à vista como referência */
+    const X = scale([40, 100], [m.l, W - m.r]);
+    const ticks = [40, 50, 60, 70, 80, 90, 100].map((v) =>
+      `<line x1="${X(v)}" x2="${X(v)}" y1="${m.t - 6}" y2="${H - m.b + 2}" class="${v === 50 ? "flow-half" : "grid-line"}"></line>
+       <text x="${X(v)}" y="${H - m.b + 18}" text-anchor="middle" class="axis-text">${v}%</text>`).join("");
+    const diamond = (x, y, r) => `M${x.toFixed(1)},${(y - r).toFixed(1)} L${(x + r).toFixed(1)},${y.toFixed(1)} L${x.toFixed(1)},${(y + r).toFixed(1)} L${(x - r).toFixed(1)},${y.toFixed(1)} Z`;
+    const marks = rows.map((r, i) => {
+      const y = m.t + i * rowH + rowH / 2;
+      const xs = X(r.salesPct), xh = X(r.inhPct);
+      /* quando vendas e heranças quase coincidem, as marcas se afastam na
+         vertical para uma não esconder a outra */
+      const near = Math.abs(xs - xh) < 12, ys = near ? y - 3.5 : y, yh = near ? y + 3.5 : y;
+      return `<g class="flow-row" data-ward="${esc(r.ward)}" tabindex="0" role="listitem" aria-label="${esc(r.ward)}: vendas ${nf(r.salesPct, 1)}%, heranças ${nf(r.inhPct, 1)}%">
+        <rect x="4" y="${y - rowH / 2}" width="${W - 8}" height="${rowH}" rx="4" class="flow-hit"></rect>
+        <text x="${m.l - 12}" y="${y + 4}" text-anchor="end" class="axis-text">${esc(r.ward)}</text>
+        <line x1="${Math.min(xs, xh).toFixed(1)}" x2="${Math.max(xs, xh).toFixed(1)}" y1="${y}" y2="${y}" class="flow-link"></line>
+        <circle cx="${xs.toFixed(1)}" cy="${ys}" r="5.5" class="flow-sale"></circle>
+        <path d="${diamond(xh, yh, 6.5)}" class="flow-inh"></path>
+      </g>`;
+    }).join("");
+    const body = `
+      <ul class="micro-facts flow-facts">
+        <li><strong>${nf((100 * sS) / sT, 1)}%</strong><span>das vendas de terreno nos 23 wards em 2024 foram de lotes com menos de 100 m², ${intBr(sS)} de ${intBr(sT)}</span></li>
+        <li><strong>${nf((100 * hS) / hT, 1)}%</strong><span>das heranças de terreno no mesmo ano também, ${intBr(hS)} de ${intBr(hT)}</span></li>
+        <li><strong>${nf((100 * aS) / aT, 1)}%</strong><span>é o peso desses lotes na área vendida: são muitos, mas pequenos</span></li>
+      </ul>
+      <div class="flow-legend" aria-hidden="true">
+        <span><svg width="14" height="14" viewBox="0 0 14 14"><circle cx="7" cy="7" r="5" class="flow-sale"></circle></svg>vendas</span>
+        <span><svg width="14" height="14" viewBox="0 0 14 14"><path d="${diamond(7, 7, 6)}" class="flow-inh"></path></svg>heranças</span>
+        <span><svg width="22" height="14" viewBox="0 0 22 14"><line x1="11" x2="11" y1="0" y2="14" class="flow-half"></line></svg>metade</span>
+      </div>
+      <div class="plot-wrap"><svg id="chart-flow" viewBox="0 0 ${W} ${H}" role="img" aria-label="Parcela de lotes abaixo de 100 m² nas vendas e nas heranças de terreno de 2024, por ward">
+        <text x="${m.l}" y="${m.t - 18}" class="axis-text">parcela de lotes com menos de 100 m² no total de transações do ward, 2024</text>
+        ${ticks}
+        <g role="list">${marks}</g>
+      </svg></div>`;
+    const note = `${allMajority ? "Em todos os 23 wards" : "Na maior parte dos wards"}, a maioria das vendas e das heranças de terreno de 2024 foi de lotes com menos de 100 m²: o menor índice de vendas é o de ${esc(minSale.ward)}, ${nf(minSale.salesPct, 1)}%, e o menor de heranças, o de ${esc(minInh.ward)}, ${nf(minInh.inhPct, 1)}%. Em número de transações, é o microlote que mais muda de dono, por compra ou por família; em área, ele responde por ${nf((100 * aS) / aT, 1)}% do solo vendido. A conta é de transações por faixa de área da parcela (até 50 m² somado a 50 a 100 m²), não de subdivisões, e não separa uso residencial. Fonte: ${esc(C.source.landFlow)}`;
+    return { html: block("landflow", "solo em movimento", "O microlote é o que mais muda de dono", body, note), init: () => {
+      document.querySelectorAll("#chart-flow .flow-row").forEach((node) => {
+        const d = F[node.dataset.ward];
+        const show = (e) => tip(node, e, `<strong>${esc(node.dataset.ward)}</strong>vendas: ${intBr(d.salesSmall)} de ${intBr(d.salesTotal)} com menos de 100 m² (${nf(d.salesPct, 1)}%)<br>até 50 m²: ${intBr(d.sales50)} · 50 a 100 m²: ${intBr(d.sales100)}<br>heranças: ${intBr(d.inhSmall)} de ${intBr(d.inhTotal)} (${nf(d.inhPct, 1)}%)`);
+        node.addEventListener("mousemove", show);
+        node.addEventListener("focus", () => { const r = node.getBoundingClientRect(); show({ clientX: r.left + r.width / 2, clientY: r.top }); });
+        node.addEventListener("mouseleave", hideTip);
+        node.addEventListener("blur", hideTip);
+      });
+    } };
+  }
+
+  /* =====================================================================
+     Quem mora junto: composição dos domicílios da Metrópole de Tóquio.
+     Fonte: aba 09 domesticidade base. É a prefeitura inteira, não os 23
+     wards; a nota diz isso e reconcilia com o bloco do censo.
+     ===================================================================== */
+  function householdsBlock() {
+    const all = C.households || [];
+    const rows = all.filter((r) => r.total && [r.single, r.couple, r.coupleKids, r.singleParent, r.nonNuclear].every(Number.isFinite));
+    if (rows.length < 2) return null;
+    const TYPES = [
+      { key: "single", label: "uma pessoa", hi: true },
+      { key: "coupleKids", label: "casal com filhos" },
+      { key: "couple", label: "casal sem filhos" },
+      { key: "singleParent", label: "monoparental" },
+      { key: "nonNuclear", label: "família não nuclear" },
+    ];
+    const share = (r, k) => (100 * r[k]) / r.total;
+    const first = rows[0], last = rows[rows.length - 1];
+    const W = 620, H = 290, m = { t: 20, r: 190, b: 30, l: 44 };
+    const X = scale([first.year, last.year], [m.l, W - m.r]);
+    const Y = scale([0, 55], [H - m.b, m.t]);
+    const grid = [0, 10, 20, 30, 40, 50].map((v) => `<line x1="${m.l}" x2="${W - m.r}" y1="${Y(v)}" y2="${Y(v)}" class="grid-line"></line>
+      <text x="${m.l - 8}" y="${Y(v) + 4}" text-anchor="end" class="axis-text">${v}%</text>`).join("");
+    const years = rows.map((r) => `<text x="${X(r.year)}" y="${H - m.b + 18}" text-anchor="middle" class="axis-text">${r.year}</text>`).join("");
+    const lines = TYPES.map((t) => {
+      const pts = rows.map((r) => [X(r.year), Y(share(r, t.key))]);
+      const end = pts[pts.length - 1];
+      return `<g class="hh-series${t.hi ? " hi" : ""}">
+        <path d="${linePath(pts)}" class="hh-line"></path>
+        ${rows.map((r, i) => `<circle cx="${pts[i][0].toFixed(1)}" cy="${pts[i][1].toFixed(1)}" r="4" class="hh-dot" data-key="${t.key}" data-i="${i}" tabindex="0"></circle>`).join("")}
+        <text x="${end[0] + 10}" y="${end[1] + 4}" class="hh-label">${esc(t.label)} · ${nf(share(last, t.key), 1)}%</text>
+      </g>`;
+    }).join("");
+    const old0 = all.find((r) => Number.isFinite(r.aloneOld)), old1 = [...all].reverse().find((r) => Number.isFinite(r.aloneOld));
+    const cp0 = all.find((r) => Number.isFinite(r.oldCouple)), cp1 = [...all].reverse().find((r) => Number.isFinite(r.oldCouple));
+    const oneIn = Math.round(old1.total / old1.aloneOld);
+    const census = C.census23 && C.census23[C.census23.length - 1];
+    const body = `
+      <div class="hh-grid">
+        <div class="plot-wrap"><svg id="chart-households" viewBox="0 0 ${W} ${H}" role="img" aria-label="Composição dos domicílios particulares da Metrópole de Tóquio, ${first.year} a ${last.year}">
+          ${grid}${years}${lines}
+        </svg></div>
+        <ul class="micro-facts">
+          <li><strong>${intBr(old1.aloneOld)}</strong><span>domicílios de uma pessoa com 65 anos ou mais em ${old1.year}, ${nf(old1.aloneOld / old0.aloneOld, 1)} vezes os ${intBr(old0.aloneOld)} de ${old0.year}: um em cada ${oneIn} domicílios da metrópole</span></li>
+          <li><strong>${intBr(cp1.oldCouple)}</strong><span>casais idosos em ${cp1.year}, contra ${intBr(cp0.oldCouple)} em ${cp0.year}</span></li>
+        </ul>
+      </div>`;
+    const note = `Parcela de cada tipo nos domicílios particulares da Metrópole de Tóquio, nos censos de ${first.year} a ${last.year}. O casal com filhos, que o código nLDK toma como família padrão, é hoje ${nf(share(last, "coupleKids"), 1)}% dos domicílios; o de uma pessoa, ${nf(share(last, "single"), 1)}%. O recorte é a metrópole inteira, e não só os 23 wards, porque é o único em que a aba traz a composição: por isso a parcela de uma pessoa aqui${census && Number.isFinite(census.pctSingle) ? ` fica abaixo dos ${nf(census.pctSingle, 1)}% do bloco anterior, que conta só os 23 wards` : " difere da dos 23 wards"}. Casal sem filhos, casal com filhos e monoparental somam a família nuclear; cerca de 1% dos domicílios, os que incluem pessoas sem parentesco, fica fora do gráfico. A série começa em ${first.year} porque monoparental e família não nuclear só aparecem na aba a partir desse censo. Fonte: ${esc(C.source.households)}`;
+    return { html: block("households", "família", "Metade dos domicílios tem uma pessoa só", body, note), init: () => {
+      document.querySelectorAll("#chart-households .hh-dot").forEach((node) => {
+        const t = TYPES.find((x) => x.key === node.dataset.key);
+        const r = rows[Number(node.dataset.i)];
+        const show = (e) => tip(node, e, `<strong>${r.year} · ${esc(t.label)}</strong>${intBr(r[t.key])} domicílios, ${nf(share(r, t.key), 1)}% do total`);
+        node.addEventListener("mousemove", show);
+        node.addEventListener("focus", () => { const b = node.getBoundingClientRect(); show({ clientX: b.left, clientY: b.top }); });
+        node.addEventListener("mouseleave", hideTip);
+        node.addEventListener("blur", hideTip);
       });
     } };
   }
@@ -671,7 +781,7 @@
       <p class="census-ask" id="census-ask">Seis séries dos 23 wards entre ${rows[0].year} e ${rows[rows.length - 1].year}. Antes de ver a linha, diga o que você acha que aconteceu com cada uma. <span id="census-score"></span></p>
       <div class="census-grid guessing" id="chart-census">${CENSUS_SERIES.map(spark).join("")}</div>
       <button type="button" class="quiet-button" id="census-reveal">Mostrar todas</button>`;
-    const note = `Os 23 wards somados, censo a censo, de ${rows[0].year} a ${rows[rows.length - 1].year}. Fonte: ${esc(C.source.census23)} A série é do conjunto dos 23 wards: o mapa por ward e por ano depende de uma exportação completa da planilha, que ainda não veio. Domicílio não é casa nem lote: é unidade de moradia recenseada.`;
+    const note = `Os 23 wards somados, censo a censo, de ${rows[0].year} a ${rows[rows.length - 1].year}. Domicílio não é casa nem lote: é unidade de moradia recenseada. Fonte: ${esc(C.source.census23)}`;
     return { html: block("census", "domicílio", "Menos gente em cada casa", body, note), init: () => {
       /* palpite antes da linha: uma pergunta por série, um clique cada */
       const grid = $("chart-census");
@@ -737,7 +847,7 @@
         <text x="${X(tokyo.m2)}" y="${m.t + 8}" text-anchor="middle" class="pref-label">Tóquio ${nf(tokyo.m2, 2)} m²</text>
         ${dots}
       </svg></div>`;
-    const note = `Área total média por moradia em cada uma das 47 províncias. Tóquio é a menor, ${nf(tokyo.m2, 2)} m², contra ${nf(mean, 1)} m² de média entre as províncias. Fonte: ${esc(C.source.prefectures)} A medida é por moradia, não por pessoa: províncias com domicílios maiores também têm famílias maiores.`;
+    const note = `Área total média por moradia em cada uma das 47 províncias. Tóquio é a menor, ${nf(tokyo.m2, 2)} m², contra ${nf(mean, 1)} m² de média entre as províncias. A medida é por moradia, não por pessoa: províncias com moradias maiores também têm famílias maiores. Fonte: ${esc(C.source.prefectures)}`;
     return { html: block("prefectures", "escala nacional", "Tóquio é a menor das 47", body, note), init: () => {
       document.querySelectorAll("#chart-prefectures .pref-dot").forEach((node) => {
         node.addEventListener("mousemove", (e) => tip(node, e, `<strong>${esc(node.dataset.name)}</strong>${nf(Number(node.dataset.m2), 2)} m² por moradia`));
@@ -753,15 +863,16 @@
   function residentsBlock() {
     const cl = C.clientela;
     const known = cl.filter((c) => c.classification && c.classification !== "sem dados");
-    const classes = {};
-    for (const c of known) classes[c.classification] = (classes[c.classification] || 0) + 1;
+    /* a aba usa rótulos variados; o waffle agrupa em quatro cores */
+    const groupOf = (c) => /^Autoria-habitação/.test(c.classification) ? "author"
+      : c.classification === "Composição com divergência" ? "conflict"
+      : c.classification === "Profissão conhecida" ? "profession" : "known";
+    const classes = { author: 0, conflict: 0, profession: 0, known: 0 };
+    for (const c of known) classes[groupOf(c)] += 1;
     const cols = 28;
     const cells = cl.map((c, i) => {
       const k = c.classification && c.classification !== "sem dados";
-      const cls = !k ? "empty"
-        : c.classification === "Autoria-habitação" ? "author"
-        : c.classification === "Composição com divergência" ? "conflict"
-        : c.classification === "Profissão conhecida" ? "profession" : "known";
+      const cls = !k ? "empty" : groupOf(c);
       return `<span class="waffle-cell ${cls}" data-i="${i}" tabindex="${k ? 0 : -1}"></span>`;
     }).join("");
 
@@ -778,17 +889,17 @@
       <div class="waffle-wrap">
         <div class="waffle" style="--cols:${cols}" role="img" aria-label="${cl.length} obras da aba de clientela: ${known.length} com registro sobre quem mora">${cells}</div>
         <ul class="waffle-legend">
-          <li><i class="swatch known"></i>${classes["Composição doméstica conhecida"] || 0} com composição doméstica registrada</li>
-          <li><i class="swatch author"></i>${classes["Autoria-habitação"] || 0} projetadas pelo próprio morador</li>
-          <li><i class="swatch conflict"></i>${classes["Composição com divergência"] || 0} com divergência entre fontes</li>
-          <li><i class="swatch profession"></i>${classes["Profissão conhecida"] || 0} só com a profissão registrada</li>
+          <li><i class="swatch known"></i>${classes.known} com composição, perfil ou uso doméstico registrado</li>
+          <li><i class="swatch author"></i>${classes.author} projetadas pelo próprio morador</li>
+          <li><i class="swatch conflict"></i>${classes.conflict} com divergência entre fontes</li>
+          <li><i class="swatch profession"></i>${classes.profession} só com a profissão registrada</li>
           <li><i class="swatch empty"></i>${cl.length - known.length} sem dado sobre quem mora</li>
         </ul>
       </div>
       <h4 class="sub-head">Relatos de moradores já autorizados</h4>
       <div class="resident-grid">${cards}</div>`;
 
-    const note = `A aba de clientela registra ${cl.length} obras; em ${known.length} há alguma informação sobre quem mora. Nenhum nome de morador aparece aqui, e cada relato mostra apenas o tipo de resposta que a autorização cobre. Quem responde é uma pessoa, não uma amostra: nenhuma fala vira descrição de como se mora no Japão.`;
+    const note = `Das ${cl.length} obras do corpus, ${known.length} têm alguma informação sobre quem mora. Nenhum nome de morador aparece aqui, e cada relato mostra apenas o tipo de resposta que a autorização cobre. Quem responde é uma pessoa, não uma amostra: nenhuma fala vira descrição de como se mora no Japão. Fonte: quadriculado, ${esc(C.source.clientela)} Relatos, ${esc(C.source.residents)}`;
     return { html: block("residents", "quem mora", "O arquivo sabe pouco sobre quem mora", body, note), init: () => {
       document.querySelectorAll(".waffle-cell").forEach((node) => {
         const c = cl[Number(node.dataset.i)];
@@ -803,34 +914,8 @@
   }
 
   /* =====================================================================
-     8. Bastidores: correspondência, biblioteca normativa, cobertura
+     8. Bastidores: biblioteca normativa
      ===================================================================== */
-
-  function contactsBlock() {
-    const c = C.contacts;
-    const rows = c.byType.filter((r) => r.total >= 2);
-    const W = 820, H = 40 + rows.length * 30, m = { t: 20, r: 180, l: 210 };
-    const max = Math.max(...rows.map((r) => r.total));
-    const X = scale([0, max], [m.l, W - m.r]);
-    const bars = rows.map((r, i) => {
-      const y = m.t + i * 30;
-      return `<g class="contact-row">
-        <text x="${m.l - 10}" y="${y + 14}" text-anchor="end" class="axis-text">${esc(r.type)}</text>
-        <rect x="${m.l}" y="${y}" width="${(X(r.total) - m.l).toFixed(1)}" height="18" rx="3" class="contact-bar total"></rect>
-        <rect x="${m.l}" y="${y}" width="${(X(r.responded) - m.l).toFixed(1)}" height="18" rx="3" class="contact-bar resp"></rect>
-        <text x="${(X(r.total) + 8).toFixed(1)}" y="${y + 14}" class="axis-text">${r.responded} de ${r.total} responderam</text>
-      </g>`;
-    }).join("");
-    const body = `
-      <div class="contact-head">
-        <div><strong>${intBr(c.total)}</strong><span>pessoas e instituições contatadas</span></div>
-        <div><strong>${intBr(c.responded)}</strong><span>respostas recebidas, ${nf((c.responded / c.total) * 100, 1)}%</span></div>
-        <div><strong>${c.updated}</strong><span>última atualização da planilha de contatos</span></div>
-      </div>
-      <div class="plot-wrap"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Contatos e respostas por categoria">${bars}</svg></div>`;
-    const note = `Correspondência do TCC por categoria, sem nomes. Categorias com um único contato ficaram fora do gráfico e continuam na conta total. Resposta aqui significa qualquer retorno, inclusive recusa: autorização de uso é outro campo, registrado obra a obra.`;
-    return { html: block("contacts", "correspondência", "459 pedidos, 141 respostas", body, note), init: () => {} };
-  }
 
   function normsBlock() {
     const lib = C.normsLibrary;
@@ -848,7 +933,7 @@
           ${l.url ? `<a href="${esc(l.url)}" target="_blank" rel="noreferrer">${esc(l.portal || "abrir")} ↗</a>` : '<span class="muted">sem link público registrado</span>'}
         </article>`).join("")}
       </div>`;
-    const note = `As ${lib.length} normas e documentos oficiais que o trabalho usa, com o portal onde cada texto pode ser conferido. Tradução oficial em inglês não substitui o texto japonês vigente: quando os dois divergem, vale o japonês.`;
+    const note = `As ${lib.length} normas e documentos oficiais que as seções A norma e Território usam, com o portal onde cada texto pode ser conferido. Tradução oficial em inglês não substitui o texto japonês vigente: quando os dois divergem, vale o japonês.`;
     return { html: block("norms", "biblioteca", "As normas que o atlas cita", body, note), init: () => {
       const filters = $("norms-filters");
       filters.addEventListener("click", (e) => {
@@ -878,32 +963,6 @@
     casa_isolada_dom: "domicílios em casa isolada", fileira_dom: "domicílios em casa geminada",
     apartamento_dom: "domicílios em apartamento",
   };
-
-  function coverageBlock() {
-    const cov = C.coverage;
-    const fields = [...new Set(cov.map((c) => c.field))];
-    const years = [...new Set(cov.map((c) => c.year))].sort();
-    const cell = (field, year) => cov.find((c) => c.field === field && c.year === year);
-    const rows = fields.map((f) => `
-      <tr><th scope="row">${esc(COV_LABELS[f] || f.replace(/_/g, " "))}</th>
-        ${years.map((y) => {
-          const c = cell(f, y);
-          if (!c) return '<td class="cov empty" title="sem registro"></td>';
-          const k = Math.max(0, Math.min(1, c.pct / 100));
-          const label = `${esc(COV_LABELS[f] || f)} em ${y}: ${nf(c.pct, 1)}% preenchido, ${intBr(c.filled)} de ${intBr(c.total)}`;
-          return `<td class="cov" style="background:rgba(18,52,93,${(0.08 + 0.85 * k).toFixed(3)})" title="${label}" aria-label="${label}"></td>`;
-        }).join("")}
-      </tr>`).join("");
-    const body = `<div class="table-scroll"><table class="coverage-matrix">
-      <thead><tr><th scope="col">campo</th>${years.map((y) => `<th scope="col">${y}</th>`).join("")}</tr></thead>
-      <tbody>${rows}</tbody></table></div>`;
-    const note = `Percentual de células preenchidas por campo e por censo, nas pequenas áreas dos 23 wards. Célula vazia significa que aquele campo não foi levantado naquele censo, não que o valor seja zero. Fonte: ${esc(C.source.coverage)}`;
-    return { html: block("coverage", "qualidade do dado", "O que existe em cada censo", body, note), init: () => {} };
-  }
-
-  /* =====================================================================
-     rolagem guiada dos achados
-     ===================================================================== */
 
   function scrollyFindings() {
     const list = $("findings-list");
@@ -955,16 +1014,16 @@
     const cityHost = $("city-blocks");
     const backHost = $("backstage-blocks");
     if (cityHost) {
-      const blocks = [landOwnerBlock(), drawItBlock(), microBlock(), archiveCityBlock(), regimeBlock(), censusBlock(), prefectureBlock(), residentsBlock()];
+      const blocks = [landOwnerBlock(), drawItBlock(), microBlock(), landFlowBlock(), archiveCityBlock(), regimeBlock(), censusBlock(), householdsBlock(), prefectureBlock(), residentsBlock()].filter(Boolean);
       cityHost.innerHTML = blocks.map((b) => b.html).join("");
       blocks.forEach((b) => b.init && b.init());
       const lede = $("city-lede");
       if (lede) {
-        lede.textContent = "Antes das casas, o chão. Esta seção usa o cadastro de solo, o censo e a pesquisa de habitação para medir o terreno em que o corpus foi construído. Nenhum destes números descreve as casas do arquivo: eles descrevem a cidade onde essas casas couberam.";
+        lede.textContent = "Antes das casas, o chão. Esta seção usa o cadastro de solo, o censo e a pesquisa de habitação, todos lidos da planilha, para medir a cidade onde o corpus foi construído. Quando um bloco cruza a cidade com as casas do arquivo, a nota diz, e cada nota termina com a aba de onde o dado saiu.";
       }
     }
     if (backHost) {
-      const blocks = [contactsBlock(), normsBlock(), coverageBlock()];
+      const blocks = [normsBlock()];
       backHost.innerHTML = blocks.map((b) => b.html).join("");
       blocks.forEach((b) => b.init && b.init());
     }

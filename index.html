@@ -1,23 +1,15 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Atlas do corpus Neko no Hitai: microlotes, domesticidade e regra urbana nos 23 wards de Tóquio.">
-  <title>Neko no Hitai · Atlas do microlote</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2310264a'/%3E%3Cpath d='M14 42V27l18-13 18 13v15H38V31H26v11z' fill='%23d8e3ec'/%3E%3C/svg%3E">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css">
-</head>
-<body>
-  <a class="skip-link" href="#conteudo">Ir direto ao conteúdo</a>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Neko no Hitai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;600;700&family=Roboto:wght@400;500;700&family=VT323&display=swap">
+<link rel="stylesheet" href="assets/styles.css">
+<a class="skip-link" href="#conteudo">Ir direto ao conteúdo</a>
 
   <header class="masthead">
     <div class="masthead-top">
       <p class="eyebrow" data-i18n="kicker">Neko no Hitai · atlas do microlote</p>
-      <span class="privacy-badge"><span data-i18n="badge">194 fichas completas</span></span>
+      <span class="privacy-badge"><span data-i18n="badge"><span data-count="eligible">203</span> fichas completas</span></span>
     </div>
     <div class="masthead-body">
       <div>
@@ -78,7 +70,7 @@
           <p class="section-index">02 · achados</p>
           <h2 id="findings-title">O que o corpus diz</h2>
         </div>
-        <span class="data-rule">194 fichas · 1966 a 2025</span>
+        <span class="data-rule" id="findings-rule">203 fichas · 1966 a 2025</span>
       </div>
       <p class="findings-lede" id="findings-lede"></p>
       <div id="findings-list" class="findings-list"></div>
@@ -90,7 +82,7 @@
         <p class="scale-lede" id="scale-lede"></p>
         <div id="scale-rows" class="scale-rows"></div>
         <figure class="scale-cat-figure">
-          <img src="assets/illo/gato-deitado.png" alt="Um gato deitado." class="scale-cat-img" loading="lazy">
+          <img src="assets/illo/gato-deitado.png" alt="Um gato deitado, em pixel art." class="scale-cat-img" width="125" height="65" loading="lazy">
           <p class="scale-cat" id="scale-cat"></p>
         </figure>
       </article>
@@ -99,7 +91,7 @@
         <div class="panel-title">
           <div><p>escala</p><h3>Uma área que você conhece</h3></div>
         </div>
-        <p class="yours-lede">Se quiser, escolha uma área abaixo ou escreva uma que você conheça bem. O atlas desenha essa medida na mesma escala das fichas e mostra onde ela ficaria entre as 194. Serve para dar tamanho aos números desta página, e nada do que você escrever sai do seu navegador.</p>
+        <p class="yours-lede">Se quiser, escolha uma área abaixo ou escreva uma que você conheça bem. O atlas desenha essa medida na mesma escala das fichas e mostra onde ela ficaria entre as <span data-count="eligible">203</span>. Serve para dar tamanho aos números desta página, e nada do que você escrever sai do seu navegador.</p>
         <form class="yours-form" id="yours-form">
           <div class="yours-presets">
             <button type="button" class="chip-button" data-yours="9">um quarto, 9 m²</button>
@@ -121,7 +113,7 @@
           <button class="icon-button" type="button" data-export-svg="lot-histogram">Baixar SVG</button>
         </div>
         <div class="plot-wrap">
-          <svg id="lot-histogram" viewBox="0 0 860 300" role="img" aria-label="Histograma da área de lote das 194 fichas"></svg>
+          <svg id="lot-histogram" viewBox="0 0 860 300" role="img" aria-label="Histograma da área de lote das 203 fichas"></svg>
           <div class="plot-tooltip" id="hist-tooltip" hidden></div>
         </div>
         <p class="plot-note" id="hist-note"></p>
@@ -214,7 +206,7 @@
             <svg id="scatter" viewBox="0 0 860 410" role="img" aria-label="Gráfico de dispersão das casas filtradas"></svg>
             <div class="plot-tooltip" id="plot-tooltip" hidden></div>
           </div>
-          <p class="plot-note">Cada ponto é uma ficha completa. Clique para levá-la à mesa comparativa.</p>
+          <p class="plot-note">Cada ponto é uma ficha completa da aba 01 casas base. Clique para levá-la à mesa comparativa.</p>
         </article>
       </div>
 
@@ -270,6 +262,14 @@
               <option value="area">área do ward</option>
               <option value="density">densidade populacional</option>
             </optgroup>
+            <optgroup label="Renda e moradia (abas 23 e 07)">
+              <option value="income">renda média por contribuinte · FY2024</option>
+              <option value="owners">% de domicílios proprietários · 2023</option>
+              <option value="renters">% de domicílios inquilinos · 2023</option>
+              <option value="dwellArea">área média da moradia · 2023</option>
+              <option value="onePerson">% de domicílios de uma pessoa · 2020</option>
+              <option value="aged">% de 65 anos ou mais · 2020</option>
+            </optgroup>
             <optgroup label="Referência normativa">
               <option value="bcrRefMin">menor BCR designado · A29-2019</option>
               <option value="farRefMin">menor FAR designado · A29-2019</option>
@@ -294,6 +294,7 @@
             <div class="plot-tooltip geo-tooltip" id="geo-tooltip" hidden></div>
           </div>
           <div class="map-legend" id="map-legend"></div>
+          <p class="map-warn" id="map-warn" role="note" hidden></p>
           <p class="map-source" id="map-source"></p>
         </article>
 
@@ -308,7 +309,7 @@
           <div class="bar-scroll">
             <svg id="ward-bars" viewBox="0 0 620 693" role="img" aria-label="Gráfico de barras por ward"></svg>
           </div>
-          <p class="plot-note">Clique numa barra para aplicar ou retirar o filtro territorial.</p>
+          <p class="plot-note">Clique numa barra para aplicar ou retirar o filtro territorial. Fonte: aba 01 casas base.</p>
         </article>
 
         <article class="ward-profile panel" id="ward-profile" aria-live="polite"></article>
@@ -352,6 +353,7 @@
         <span class="data-rule">建築基準法 · 都市計画法</span>
       </div>
       <div id="rules-defs"></div>
+      <div id="lawline" class="lawline-host"></div>
 
       <div id="norma-extra" class="norma-extra"></div>
 
@@ -434,7 +436,7 @@
         <div class="law-table-wrap">
           <table class="law-table" id="law-table"></table>
         </div>
-        <p class="law-disclaimer">Os valores designados de ocupação e aproveitamento são escolhidos por você entre os admitidos na classe de zona. O atlas não sabe a designação real de nenhuma parcela: zona de uso, largura de via, prevenção contra incêndio e plano de distrito não constam da planilha, em 194 de 194 fichas.</p>
+        <p class="law-disclaimer">Os valores designados de ocupação e aproveitamento são escolhidos por você entre os admitidos na classe de zona. O atlas não sabe a designação real de nenhuma parcela: zona de uso, largura de via, prevenção contra incêndio e plano de distrito não constam da planilha, em <span data-count="eligible">203</span> de <span data-count="eligible">203</span> fichas.</p>
       </article>
         </div>
 
@@ -495,7 +497,7 @@
 
       <div class="evidence-grid">
         <article class="coverage-panel evidence-card">
-          <h3>Como as 194 foram escolhidas</h3>
+          <h3>Como as <span data-count="eligible">203</span> foram escolhidas</h3>
           <div id="coverage-bars" class="coverage-bars"></div>
         </article>
         <article class="legal-gap-panel evidence-card">
@@ -509,6 +511,7 @@
             <li><strong>FAR observado</strong> = área construída ÷ área do lote.</li>
             <li><strong>BCR observado</strong> = projeção da edificação ÷ área do lote.</li>
             <li><strong>Faixa do ward</strong> reúne valores designados por zona em 2019. Não é teto de casa.</li>
+            <li><strong>Pavimentos</strong> = número registrado na planilha. Subsolo (B1) e loft ficam anotados na ficha e não entram na conta.</li>
             <li><strong>Ausência</strong> significa lacuna na fonte, nunca zero.</li>
             <li><strong>Casa publicada</strong> não é amostra da cidade. O corpus mede o arquivo, não a frequência urbana.</li>
           </ul>
@@ -548,7 +551,7 @@
           <p class="section-index">10 · bastidores</p>
           <h2 id="backstage-title">O que sustenta o atlas</h2>
         </div>
-        <span class="data-rule">correspondência · normas · cobertura</span>
+        <span class="data-rule">normas</span>
       </div>
       <div id="backstage-blocks" class="city-blocks"></div>
       <p class="city-note" id="pending-tally"></p>
@@ -580,6 +583,22 @@
     <div class="cursor-pick" id="cursor-pick" aria-label="Escolha do cursor"></div>
   </footer>
 
+  <script>
+    /* three.js entra uma vez só, quando o relevo ou o jogo pedem */
+    window.NekoLoadThree = function () {
+      if (window.THREE) return Promise.resolve(window.THREE);
+      if (!window.__nekoThree) {
+        window.__nekoThree = new Promise(function (ok, no) {
+          var sc = document.createElement("script");
+          sc.src = "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js";
+          sc.onload = function () { ok(window.THREE); };
+          sc.onerror = no;
+          document.head.appendChild(sc);
+        });
+      }
+      return window.__nekoThree;
+    };
+  </script>
   <script src="assets/data.js"></script>
   <script src="assets/geo.js"></script>
   <script src="assets/legal.js"></script>
@@ -597,10 +616,46 @@
   <script src="assets/app.js"></script>
   <script src="assets/ui.js"></script>
   <script src="assets/cityviz.js"></script>
+  <script src="assets/relief-data.js"></script>
+  <script src="assets/relief.js"></script>
+  <script src="assets/mosaic.js"></script>
   <script src="assets/cats.js"></script>
-  <script src="assets/world.js"></script>
+  <script>
+    /* o jogo da Building Frame (three.js, trilha e cena) só carrega quando a
+       seção Retratos chega perto da tela: o resto do atlas abre sem ele */
+    (function () {
+      var host = document.getElementById("cats-blocks");
+      if (!host) return;
+      var slot = document.createElement("div");
+      slot.className = "city-block panel nk-slot";
+      slot.innerHTML = '<p class="city-note">O jogo da Building Frame of the House carrega quando você chega aqui.</p>';
+      host.insertBefore(slot, host.firstElementChild);
+      var loaded = false;
+      function load() {
+        if (loaded) return;
+        loaded = true;
+        var list = ["assets/trilha.js", "assets/frame-en.js", "assets/pieces.js", "assets/frame.js"];
+        var go = function () {
+          list.forEach(function (src, i) {
+            var sc = document.createElement("script");
+            sc.src = src;
+            sc.async = false;
+            if (i === list.length - 1) sc.onload = sc.onerror = function () { if (slot.parentNode) slot.parentNode.removeChild(slot); };
+            document.body.appendChild(sc);
+          });
+        };
+        window.NekoLoadThree().then(go, go);
+      }
+      if (!("IntersectionObserver" in window)) { load(); return; }
+      var io = new IntersectionObserver(function (es) {
+        if (es.some(function (e) { return e.isIntersecting; })) { io.disconnect(); load(); }
+      }, { rootMargin: "1200px 0px" });
+      io.observe(slot);
+    })();
+  </script>
   <script src="assets/envelope.js"></script>
+  <script src="assets/lawline.js"></script>
   <script src="assets/bibviz.js"></script>
-  <script src="assets/vozes.js"></script>
-</body>
-</html>
+
+
+</body></html>
