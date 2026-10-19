@@ -3,8 +3,8 @@
    Fonte: window.NEKO_BIBLIO, exportado da base do Notion. Cada ligação carrega
    a origem: citação conferida no PDF, ligação escrita no fichamento, mesma
    autoria, ou dois textos que citam um mesmo terceiro. Nenhuma aresta foi
-   criada por semelhança de assunto. A matriz eixo por capítulo é proposta e
-   está marcada como tal. */
+   criada por semelhança de assunto. A matriz eixo por capítulo incorpora
+   as marcações enviadas pela autora e a consolidação dos eixos. */
 
 (function () {
   "use strict";
@@ -294,7 +294,7 @@
   function timeline(panel) {
     const rows = B.eixos.map((e) => ({ ...e, works: B.works.filter((w) => w.eixo === e.key).sort((a, b) => yearOf(a) - yearOf(b)) }))
       .filter((r) => r.works.length);
-    const W = 960, rowH = 58, H = 60 + rows.length * rowH, m = { l: 170, r: 30, t: 40 };
+    const W = 960, rowH = 58, H = 60 + rows.length * rowH, m = { l: 215, r: 30, t: 40 };
     const X = (y) => m.l + ((y - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * (W - m.l - m.r);
     const decades = [];
     for (let y = 1950; y <= 2020; y += 10) decades.push(y);
@@ -364,11 +364,12 @@
     }).join("");
 
     panel.innerHTML = `
-      <p class="panel-lede">Proposta de onde cada eixo entra no sumário, para ser corrigida: círculo cheio é capítulo que se apoia naquele eixo, círculo claro é entrada de apoio. A coluna da direita traz quantas obras o eixo reúne hoje. Esta é a única figura do atlas que não sai da base: é sugestão, e por isso pode ser editada aqui.</p>
+      <p class="panel-lede">Matriz atualizada com as marcações enviadas em ${esc(B.matrixSource.imported)}. Círculo cheio indica base do capítulo; círculo claro, apoio. Nos eixos reunidos, prevalece a marcação mais forte entre os grupos de origem. A coluna da direita conta as obras de cada eixo.</p>
+      <p class="panel-lede">Microcasas e dimensionamento reúne os estudos sobre dimensões da moradia e projetos de microcasas. Solo e forma urbana reúne lote, parcelamento, economia do solo e morfologia.</p>
       <div class="matrix-tools">
         <button type="button" class="chip-button" id="matrix-edit" aria-pressed="false">Editar a matriz</button>
         <button type="button" class="quiet-button" id="matrix-export" hidden>Baixar as correções · JSON</button>
-        <button type="button" class="quiet-button" id="matrix-reset" hidden>Voltar à proposta</button>
+        <button type="button" class="quiet-button" id="matrix-reset" hidden>Restaurar matriz publicada</button>
         <span class="matrix-hint" id="matrix-hint">Clique numa célula para ver as obras do eixo.</span>
       </div>
       <div class="table-scroll">
@@ -382,11 +383,19 @@
 
     const detail = $("matrix-detail");
 
-    /* edição local: a proposta é dela, não minha. O que for corrigido aqui
-       fica no navegador e sai em JSON, para voltar ao Notion.            */
-    const OVERRIDE_KEY = "neko-matrix-override";
+    /* Revisões antigas do navegador não substituem a matriz recém-publicada.
+       Novas edições locais continuam disponíveis para exportação em JSON. */
+    const OVERRIDE_KEY = `neko-matrix-override:${B.matrixRevision}`;
     let overrides = {};
-    try { overrides = JSON.parse(localStorage.getItem(OVERRIDE_KEY) || "{}"); } catch (e) { overrides = {}; }
+    try {
+      const saved = JSON.parse(localStorage.getItem(OVERRIDE_KEY) || "{}");
+      if (saved && typeof saved === "object" && !Array.isArray(saved)) {
+        for (const e of B.eixos) for (const c of B.chapters) {
+          const key = `${e.key}|${c.key}`;
+          if (Object.prototype.hasOwnProperty.call(saved, key) && [0, 1, 2].includes(saved[key])) overrides[key] = saved[key];
+        }
+      }
+    } catch (e) { overrides = {}; }
     let editing = false;
 
     const valueOf = (eixo, chap) => {
@@ -399,6 +408,8 @@
       const e = eixoById.get(eixo);
       cell.className = `mx ${v === 2 ? "base" : v === 1 ? "apoio" : "none"}${Object.prototype.hasOwnProperty.call(overrides, `${eixo}|${chap}`) ? " edited" : ""}`;
       cell.tabIndex = editing || v ? 0 : -1;
+      const c = B.chapters.find((chapter) => chapter.key === chap);
+      cell.title = `${e.label} no capítulo ${c.n}: ${v === 2 ? "base" : v === 1 ? "apoio" : "não entra"}`;
       cell.innerHTML = v ? `<span class="mx-mark" style="background:${e.color};opacity:${v === 2 ? 1 : 0.45}"></span>` : "";
     };
     const repaint = () => panel.querySelectorAll("td.mx").forEach(paintCell);
@@ -424,7 +435,7 @@
         full[e.key] = {};
         B.chapters.forEach((c) => { const v = valueOf(e.key, c.key); if (v) full[e.key][c.key] = v; });
       });
-      const blob = new Blob([JSON.stringify({ gerado: new Date().toISOString(), matriz: full }, null, 2)], { type: "application/json" });
+      const blob = new Blob([JSON.stringify({ gerado: new Date().toISOString(), versao: B.matrixRevision, eixos: B.eixos.map(({ key, label, origens }) => ({ key, label, origens })), matriz: full }, null, 2)], { type: "application/json" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
       a.download = "neko-matriz-eixo-capitulo.json";
@@ -498,3 +509,4 @@
 
   mount();
 })();
+

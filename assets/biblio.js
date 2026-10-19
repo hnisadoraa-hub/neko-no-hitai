@@ -1,7 +1,7 @@
 /* Bibliografia do TCC, exportada da base do Notion
    "📚 Bibliografia (PDFs) — TCC Domesticidade/Microlotes" em 22/09/2026.
 
-   O que veio da base, sem alteração: autoria, ano, tipo, eixo (Tema) e link
+   O que veio da base, sem alteração: autoria, ano, tipo e link
    público quando existe. Links do Drive e endereços de páginas do Notion não
    entram aqui: são privados.
 
@@ -13,9 +13,9 @@
    Nenhuma ligação foi inferida por semelhança de assunto: o que está aqui
    está escrito em algum lugar da base ou do PDF.
 
-   A matriz eixo por capítulo é proposta de Claude a partir do sumário do
-   RASCUNHO OFICIAL ORIGINAL, não uma decisão da autora. Está marcada como
-   proposta na interface e deve ser confirmada ou trocada.                      */
+   Matriz revista a partir do JSON enviado pela autora em 19/10/2026.
+   Os temas originais ficam em eixoOriginal. Os grupos consolidados preservam
+   todas as obras e, em cada capítulo, a maior marcação dos grupos de origem.                      */
 
 window.NEKO_BIBLIO = {
   updated: "22/09/2026",
@@ -25,16 +25,13 @@ window.NEKO_BIBLIO = {
     "Base 📚 Bibliografia (PDFs) — TCC Domesticidade/Microlotes (Notion). A base traz 76 linhas; duas delas registram o mesmo artigo de Sugiyama e outros (2005), uma em japonês e outra em inglês. Aqui esse registro duplicado foi fundido, e a bibliografia conta 75 obras.",
 
   eixos: [
-    { key: "domesticidade", label: "Domesticidade", color: "#c2185b" },
-    { key: "minimo", label: "Espaço mínimo", color: "#0b7285" },
-    { key: "micro", label: "Micro houses", color: "#1565c0" },
-    { key: "lote", label: "Lote / parcelamento", color: "#e07a1f" },
-    { key: "regulacao", label: "Regulação urbana", color: "#c62828" },
-    { key: "solo", label: "Economia do solo", color: "#b28704" },
-    { key: "morfologia", label: "Morfologia", color: "#6a3fa0" },
-    { key: "historia", label: "História", color: "#8d6748" },
-    { key: "linguagem", label: "Linguagem e tradução", color: "#a63a7e" },
-    { key: "outros", label: "Sem eixo definido", color: "#5b6b7c" },
+    { key: "domesticidade", label: "Domesticidade", color: "#c2185b", origens: ["domesticidade"] },
+    { key: "moradia", label: "Microcasas e dimensionamento", color: "#0b7285", origens: ["minimo", "micro"] },
+    { key: "territorio", label: "Solo e forma urbana", color: "#e07a1f", origens: ["lote", "solo", "morfologia"] },
+    { key: "regulacao", label: "Regulação urbana", color: "#c62828", origens: ["regulacao"] },
+    { key: "historia", label: "História", color: "#8d6748", origens: ["historia"] },
+    { key: "linguagem", label: "Linguagem e tradução", color: "#a63a7e", origens: ["linguagem"] },
+    { key: "outros", label: "Outras referências", color: "#5b6b7c", origens: ["outros"] },
   ],
 
   chapters: [
@@ -50,18 +47,26 @@ window.NEKO_BIBLIO = {
     { key: "c9", n: "9", label: "Estudos de caso" },
   ],
 
-  /* 2 = entra como base do capítulo; 1 = entra como apoio */
-  matrix: {
-    domesticidade: { p: 1, c1: 1, c2: 2, c8: 1, c9: 1 },
-    minimo: { c3: 2, c6: 1, c7: 1, c8: 1 },
-    micro: { c6: 2, c7: 1, c9: 2 },
-    lote: { c4: 2, c5: 1, c7: 1 },
-    regulacao: { c4: 1, c5: 2, c8: 1 },
-    solo: { c3: 1, c4: 2, c6: 1 },
-    morfologia: { c4: 2, c7: 1, c8: 1 },
-    historia: { c2: 1, c3: 1, c4: 1, c6: 2 },
-    linguagem: { p: 2, c1: 1, c8: 1 },
-    outros: { c8: 1 },
+  matrixRevision: "2026-10-19-eixos-v1",
+  matrixSource: {
+    file: "neko-matriz-eixo-capitulo (1).json",
+    generated: "2026-10-18T22:08:24.615Z",
+    imported: "19/10/2026",
+  },
+
+  /* Marcações enviadas: 2 = base; 1 = apoio; ausência = não previsto.
+     A matriz consolidada é calculada abaixo, sem somar os pesos. */
+  matrixOriginal: {
+    "domesticidade": {"p": 1, "c1": 1, "c2": 2, "c8": 1, "c9": 1},
+    "minimo": {"c3": 2, "c6": 2, "c8": 1, "c9": 2},
+    "micro": {"c6": 2, "c7": 2, "c8": 2, "c9": 2},
+    "lote": {"c3": 2, "c4": 2, "c5": 2, "c7": 1, "c8": 2, "c9": 1},
+    "regulacao": {"c3": 2, "c4": 1, "c5": 2, "c7": 2, "c8": 2, "c9": 2},
+    "solo": {"c4": 2, "c8": 2, "c9": 1},
+    "morfologia": {"c4": 2, "c7": 2, "c8": 2, "c9": 2},
+    "historia": {"c2": 2, "c3": 2, "c4": 2, "c6": 2, "c8": 2, "c9": 2},
+    "linguagem": {"p": 2},
+    "outros": {"p": 2},
   },
 
   works: [
@@ -208,3 +213,19 @@ window.NEKO_BIBLIO = {
     comum: { label: "citam o mesmo terceiro", color: "#b28704" },
   },
 };
+
+/* Uma única classificação para rede, arcos, linha do tempo e matriz.
+   A classificação anterior de cada obra fica preservada para rastreio. */
+(function () {
+  const B = window.NEKO_BIBLIO;
+  const eixoPorOrigem = new Map(B.eixos.flatMap((e) => e.origens.map((origem) => [origem, e.key])));
+  B.works = B.works.map((w) => ({ ...w, eixoOriginal: w.eixo, eixo: eixoPorOrigem.get(w.eixo) }));
+  B.matrix = Object.fromEntries(B.eixos.map((e) => {
+    const row = {};
+    for (const c of B.chapters) {
+      const weight = Math.max(...e.origens.map((origem) => (B.matrixOriginal[origem] || {})[c.key] || 0));
+      if (weight) row[c.key] = weight;
+    }
+    return [e.key, row];
+  }));
+})();
