@@ -194,7 +194,7 @@
       <p class="lawline-lede">Só as normas que tocam diretamente o lote pequeno ou a casa que cabe nele: acesso à via, recuo, coeficientes, planos inclinados, sombra, lote mínimo e aprovação da obra. Os pontos azul-escuros são normas nacionais e metropolitanas. Os claros são as datas em que cada ward adotou um lote mínimo.</p>
       ${axis}
       <ol class="ll-list">${cards}</ol>
-      <p class="plot-note">Datas nacionais e metropolitanas: textos oficiais e comentários citados em cada item. Datas e mínimos dos wards: planilha, aba 11 normas wards. Wards sem data única de adoção (mínimo variável por plano de distrito) não aparecem no eixo. Adachi: a planilha registra que uma alteração de 2023 estendeu a ordenança a certas divisões sem construção (aba 10 normas tempo) [VERIFICAR a data exata].</p>
+      <p class="plot-note">As datas nacionais e metropolitanas seguem os textos oficiais e os comentários indicados em cada item. Para os wards, foram usadas as datas e áreas mínimas da aba 11 normas wards. Regras que variam por plano de distrito, sem data única de adoção, ficaram fora do eixo. Em Adachi, a aba 10 normas tempo registra uma alteração de 2023 que estendeu a ordenança a certas divisões sem construção [VERIFICAR a data exata].</p>
     </article>`;
 
   const list = host.querySelector(".ll-list");
@@ -210,3 +210,4 @@
     d.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); focusYear(d.dataset.year); } });
   });
 })();
+

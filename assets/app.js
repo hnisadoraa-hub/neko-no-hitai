@@ -983,7 +983,7 @@
     const warn = $("map-warn");
     if (warn) { warn.hidden = !config.warn; warn.textContent = config.warn || ""; }
     const housingSrc = config.housing ? ` ${escapeHtml(config.label.charAt(0).toUpperCase() + config.label.slice(1))}: aba 23 painel renda habitação, seção 5, conferida com a aba 07 contexto wards (${escapeHtml(config === mapMetrics.income ? "Governo Metropolitano de Tóquio, tributação municipal FY2024, tabela 12" : config === mapMetrics.onePerson ? "Censo 2020" : config === mapMetrics.aged ? "projeção populacional de Tóquio 2023, dados de 2020" : "Housing and Land Survey 2023")}).` : "";
-    $("map-source").innerHTML = `Limites administrativos N03-2021 (MLIT), simplificados por SmartNews Media Research Institute. ${escapeHtml(context.source.note)} População e área: ${escapeHtml(context.source.demography)}. As casas aparecem agregadas por ward porque a planilha não traz coordenadas. Fonte das casas: aba 01 casas base; regime de lote mínimo: aba 11 normas wards; população e área não vêm da planilha.${housingSrc}`;
+    $("map-source").innerHTML = `Limites administrativos: N03-2021 (MLIT), simplificação do SmartNews Media Research Institute. População e área: ${escapeHtml(context.source.demography)}, consultadas fora da planilha. ${escapeHtml(context.source.note)} Casas: aba 01 casas base, agregadas por ward por falta de coordenadas. Regime de lote mínimo: aba 11 normas wards.${housingSrc}`;
   }
 
   function renderWardBars() {
@@ -1493,12 +1493,12 @@
     const tabs = (metadata.sourceTabs || []).map((t) => `<em>${escapeHtml(t)}</em>`);
     const tabsText = tabs.length > 1 ? `${tabs.slice(0, -1).join(", ")} e ${tabs[tabs.length - 1]}` : tabs.join("");
     const readAt = metadata.sourceReadAt ? new Date(`${metadata.sourceReadAt}T12:00:00`).toLocaleDateString("pt-BR") : "";
-    $("source-note").innerHTML = `Fonte: <strong>${escapeHtml(metadata.sourceFile)}</strong>${tabsText ? `, abas ${tabsText}` : ""}${readAt ? `, lidas em ${readAt}` : ""}. `
+    $("source-note").innerHTML = `Fonte: <strong>${escapeHtml(metadata.sourceFile)}</strong>${tabsText ? `, abas ${tabsText}` : ""}${readAt ? `. Consulta em ${readAt}` : ""}. `
       + (metadata.declaredRecords && metadata.declaredRecords !== metadata.sourceRecords
-        ? `A planilha declara ${metadata.declaredRecords} registros na base, e ${metadata.sourceRecords} obras distintas aparecem nessas abas. `
+        ? `A base declara ${metadata.declaredRecords} registros; as abas consultadas contêm ${metadata.sourceRecords} obras distintas. `
         : "")
-      + `Das ${metadata.sourceRecords} obras do corpus, ${metadata.excludedIncomplete} ficaram fora por faltar ao menos um dos seis campos comparáveis${metadata.missingFromTarget ? `, e ${metadata.missingFromTarget} registros do corpus-alvo de ${metadata.targetCorpus} não constam da planilha` : ""}. `
-      + `As barras contam as ${metadata.sourceRecords} linhas da aba <em>01 casas base</em>; projeção e área construída só entram quando a taxa de ocupação e o coeficiente de aproveitamento da aba <em>90 aux casas indicadores</em> batem com elas.`;
+      + `Entre as ${metadata.sourceRecords} obras, ${metadata.excludedIncomplete} foram excluídas por falta de algum dos seis campos usados na comparação${metadata.missingFromTarget ? `; outros ${metadata.missingFromTarget} registros do corpus-alvo de ${metadata.targetCorpus} não constam da planilha` : ""}. `
+      + `As barras abrangem as ${metadata.sourceRecords} linhas da aba <em>01 casas base</em>. Os valores de projeção e área construída foram aceitos quando coincidiram com os obtidos pela taxa de ocupação e pelo coeficiente de aproveitamento da aba <em>90 aux casas indicadores</em>.`;
     $("footer-build").textContent = `corpus de ${metadata.sourceFile} · atlas reconstruído em ${new Date(metadata.rebuiltAt).toLocaleDateString("pt-BR")}`;
     document.querySelectorAll('[data-count="eligible"]').forEach((node) => { node.textContent = String(houses.length); });
     const years = houses.map((h) => h.year).filter(Number.isFinite);

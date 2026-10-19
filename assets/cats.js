@@ -55,7 +55,7 @@
         <span class="game-score" id="game-score"></span>
         <button type="button" class="quiet-button" id="game-restart" hidden>Jogar de novo</button>
       </div>
-      <p class="city-note">As casas são sorteadas entre as fichas com lote, área construída e pavimentos registrados, e cada rodada garante pelo menos 6 m² de diferença entre os dois lotes. Metade das rodadas é montada de propósito com a casa de maior área construída no lote menor: é o caso que quebra a intuição, e ele existe no corpus. Fonte: aba 01 casas base.</p>
+      <p class="city-note">O sorteio usa fichas com área do lote, área construída e pavimentos registrados. Os lotes comparados diferem em pelo menos 6 m². Em metade das rodadas, a casa com maior área construída ocupa o menor terreno. Fonte: aba 01 casas base.</p>
     </article>`;
   }
 
@@ -186,7 +186,7 @@
         <li>Compare os dois, arraste o controle até o número que você acha que é a área do terreno e responda. São cinco rodadas.</li>
       </ol>
       <div class="eye-board" id="eye-board"></div>
-      <p class="city-note">As casas são sorteadas entre as fichas que têm a área do lote registrada e que ficam entre 12 e 100 m², que é a faixa em que a régua da vaga ainda ajuda. A planilha registra a área do lote, não as suas dimensões: o terreno é desenhado como um quadrado de mesma área, o que é convenção de leitura e não a forma real da parcela. Um lote de 50 m² pode ser um retângulo de 4 por 12,5. Fonte: aba 01 casas base.</p>
+      <p class="city-note">O sorteio inclui lotes de 12 a 100 m², faixa usada na comparação com a vaga de garagem. Como a planilha informa a área, sem frente e profundidade, cada terreno aparece como um quadrado equivalente. A forma real pode variar: 50 m² também cabem num retângulo de 4 × 12,5 m. Fonte: aba 01 casas base.</p>
     </article>`;
   }
 
@@ -324,3 +324,4 @@
 
   mount();
 })();
+

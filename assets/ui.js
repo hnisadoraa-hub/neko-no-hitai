@@ -1073,16 +1073,16 @@
      ===================================================================== */
 
   const EPIGRAPHS = {
-    cidade: ["A capacidade de alterar a casa não pressupõe igual liberdade para alterar o terreno.", "Isadora Helena Nogueira (2026) · análise da autora", "Com base em Hein (2010, p. 450)."],
-    achados: ["Uma casa incluída pelo terreno pode superar a imagem corrente de “micro” ao empilhar área; outra pode preservar vazios e permanecer pequena apesar do potencial construtivo disponível.", "Síntese editorial do atlas", "A partir dos critérios e da análise do corpus de Isadora Helena Nogueira (2026)."],
-    explorar: ["A kyōshō jūtaku é muito fotografada e frequentemente mal fichada.", "Isadora Helena Nogueira (2026) · texto da pesquisa, cap. 7"],
-    territorio: ["A rua podia ser modernizada enquanto o desenho das edificações continuava a ser decidido parcela por parcela.", "Isadora Helena Nogueira (2026) · síntese da autora", "Com base em Hein (2010, p. 452–453)."],
-    tipologias: ["A forma atual pode ser observada diretamente; sua origem depende de documentação específica.", "Isadora Helena Nogueira (2026) · análise da autora, cap. 4"],
-    retratos: ["É ela que converte escassez de terra em laboratório de domesticidade, e por isso trato essas casas como argumento, e não como curiosidade dimensional.", "Isadora Helena Nogueira (2026) · notas da pesquisa"],
-    norma: ["A norma participa da forma, mas não define sozinha o que a janela enquadra nem como ela é usada.", "Isadora Helena Nogueira (2026) · análise da autora", "A partir de Takaaki Fuji, TYFA (Takaaki Fuji + Yuko Fuji Architecture), correspondência com a autora (2026)."],
-    comparar: ["A contagem de portas ganha sentido quando relacionada a quem usa o espaço, para quê e em que momento.", "Síntese do atlas a partir de Hwajin Lim (2026)", "Paráfrase de observação pessoal por e-mail, 25 set. 2026, aplicada à análise de privacidade de Nogueira (2026)."],
-    bibliografia: ["Separar essas vozes faz parte do método.", "Síntese editorial do atlas", "A partir da distinção entre tipos de fonte na metodologia de Isadora Helena Nogueira (2026)."],
-    bastidores: ["Forma e experiência doméstica serão tratadas separadamente: a qualidade formal de uma casa não permite inferir, sozinha, como ela foi vivida.", "Síntese editorial do atlas", "A partir do preâmbulo e do método de leitura das casas de Isadora Helena Nogueira (2026)."],
+    cidade: ["A capacidade de alterar a casa não pressupõe igual liberdade para alterar o terreno.", "Isadora Helena Nogueira (2026), cap. 4, em leitura de Hein (2010, p. 450)."],
+    achados: ["Uma casa incluída pelo terreno pode superar a imagem corrente de “micro” ao empilhar área; outra pode preservar vazios e permanecer pequena apesar do potencial construtivo disponível.", "Texto do atlas sobre os critérios e os resultados do levantamento de Isadora Helena Nogueira (2026)."],
+    explorar: ["A kyōshō jūtaku é muito fotografada e frequentemente mal fichada.", "Isadora Helena Nogueira (2026), cap. 7."],
+    territorio: ["A rua podia ser modernizada enquanto o desenho das edificações continuava a ser decidido parcela por parcela.", "Isadora Helena Nogueira (2026), cap. 4, em leitura de Hein (2010, p. 452–453)."],
+    tipologias: ["A forma atual pode ser observada diretamente; sua origem depende de documentação específica.", "Isadora Helena Nogueira (2026), cap. 4."],
+    retratos: ["É ela que converte escassez de terra em laboratório de domesticidade, e por isso trato essas casas como argumento, e não como curiosidade dimensional.", "Isadora Helena Nogueira (2026), notas da pesquisa."],
+    norma: ["A norma participa da forma, mas não define sozinha o que a janela enquadra nem como ela é usada.", "Isadora Helena Nogueira (2026), cap. 5, comentando a resposta de Takaaki Fuji.", "Takaaki Fuji, TYFA (Takaaki Fuji + Yuko Fuji Architecture), correspondência com a autora, 2026."],
+    comparar: ["A contagem de portas ganha sentido quando relacionada a quem usa o espaço, para quê e em que momento.", "Paráfrase de Hwajin Lim, e-mail à autora, 25 set. 2026.", "Observação pessoal retomada no atlas para a análise de privacidade de Nogueira (2026)."],
+    bibliografia: ["Separar essas vozes faz parte do método.", "Texto do atlas sobre a distinção entre fontes na metodologia de Isadora Helena Nogueira (2026)."],
+    bastidores: ["Forma e experiência doméstica serão tratadas separadamente: a qualidade formal de uma casa não permite inferir, sozinha, como ela foi vivida.", "Texto do atlas baseado no preâmbulo e no método de leitura das casas de Isadora Helena Nogueira (2026)."],
   };
 
   function epigraphs() {

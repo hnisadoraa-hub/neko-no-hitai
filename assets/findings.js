@@ -18,7 +18,7 @@ window.NEKO_FINDINGS = {
       claim: "Quanto menor o lote, mais intensa a operação espacial.",
       body: "A restrição não produz recuo, produz adensamento do gesto. Nos lotes abaixo de 40 m², a mediana do FAR observado é {farSmall}× contra {farBig}× nos lotes de 80 m² ou mais. A ocupação do solo sobe de {bcrBig}% para {bcrSmall}%, e o empilhamento equivalente, que é a área construída dividida pela projeção, vai de {stackBig}× para {stackSmall}×. As três correlações com a área do lote são negativas e consistentes.",
       method: "ρ lote × FAR = {rhoFar} · ρ lote × BCR = {rhoBcr} · ρ lote × empilhamento = {rhoStack} · n = {n}",
-      caveat: "Associação, não causa. E o corpus é de casas de autoria publicada: a intensificação observada é a que a arquitetura de projeto faz, não necessariamente a que o mercado imobiliário faz no mesmo tamanho de lote.",
+      caveat: "As correlações descrevem associações entre as variáveis. Como o corpus reúne casas de autoria publicadas, os resultados não podem ser estendidos ao conjunto da produção imobiliária em lotes de mesma área.",
       chart: "bands",
     },
     {
@@ -36,7 +36,7 @@ window.NEKO_FINDINGS = {
       claim: "No arquivo publicado, o lote não encolhe.",
       body: "A leitura corrente diz que o microlote avança. O corpus não mostra isso: a mediana do lote é {lot2000} m² nos anos 2000, {lot2010} m² nos 2010 e {lot2020} m² nos 2020. A correlação entre ano e área do lote é {rhoYear}, praticamente nula. O que se move, de leve, é o empilhamento, que cai de {stack2000}× para {stack2020}×.",
       method: "medianas por década · ρ ano × lote = {rhoYear} · n = {n}",
-      caveat: "Esta é a ressalva mais importante do atlas. O corpus mede o arquivo, não o mercado fundiário. Se a microlotização avança na cidade e não avança aqui, a diferença é editorial, e é matéria da pesquisa. Décadas de 1960, 1970 e 1990 têm uma única obra cada: a série só é legível a partir de 2000.",
+      caveat: "A seleção de obras publicadas pode explicar parte da diferença entre esta série e a evolução do mercado fundiário. As décadas de 1960, 1970 e 1990 têm uma obra cada; a comparação por década fica restrita ao período a partir de 2000.",
       chart: "decades",
     },
     {
@@ -68,3 +68,4 @@ window.NEKO_FINDINGS = {
     catNote: "Um gato doméstico deitado ocupa algo perto de 0,1 m². O menor lote do corpus, com {minLot} m², caberia {catCount} vezes essa área. Neko no hitai (猫の額), literalmente “testa de gato”, é uma expressão japonesa para lugares de área muito pequena. Como a testa do gato é estreita, a imagem serve para qualquer espaço apertado, de um jardim a um terreno, como em 猫の額ほどの庭, “um jardim do tamanho da testa de um gato”.",
   },
 };
+

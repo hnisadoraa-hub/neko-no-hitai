@@ -145,7 +145,7 @@
         </div>
       </div>`;
 
-    const note = `Solo residencial por proprietário pessoa física, nos 23 wards: ${nf(first.wards, 0)} m² em ${first.year} e ${nf(last.wards, 0)} m² em ${last.year}, uma queda de ${nf((1 - last.wards / first.wards) * 100, 1)}%. Os pontos em rosa são a mediana do lote das ${A.metadata.eligibleRecords} fichas comparáveis, por década. Que fiquem abaixo da linha é consequência do recorte, que só aceita lotes menores que 100 m²; o que o gráfico compara é a inclinação: a cidade perde quase metade do solo por dono, e a mediana do arquivo quase não se move. As duas séries medem coisas diferentes, uma é propriedade, a outra é lote de obra publicada. Fonte: cidade, ${esc(C.source.landPerOwner)} Fichas, aba 01 casas base.`;
+    const note = `Nos 23 wards, a área residencial por proprietário pessoa física passou de ${nf(first.wards, 0)} m² em ${first.year} para ${nf(last.wards, 0)} m² em ${last.year}, queda de ${nf((1 - last.wards / first.wards) * 100, 1)}%. Os pontos rosa mostram a mediana do lote das ${A.metadata.eligibleRecords} fichas comparáveis por década, que varia pouco no período. Como o corpus inclui apenas lotes abaixo de 100 m², suas medianas ficam abaixo da série oficial. A comparação aproxima duas unidades distintas: área por proprietário e lote de obra publicada. Fontes: ${esc(C.source.landPerOwner)} Fichas do corpus: aba 01 casas base.`;
 
     return { html: block("landowner", "a cidade e o arquivo", "A cidade encolhe, o arquivo não", body, note), init: () => initGuess(X, Y, first, last, segs) };
   }
@@ -280,7 +280,7 @@
         <p class="drawit-verdict" id="drawit-verdict"></p>
       </div>`;
 
-    const note = `Proprietários pessoas físicas com terreno residencial abaixo de 100 m² nos 23 wards, em 1º de janeiro de cada ano. Desenhar antes de ver é recurso de leitura, não medida: o seu traço não entra em conta nenhuma e nada do que você desenha sai do seu navegador. Fonte: ${esc(C.source.micro)}`;
+    const note = `Proprietários pessoas físicas de terreno residencial abaixo de 100 m² nos 23 wards, em 1º de janeiro de cada ano. O desenho é um exercício de leitura: permanece no navegador e não entra nos cálculos. Fonte: ${esc(C.source.micro)}`;
     return { html: block("drawit", "palpite", "Você desenha: quantos donos de microlote, de 2016 a 2024", body, note), init: initDrawIt };
   }
 
@@ -444,7 +444,7 @@
         </div>
       </div>`;
 
-    const note = `Proprietários pessoa física de lotes menores que 100 m² nos 23 wards, por ano, em 1º de janeiro. A série conta proprietários, não lotes nem domicílios: um proprietário pode ter mais de um lote e um lote pode ter mais de um dono. Crescimento não é prova de novos parcelamentos, porque herança e venda também movem o número. Fonte: ${esc(C.source.micro)}`;
+    const note = `Proprietários pessoas físicas de lotes abaixo de 100 m² nos 23 wards, com posição em 1º de janeiro de cada ano. Um proprietário pode ter vários lotes, e um lote pode ter vários donos. Vendas e heranças também alteram a contagem, que por isso não permite identificar isoladamente novas subdivisões. Fonte: ${esc(C.source.micro)}`;
 
     return { html: block("micro", "solo", "Microlotes, 2016 a 2024", body, note), init: initMicro };
   }
@@ -538,7 +538,7 @@
       </div>`;
 
     const top = rows[0], topCount = rows.slice().sort((a, b) => b.works - a.works)[0];
-    const note = `Obras do corpus, as ${total} da aba 01 casas base, para cada 10 mil proprietários de lote abaixo de 100 m² em 2024, ward a ward. ${esc(topCount.ward)} tem mais obras em número, ${intBr(topCount.works)}, mas ${esc(top.ward)} lidera a conta relativa, com ${nf(top.rate, 2)} por 10 mil. A cor diz se o número de donos de microlote subiu ou caiu desde 2016, o que não é o mesmo que dizer que o solo foi parcelado: herança e venda também mexem nesse número. A conta cruza um arquivo editorial com um cadastro tributário e mede densidade de publicação, nunca frequência de microcasas na cidade. Fonte: obras, aba 01 casas base; proprietários, ${esc(C.source.micro)} A mesma razão aparece na aba 07 contexto wards.`;
+    const note = `Razão entre as ${total} obras da aba 01 casas base e o número de proprietários de lotes abaixo de 100 m² em 2024, por ward. ${esc(topCount.ward)} reúne mais obras, ${intBr(topCount.works)}; ${esc(top.ward)} tem a maior razão, ${nf(top.rate, 2)} por 10 mil proprietários. As cores mostram a variação do número de proprietários desde 2016, também afetada por vendas e heranças. O cruzamento entre o arquivo de publicações e o cadastro tributário indica a presença relativa de obras publicadas, sem estimar a frequência de microcasas na cidade ou quantificar parcelamentos. Fontes: aba 01 casas base e ${esc(C.source.micro)} A razão também consta da aba 07 contexto wards.`;
 
     return { html: block("archive-city", "arquivo × cidade", "Onde se publica não é onde se constrói", body, note), init: () => {
       document.querySelectorAll("#chart-archive-city .archive-row").forEach((node) => {
@@ -595,7 +595,7 @@
           <text x="${m.l}" y="${m.t - 16}" class="axis-text">ano de adoção da regra de área mínima</text>
         </svg></div>`;
 
-    const note = `Regime de área mínima de lote nos 23 wards, com a data de adoção registrada. ${dated.length} wards têm data; os demais não definem mínimo ou não registram adoção. Onde há duas datas, a mais antiga entra na linha e o ward aparece com asterisco; a ficha traz as duas. O mínimo vale para lotes novos: lotes anteriores continuam existindo como 既存不適格. Fonte: ${esc(C.source.wardNorms)}`;
+    const note = `Área mínima de lote nos 23 wards e datas de adoção registradas na base. Há data para ${dated.length} wards; nos demais, não foi identificado mínimo geral ou falta o registro da adoção. Quando há duas datas, o gráfico usa a mais antiga e marca o ward com asterisco; ambas constam da ficha. O mínimo se aplica a lotes novos, e os anteriores permanecem como 既存不適格. Fonte: ${esc(C.source.wardNorms)}`;
 
     return { html: block("regime", "norma", "Quando cada ward passou a exigir um lote mínimo", body, note), init: () => {
       document.querySelectorAll("#chart-regime .regime-dot").forEach((node) => {
@@ -663,7 +663,7 @@
         ${ticks}
         <g role="list">${marks}</g>
       </svg></div>`;
-    const note = `${allMajority ? "Em todos os 23 wards" : "Na maior parte dos wards"}, a maioria das vendas e das heranças de terreno de 2024 foi de lotes com menos de 100 m²: o menor índice de vendas é o de ${esc(minSale.ward)}, ${nf(minSale.salesPct, 1)}%, e o menor de heranças, o de ${esc(minInh.ward)}, ${nf(minInh.inhPct, 1)}%. Em número de transações, é o microlote que mais muda de dono, por compra ou por família; em área, ele responde por ${nf((100 * aS) / aT, 1)}% do solo vendido. A conta é de transações por faixa de área da parcela (até 50 m² somado a 50 a 100 m²), não de subdivisões, e não separa uso residencial. Fonte: ${esc(C.source.landFlow)}`;
+    const note = `${allMajority ? "Nos 23 wards" : "Na maior parte dos wards"}, lotes abaixo de 100 m² concentraram a maioria das vendas e heranças de terrenos em 2024. As menores participações foram ${nf(minSale.salesPct, 1)}% nas vendas de ${esc(minSale.ward)} e ${nf(minInh.inhPct, 1)}% nas heranças de ${esc(minInh.ward)}. Em área, esses lotes corresponderam a ${nf((100 * aS) / aT, 1)}% do solo vendido. Foram somadas as faixas até 50 m² e de 50 a 100 m². Os registros abrangem transações, sem distinguir uso residencial nem identificar subdivisões. Fonte: ${esc(C.source.landFlow)}`;
     return { html: block("landflow", "solo em movimento", "O microlote é o que mais muda de dono", body, note), init: () => {
       document.querySelectorAll("#chart-flow .flow-row").forEach((node) => {
         const d = F[node.dataset.ward];
@@ -723,7 +723,7 @@
           <li><strong>${intBr(cp1.oldCouple)}</strong><span>casais idosos em ${cp1.year}, contra ${intBr(cp0.oldCouple)} em ${cp0.year}</span></li>
         </ul>
       </div>`;
-    const note = `Parcela de cada tipo nos domicílios particulares da Metrópole de Tóquio, nos censos de ${first.year} a ${last.year}. O casal com filhos, que o código nLDK toma como família padrão, é hoje ${nf(share(last, "coupleKids"), 1)}% dos domicílios; o de uma pessoa, ${nf(share(last, "single"), 1)}%. O recorte é a metrópole inteira, e não só os 23 wards, porque é o único em que a aba traz a composição: por isso a parcela de uma pessoa aqui${census && Number.isFinite(census.pctSingle) ? ` fica abaixo dos ${nf(census.pctSingle, 1)}% do bloco anterior, que conta só os 23 wards` : " difere da dos 23 wards"}. Casal sem filhos, casal com filhos e monoparental somam a família nuclear; cerca de 1% dos domicílios, os que incluem pessoas sem parentesco, fica fora do gráfico. A série começa em ${first.year} porque monoparental e família não nuclear só aparecem na aba a partir desse censo. Fonte: ${esc(C.source.households)}`;
+    const note = `Composição dos domicílios particulares da Metrópole de Tóquio, de ${first.year} a ${last.year}. No último censo, casais com filhos, a família de referência do nLDK, representavam ${nf(share(last, "coupleKids"), 1)}% dos domicílios; pessoas sozinhas, ${nf(share(last, "single"), 1)}%. A aba registra essa composição para a metrópole inteira. A participação de pessoas sozinhas${census && Number.isFinite(census.pctSingle) ? ` fica, portanto, abaixo dos ${nf(census.pctSingle, 1)}% dos 23 wards mostrados no bloco anterior` : " difere da encontrada nos 23 wards"}. A categoria família nuclear reúne casais com ou sem filhos e famílias monoparentais. Cerca de 1% dos domicílios, com pessoas sem parentesco, foi excluído do gráfico. A série começa em ${first.year}, primeiro censo da aba com dados de famílias monoparentais e não nucleares. Fonte: ${esc(C.source.households)}`;
     return { html: block("households", "família", "Metade dos domicílios tem uma pessoa só", body, note), init: () => {
       document.querySelectorAll("#chart-households .hh-dot").forEach((node) => {
         const t = TYPES.find((x) => x.key === node.dataset.key);
@@ -781,7 +781,7 @@
       <p class="census-ask" id="census-ask">Seis séries dos 23 wards entre ${rows[0].year} e ${rows[rows.length - 1].year}. Antes de ver a linha, diga o que você acha que aconteceu com cada uma. <span id="census-score"></span></p>
       <div class="census-grid guessing" id="chart-census">${CENSUS_SERIES.map(spark).join("")}</div>
       <button type="button" class="quiet-button" id="census-reveal">Mostrar todas</button>`;
-    const note = `Os 23 wards somados, censo a censo, de ${rows[0].year} a ${rows[rows.length - 1].year}. Domicílio não é casa nem lote: é unidade de moradia recenseada. Fonte: ${esc(C.source.census23)}`;
+    const note = `Dados dos 23 wards somados em cada censo, de ${rows[0].year} a ${rows[rows.length - 1].year}. Domicílio corresponde à unidade de moradia recenseada. Fonte: ${esc(C.source.census23)}`;
     return { html: block("census", "domicílio", "Menos gente em cada casa", body, note), init: () => {
       /* palpite antes da linha: uma pergunta por série, um clique cada */
       const grid = $("chart-census");
@@ -847,7 +847,7 @@
         <text x="${X(tokyo.m2)}" y="${m.t + 8}" text-anchor="middle" class="pref-label">Tóquio ${nf(tokyo.m2, 2)} m²</text>
         ${dots}
       </svg></div>`;
-    const note = `Área total média por moradia em cada uma das 47 províncias. Tóquio é a menor, ${nf(tokyo.m2, 2)} m², contra ${nf(mean, 1)} m² de média entre as províncias. A medida é por moradia, não por pessoa: províncias com moradias maiores também têm famílias maiores. Fonte: ${esc(C.source.prefectures)}`;
+    const note = `Área total média por moradia nas 47 províncias. Tóquio tem a menor média, ${nf(tokyo.m2, 2)} m², diante de ${nf(mean, 1)} m² na média entre províncias. A medida se refere à moradia inteira; províncias com moradias maiores também têm famílias maiores, o que impede lê-la como área por pessoa. Fonte: ${esc(C.source.prefectures)}`;
     return { html: block("prefectures", "escala nacional", "Tóquio é a menor das 47", body, note), init: () => {
       document.querySelectorAll("#chart-prefectures .pref-dot").forEach((node) => {
         node.addEventListener("mousemove", (e) => tip(node, e, `<strong>${esc(node.dataset.name)}</strong>${nf(Number(node.dataset.m2), 2)} m² por moradia`));
@@ -899,7 +899,7 @@
       <h4 class="sub-head">Relatos de moradores já autorizados</h4>
       <div class="resident-grid">${cards}</div>`;
 
-    const note = `Das ${cl.length} obras do corpus, ${known.length} têm alguma informação sobre quem mora. Nenhum nome de morador aparece aqui, e cada relato mostra apenas o tipo de resposta que a autorização cobre. Quem responde é uma pessoa, não uma amostra: nenhuma fala vira descrição de como se mora no Japão. Fonte: quadriculado, ${esc(C.source.clientela)} Relatos, ${esc(C.source.residents)}`;
+    const note = `Há informação sobre moradores em ${known.length} das ${cl.length} obras do corpus. Os relatos são apresentados sem nomes e dentro das autorizações recebidas. Por serem depoimentos individuais, não permitem generalizar os modos de morar no Japão. Fontes: ${esc(C.source.clientela)} para o quadro de clientela; ${esc(C.source.residents)} para os relatos.`;
     return { html: block("residents", "quem mora", "O arquivo sabe pouco sobre quem mora", body, note), init: () => {
       document.querySelectorAll(".waffle-cell").forEach((node) => {
         const c = cl[Number(node.dataset.i)];
@@ -933,7 +933,7 @@
           ${l.url ? `<a href="${esc(l.url)}" target="_blank" rel="noreferrer">${esc(l.portal || "abrir")} ↗</a>` : '<span class="muted">sem link público registrado</span>'}
         </article>`).join("")}
       </div>`;
-    const note = `As ${lib.length} normas e documentos oficiais que as seções A norma e Território usam, com o portal onde cada texto pode ser conferido. Tradução oficial em inglês não substitui o texto japonês vigente: quando os dois divergem, vale o japonês.`;
+    const note = `As ${lib.length} normas e documentos oficiais usados nas seções A norma e Território estão acompanhados dos portais de consulta. Em caso de divergência com a tradução em inglês, a referência é o texto japonês vigente.`;
     return { html: block("norms", "biblioteca", "As normas que o atlas cita", body, note), init: () => {
       const filters = $("norms-filters");
       filters.addEventListener("click", (e) => {
@@ -1032,3 +1032,4 @@
 
   mount();
 })();
+

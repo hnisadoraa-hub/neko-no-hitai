@@ -146,7 +146,7 @@
     }).join("");
 
     panel.innerHTML = `
-      <p class="panel-lede">Cada ponto é uma obra, posta no setor do seu eixo e afastada do centro conforme o ano: 1950 junto ao miolo, 2026 na borda. As linhas só existem quando há registro: citação conferida no PDF, ligação escrita no fichamento, mesma autoria, ou duas obras que citam o mesmo terceiro. As ${bridges.size} obras destacadas são as que amarram dois ou mais eixos diferentes.</p>
+      <p class="panel-lede">As obras estão agrupadas por eixo. A distância ao centro corresponde ao ano da edição, de 1950 a 2026. As linhas distinguem citações registradas no PDF, associações anotadas no fichamento, autoria em comum e referências a um mesmo terceiro autor. As ${bridges.size} obras com pontos maiores têm ligações com pelo menos dois outros eixos.</p>
       <div class="bib-legend">${legendHtml()}</div>
       <div class="plot-wrap bib-wrap">
         <svg id="chart-biblio-network" viewBox="0 0 ${W} ${H}" role="img" aria-label="Rede das ${B.works.length} obras por eixo temático">
@@ -243,7 +243,7 @@
        <text x="${X(y)}" y="${H - 22}" text-anchor="middle" class="axis-text">${y}</text>`).join("");
 
     panel.innerHTML = `
-      <p class="panel-lede">A mesma bibliografia posta no tempo. Acima da linha, as conversas diretas: citação conferida no PDF, ligação escrita no fichamento, continuidade de autoria. Abaixo, as indiretas: duas obras que chamam o mesmo terceiro, como Nishiyama, Shinohara, Tange ou Taut. Evidência em cima, leitura em baixo.</p>
+      <p class="panel-lede">O gráfico organiza as relações por ano. Acima da linha estão as citações registradas no PDF, as associações do fichamento e os vínculos de autoria. Abaixo aparecem obras que recorrem a um mesmo terceiro autor, como Nishiyama, Shinohara, Tange ou Taut.</p>
       <div class="bib-legend">${legendHtml()}</div>
       <div class="plot-wrap bib-wrap">
         <svg id="chart-biblio-arc" viewBox="0 0 ${W} ${H}" role="img" aria-label="Ligações entre as obras, de 1950 a 2026">
@@ -321,7 +321,7 @@
     }).join("");
 
     panel.innerHTML = `
-      <p class="panel-lede">Cada linha é um eixo, cada ponto é uma obra no ano da edição consultada. Traduções aparecem no ano da edição em mãos, não no do original: Teige é de 1932 e entra em 2002. Obra sem ano confirmado fica marcada na ficha.</p>
+      <p class="panel-lede">Cada linha reúne as obras de um eixo pelo ano da edição consultada. O livro de Teige, publicado originalmente em 1932, aparece em 2002, ano da tradução utilizada. Datas sem confirmação estão assinaladas nas fichas.</p>
       <div class="plot-wrap bib-wrap">
         <svg id="chart-biblio-timeline" viewBox="0 0 ${W} ${H}" role="img" aria-label="Linha do tempo das obras por eixo, de 1950 a 2026">
           ${decades.map((y) => `<line x1="${X(y)}" x2="${X(y)}" y1="${m.t - 12}" y2="${H - 28}" class="grid-line"></line>
@@ -475,7 +475,7 @@
   function mount() {
     const lede = $("biblio-lede");
     if (lede) {
-      lede.textContent = `As ${B.nodes} obras da bibliografia, por eixo, no tempo e nas ligações que estão escritas em algum lugar, no PDF ou no fichamento. ${bridges.size} delas funcionam como ponte entre eixos diferentes.`;
+      lede.textContent = `As ${B.nodes} obras estão organizadas por tema, ano e relações registradas nos textos ou fichamentos. ${bridges.size} têm ligações com obras de pelo menos dois outros eixos.`;
     }
     const rule = $("biblio-rule");
     if (rule) rule.textContent = `${B.nodes} obras · ${B.eixos.length} eixos · ${allLinks.length} ligações`;

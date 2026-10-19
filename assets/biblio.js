@@ -22,7 +22,7 @@ window.NEKO_BIBLIO = {
   total: 75,
   nodes: 75,
   source:
-    "Base 📚 Bibliografia (PDFs) — TCC Domesticidade/Microlotes (Notion). A base traz 76 linhas; duas delas registram o mesmo artigo de Sugiyama e outros (2005), uma em japonês e outra em inglês. Aqui esse registro duplicado foi fundido, e a bibliografia conta 75 obras.",
+    "Base 📚 Bibliografia (PDFs) — TCC Domesticidade/Microlotes, no Notion: 76 registros e 75 obras. O artigo de Sugiyama e outros (2005), registrado em japonês e inglês, foi contado uma vez.",
 
   eixos: [
     { key: "domesticidade", label: "Domesticidade", color: "#c2185b", origens: ["domesticidade"] },

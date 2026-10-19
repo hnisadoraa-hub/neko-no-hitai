@@ -13,8 +13,8 @@ window.WARD_CONTEXT = {
   source: {
     demography: "令和7年国勢調査 (censo de 01/10/2025, preliminar) e 国土地理院, área em 01/10/2025",
     demographyUrl: "https://uub.jp/rnk/tokyo/k_j.html",
-    note: "Densidade calculada a partir de população e área. A área inclui superfícies de água e terrenos não edificáveis, por isso a densidade por km² não é densidade de solo residencial.",
-    profileNote: "Os perfis descrevem formação urbana e caráter do tecido. Não são leitura normativa e não substituem a consulta urbanística parcelar.",
+    note: "A densidade divide a população pela área total do ward, incluindo água e terrenos não edificáveis. O resultado se refere ao território inteiro, sem isolar o solo residencial.",
+    profileNote: "Os perfis resumem a formação urbana e o tecido de cada ward. As regras aplicáveis a uma parcela exigem consulta urbanística específica.",
   },
   wards: {
     Chiyoda: {
@@ -236,3 +236,4 @@ window.WARD_CONTEXT = {
     },
   },
 };
+
