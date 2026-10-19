@@ -1269,13 +1269,14 @@ select { max-width: 100%; }
 .cursor-pick button { padding: 5px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--white); font: 600 .74rem "Urbanist", sans-serif; }
 .cursor-pick button[aria-pressed="true"] { background: var(--navy); border-color: var(--navy); color: #fff; }
 
-/* epígrafes tiradas do rascunho */
+/* aberturas com autoria e fontes de apoio */
 .epigraph { margin: 0 0 18px; padding-left: 16px; border-left: 2px solid var(--blue); max-width: 62ch; }
 .epigraph p { margin: 0; font: 400 1.02rem/1.6 "Roboto", sans-serif; color: var(--ink); font-style: italic; }
-.epigraph cite { display: block; margin-top: 5px; font: 600 .72rem "Urbanist", sans-serif; font-style: normal; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.epigraph cite { display: block; margin-top: 5px; font: 600 .76rem/1.5 "Urbanist", sans-serif; font-style: normal; color: var(--muted); }
+.epigraph-basis { display: block; margin-top: 2px; font: 400 .76rem/1.5 "Roboto", sans-serif; color: var(--muted); }
 .compare-section .epigraph { border-left-color: #9dbbd3; }
 .compare-section .epigraph p { color: #e6eef5; }
-.compare-section .epigraph cite { color: #9dbbd3; }
+.compare-section .epigraph cite, .compare-section .epigraph-basis { color: #9dbbd3; }
 
 /* =====================================================================
    07 a norma: o envelope corte por corte, as zonas e o jogo
@@ -1955,3 +1956,4 @@ td.mx.edited { box-shadow: inset 0 0 0 2px rgba(213, 71, 106, .55); }
   .relief-step { padding-bottom: 168px; }
   .relief-card { width: min(520px, 100%); opacity: 1; background: #fff; box-shadow: 0 6px 24px rgba(16,38,74,.12); }
 }
+

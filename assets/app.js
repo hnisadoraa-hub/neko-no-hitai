@@ -1498,8 +1498,7 @@
         ? `A planilha declara ${metadata.declaredRecords} registros na base, e ${metadata.sourceRecords} obras distintas aparecem nessas abas. `
         : "")
       + `Das ${metadata.sourceRecords} obras do corpus, ${metadata.excludedIncomplete} ficaram fora por faltar ao menos um dos seis campos comparáveis${metadata.missingFromTarget ? `, e ${metadata.missingFromTarget} registros do corpus-alvo de ${metadata.targetCorpus} não constam da planilha` : ""}. `
-      + `As barras contam as ${metadata.sourceRecords} linhas da aba <em>01 casas base</em>; projeção e área construída só entram quando a taxa de ocupação e o coeficiente de aproveitamento da aba <em>90 aux casas indicadores</em> batem com elas. `
-      + `IDP, IPE-Pico e limites legais por casa não constam dessas abas e ficaram fora da interface em vez de aparecer como lacuna.`;
+      + `As barras contam as ${metadata.sourceRecords} linhas da aba <em>01 casas base</em>; projeção e área construída só entram quando a taxa de ocupação e o coeficiente de aproveitamento da aba <em>90 aux casas indicadores</em> batem com elas.`;
     $("footer-build").textContent = `corpus de ${metadata.sourceFile} · atlas reconstruído em ${new Date(metadata.rebuiltAt).toLocaleDateString("pt-BR")}`;
     document.querySelectorAll('[data-count="eligible"]').forEach((node) => { node.textContent = String(houses.length); });
     const years = houses.map((h) => h.year).filter(Number.isFinite);
@@ -1771,3 +1770,4 @@
   renderEvidence();
   renderAll();
 })();
+
