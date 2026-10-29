@@ -1,0 +1,984 @@
+{
+  "summary": {
+    "date": "2026-10-29",
+    "screenedRecords": 203,
+    "uniqueRecords": 202,
+    "updatedRecords": 45,
+    "changedFloorCounts": 31,
+    "mergedDuplicates": 1,
+    "report": "docs/revisao_fichas_2026-10-29.md"
+  },
+  "changes": [
+    {
+      "n": 5,
+      "name": "Small House (Kazuyo Sejima)",
+      "changes": {
+        "floors": {
+          "before": 4,
+          "after": 3
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://backnumber.japan-architect.co.jp/english/2maga/ja/ja0043/work/01/001.html"
+      ]
+    },
+    {
+      "n": 18,
+      "name": "Kus House",
+      "changes": {
+        "floors": {
+          "before": 3,
+          "after": 2
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://backnumber.japan-architect.co.jp/english/2maga/ja/ja0066/works/074.html"
+      ]
+    },
+    {
+      "n": 27,
+      "name": "House SH",
+      "changes": {
+        "floors": {
+          "before": 4,
+          "after": 3
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://backnumber.japan-architect.co.jp/japanese/2maga/jt/jt2006/jt02/works/08.html"
+      ]
+    },
+    {
+      "n": 28,
+      "name": "Juicy House",
+      "changes": {
+        "builtArea": {
+          "before": 130.37,
+          "after": 121.81
+        },
+        "floors": {
+          "before": 4,
+          "after": 3
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        },
+        "dataNotes": {
+          "before": null,
+          "after": [
+            "Área construída de 121,81 m² adotada conforme a publicação do Atelier Bow-Wow. O engenheiro estrutural publica aproximadamente 130 m²; as fontes não esclarecem a diferença de critério."
+          ]
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores.",
+        "Área construída atualizada para o valor publicado pelo escritório autor, com a divergência entre fontes registrada."
+      ],
+      "sources": [
+        "https://www.kanebako-se.co.jp/works/view/288",
+        "https://www.bow-wow.jp/profile/2005/JuicyHouse/index.html"
+      ]
+    },
+    {
+      "n": 29,
+      "name": "Lucky Drops",
+      "changes": {
+        "floors": {
+          "before": 3,
+          "after": 2
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://www.tekuto.com/works/a084lucky-drops"
+      ]
+    },
+    {
+      "n": 37,
+      "name": "SWITCH",
+      "changes": {
+        "loft": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://apollo-aa.jp/works/switch/"
+      ]
+    },
+    {
+      "n": 49,
+      "name": "STEPS",
+      "changes": {
+        "floors": {
+          "before": 5,
+          "after": 4
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        },
+        "dataNotes": {
+          "before": null,
+          "after": [
+            "Localização mantida como Chiyoda: o texto do autor identifica Kanda, enquanto a tabela da mesma página indica Azabujuban, Minato. A contradição permanece pendente de confirmação documental."
+          ]
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores.",
+        "Divergência interna da fonte de localização documentada; ward não alterado por suposição."
+      ],
+      "sources": [
+        "https://apollo-aa.jp/works/steps/"
+      ]
+    },
+    {
+      "n": 53,
+      "name": "Bokutei",
+      "changes": {
+        "floors": {
+          "before": 3,
+          "after": 2
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://www.bow-wow.jp/profile/2008/Bokutei/index.html"
+      ]
+    },
+    {
+      "n": 62,
+      "name": "DAMIER",
+      "changes": {
+        "penthouse": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://apollo-aa.jp/works/damier/"
+      ]
+    },
+    {
+      "n": 72,
+      "name": "LUFT",
+      "changes": {
+        "penthouse": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://apollo-aa.jp/works/luft/"
+      ]
+    },
+    {
+      "n": 76,
+      "name": "Small House (Unemori Architects)",
+      "changes": {
+        "floors": {
+          "before": 5,
+          "after": 4
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        },
+        "sourceUrl": {
+          "before": "https://unemori-archi.com/",
+          "after": "https://unemori-archi.pro/?works=small-house-2010"
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores.",
+        "Homepage substituída pela página oficial específica da obra."
+      ],
+      "sources": [
+        "https://unemori-archi.pro/?works=small-house-2010"
+      ]
+    },
+    {
+      "n": 77,
+      "name": "Split Machiya",
+      "changes": {
+        "floors": {
+          "before": null,
+          "after": 2
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://www.bow-wow.jp/profile/2010/SplitMachiya/index.html"
+      ]
+    },
+    {
+      "n": 80,
+      "name": "Tsubomi House (Tokyo Bud House)",
+      "changes": {
+        "floors": {
+          "before": 3,
+          "after": 2
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://ys-arc.co.jp/works/tsubomihouse/"
+      ]
+    },
+    {
+      "n": 82,
+      "name": "TRICO",
+      "changes": {
+        "penthouse": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://apollo-aa.jp/works/trico/"
+      ]
+    },
+    {
+      "n": 84,
+      "name": "43base",
+      "changes": {
+        "floors": {
+          "before": 4,
+          "after": 3
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://architecturephoto.net/27577/"
+      ]
+    },
+    {
+      "n": 89,
+      "name": "FOLD",
+      "changes": {
+        "penthouse": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://apollo-aa.jp/works/fold/"
+      ]
+    },
+    {
+      "n": 95,
+      "name": "NID",
+      "changes": {
+        "floors": {
+          "before": 4,
+          "after": 3
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://apollo-aa.jp/works/nid/"
+      ]
+    },
+    {
+      "n": 97,
+      "name": "ROUGE",
+      "changes": {
+        "penthouse": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://apollo-aa.jp/works/rouge/"
+      ]
+    },
+    {
+      "n": 101,
+      "name": "Oyaguchi House",
+      "changes": {
+        "loft": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://www.sekeikobo.com/works/ooya.html"
+      ]
+    },
+    {
+      "n": 104,
+      "name": "House in Monzen-nakacho",
+      "changes": {
+        "floors": {
+          "before": 4,
+          "after": 3
+        },
+        "penthouse": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://level-architects.com/project/monnaka/"
+      ]
+    },
+    {
+      "n": 106,
+      "name": "1.8-M Width House",
+      "changes": {
+        "footprintArea": {
+          "before": 22.5,
+          "after": 22.25
+        },
+        "floors": {
+          "before": 4,
+          "after": 3
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        },
+        "sourceUrl": {
+          "before": "https://www.yuua.jp/",
+          "after": "https://www.yuua.jp/projects/1_8m_width_house/"
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores.",
+        "Projeção corrigida de 22,50 para 22,25 m², conforme a página oficial do projeto."
+      ],
+      "sources": [
+        "https://www.yuua.jp/projects/1_8m_width_house/"
+      ]
+    },
+    {
+      "n": 107,
+      "name": "BASE",
+      "changes": {
+        "dataNotes": {
+          "before": null,
+          "after": [
+            "A área construída de 21,87 m² coincide com a projeção da base e exige confirmação. A publicação com texto dos autores no ArchDaily também apresenta 21,87 m² como “Floor Area”, sem esclarecer o total dos três pavimentos. O atlas mantém o valor provisoriamente; não o multiplica pelo número de andares."
+          ]
+        }
+      },
+      "reasons": [
+        "Inconsistência de critério da área construída sinalizada para revisão documental, sem calcular uma área presumida."
+      ],
+      "sources": [
+        "https://www.archdaily.com/331904/base-komada-architects-office"
+      ]
+    },
+    {
+      "n": 109,
+      "name": "GROW",
+      "changes": {
+        "penthouse": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://apollo-aa.jp/works/grow/"
+      ]
+    },
+    {
+      "n": 118,
+      "name": "Framing the Sky",
+      "changes": {
+        "floors": {
+          "before": 4,
+          "after": 2
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        },
+        "loft": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://www.tekuto.com/en/works/framing-the-sky"
+      ]
+    },
+    {
+      "n": 119,
+      "name": "House in Kitakarasuyama",
+      "changes": {
+        "floors": {
+          "before": 3,
+          "after": 2
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://www.archdaily.com/483119/house-in-kitakarasuyama-mizuishi-architect-atelier"
+      ]
+    },
+    {
+      "n": 120,
+      "name": "KKZ / Kamikitazawa House",
+      "changes": {
+        "floors": {
+          "before": 3,
+          "after": 2
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://architecturephoto.net/35141/"
+      ]
+    },
+    {
+      "n": 121,
+      "name": "LATTICE",
+      "changes": {
+        "penthouse": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://apollo-aa.jp/works/lattice/"
+      ]
+    },
+    {
+      "n": 127,
+      "name": "CAVE",
+      "changes": {
+        "floors": {
+          "before": 4,
+          "after": 3
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://apollo-aa.jp/works/cave/"
+      ]
+    },
+    {
+      "n": 133,
+      "name": "Matsubara Gable",
+      "changes": {
+        "floors": {
+          "before": 3,
+          "after": 2
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://www.architect-cafe.com/archive/work/003.html"
+      ]
+    },
+    {
+      "n": 136,
+      "name": "Nakanobu House",
+      "changes": {
+        "floors": {
+          "before": 2,
+          "after": 3
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://www.sekeikobo.com/works/nakanobu.html"
+      ]
+    },
+    {
+      "n": 141,
+      "name": "Little House with a Big Terrace",
+      "changes": {
+        "floors": {
+          "before": 3,
+          "after": 2
+        },
+        "storageLevel": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://takuroyama.jp/en/portfolio-item/little-house-with-big-terrace"
+      ]
+    },
+    {
+      "n": 153,
+      "name": "Alley House",
+      "changes": {
+        "loft": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://www.riotadesign.com/works/17_roji/"
+      ]
+    },
+    {
+      "n": 159,
+      "name": "House H (o+h)",
+      "changes": {
+        "floors": {
+          "before": 6,
+          "after": 3
+        },
+        "basement": {
+          "before": null,
+          "after": 2
+        },
+        "penthouse": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://jp.toto.com/page/knowledge/useful/tototsushin/backnumber/assets/pdf/no521.pdf"
+      ]
+    },
+    {
+      "n": 162,
+      "name": "Milk Carton House",
+      "changes": {
+        "year": {
+          "before": 2018,
+          "after": 2019
+        },
+        "loft": {
+          "before": null,
+          "after": 2
+        },
+        "dataNotes": {
+          "before": null,
+          "after": [
+            "Ano atualizado para 2019 conforme o portfólio do TENHACHI.",
+            "O autor publica 71 m² de área bruta; a entrevista com os moradores esclarece que há dois lofts. A base registra 51,69 m² de área construída e 26,32 m² de projeção. Esses valores precisos foram mantidos provisoriamente porque a equivalência com os 71 m² brutos e os 25 m² publicados pelo autor não está demonstrada."
+          ]
+        },
+        "grossAreaIncludingLofts": {
+          "before": null,
+          "after": 71
+        }
+      },
+      "reasons": [
+        "Ano e presença de dois lofts confirmados. A divergência entre áreas permanece explícita, sem substituir medidas de critérios diferentes."
+      ],
+      "sources": [
+        "https://www.ten-hachi.com/milkcartonhouse",
+        "https://100life.jp/architecture/42224/"
+      ]
+    },
+    {
+      "n": 163,
+      "name": "stir",
+      "changes": {
+        "sourceUrl": {
+          "before": "https://www.ryumitarai.jp/",
+          "after": "https://www.ryumitarai.jp/stir"
+        }
+      },
+      "reasons": [
+        "Link específico da obra. Os quatro pavimentos foram confirmados e mantidos."
+      ],
+      "sources": [
+        "https://www.ryumitarai.jp/stir"
+      ]
+    },
+    {
+      "n": 176,
+      "name": "House in Myougadani (MAMM House)",
+      "changes": {
+        "name": {
+          "before": "MAMM House",
+          "after": "House in Myougadani (MAMM House)"
+        },
+        "floors": {
+          "before": 4,
+          "after": 3
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        },
+        "penthouse": {
+          "before": null,
+          "after": 1
+        },
+        "aliases": {
+          "before": null,
+          "after": [
+            "MAMM House",
+            "House in Myougadani",
+            "茗荷谷の舎"
+          ]
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores.",
+        "Nome oficial do projeto incorporado, preservando o nome anterior para busca."
+      ],
+      "sources": [
+        "https://mamm-design.com/mammhouse/"
+      ]
+    },
+    {
+      "n": 179,
+      "name": "Zoshigaya Takahashi House",
+      "changes": {
+        "floors": {
+          "before": 4,
+          "after": 3
+        },
+        "penthouse": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://mag.tecture.jp/project/20210615-zoshigaya-takahashi-house/"
+      ]
+    },
+    {
+      "n": 185,
+      "name": "Murakoshi House",
+      "changes": {
+        "builtArea": {
+          "before": 122.36,
+          "after": 102.16
+        },
+        "loft": {
+          "before": null,
+          "after": 1
+        },
+        "sourceUrl": {
+          "before": "https://s-designfarm.co.jp/projects/murakoshitei/",
+          "after": "https://s-designfarm.co.jp/en/works/murakoshi-house/"
+        },
+        "dataNotes": {
+          "before": null,
+          "after": [
+            "Área construída de 102,16 m² conforme a ficha técnica atual do S Design Farm. O loft é registrado à parte; a revisão não pressupõe que sua área integre esse total."
+          ]
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores.",
+        "Área construída corrigida de 122,36 para 102,16 m² conforme o autor."
+      ],
+      "sources": [
+        "https://s-designfarm.co.jp/en/works/murakoshi-house/"
+      ]
+    },
+    {
+      "n": 188,
+      "name": "Setagaya Floating Residence",
+      "changes": {
+        "floors": {
+          "before": 4,
+          "after": 3
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://ashdaa.com/EN/projects/1869"
+      ]
+    },
+    {
+      "n": 190,
+      "name": "Weather House",
+      "changes": {
+        "floors": {
+          "before": 4,
+          "after": 3
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://mag.tecture.jp/project/20210716-weather-house/"
+      ]
+    },
+    {
+      "n": 199,
+      "name": "House in Daikanyama",
+      "changes": {
+        "floors": {
+          "before": 3,
+          "after": 2
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://mag.tecture.jp/project/20230925-house-in-daikanyama/"
+      ]
+    },
+    {
+      "n": 208,
+      "name": "Daita House (Aisaka Atelier)",
+      "changes": {
+        "floors": {
+          "before": 4,
+          "after": 3
+        },
+        "sourceUrl": {
+          "before": "https://aisaka.info/",
+          "after": "https://aisaka.info/works_architecture/daita.php"
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores.",
+        "Homepage substituída pela ficha técnica da obra."
+      ],
+      "sources": [
+        "https://aisaka.info/works_architecture/daita.php"
+      ]
+    },
+    {
+      "n": 209,
+      "name": "House for Kagami (Mirai Shokudo)",
+      "changes": {
+        "name": {
+          "before": "Kagami's House",
+          "after": "House for Kagami (Mirai Shokudo)"
+        },
+        "floors": {
+          "before": 2,
+          "after": 3
+        },
+        "dataNotes": {
+          "before": null,
+          "after": [
+            "Kagami’s House e Mirai Shokudo identificam a mesma obra de 2022 do Niko Design Studio. Os dois cadastros foram unificados; a busca pelos nomes anteriores continua disponível."
+          ]
+        },
+        "aliases": {
+          "before": null,
+          "after": [
+            "Kagami's House",
+            "Mirai Shokudo / Enbutai House",
+            "Mirai Shokudo",
+            "Enbutai House",
+            "Kagami House",
+            "Kagami’s House",
+            "各務さんの家",
+            "未来食堂"
+          ]
+        },
+        "legacyIds": {
+          "before": null,
+          "after": [
+            "h253-mirai-shokudo-enbutai-house"
+          ]
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores.",
+        "Duplicata confirmada: o título do próprio autor associa Kagami e Mirai Shokudo. Mantidos ano, ward e áreas da ficha oficial; a obra entra uma vez nas estatísticas."
+      ],
+      "sources": [
+        "https://www.niko-arch.com/niko-work2023/niko-work.kagami.2022/newwork.kagami_all_images_refined.html"
+      ]
+    },
+    {
+      "n": 213,
+      "name": "Seta House",
+      "changes": {
+        "floors": {
+          "before": 3,
+          "after": 2
+        },
+        "basement": {
+          "before": null,
+          "after": 1
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores."
+      ],
+      "sources": [
+        "https://tko-m.com/works/house/%E7%80%AC%E7%94%B0%E3%81%AE%E4%BD%8F%E5%AE%85/"
+      ]
+    },
+    {
+      "n": 215,
+      "name": "Building Frame of the House",
+      "changes": {
+        "architect": {
+          "before": "IGArchitects / Masato Igarashi",
+          "after": "IGArchitects / Rihito Igarashi + Tomoko Igarashi"
+        },
+        "floors": {
+          "before": 7,
+          "after": 2
+        }
+      },
+      "reasons": [
+        "Pavimentos acima do solo separados dos níveis adicionais conforme a ficha técnica ou o texto dos autores.",
+        "Crédito de projeto completado conforme o texto e a ficha técnica dos autores."
+      ],
+      "sources": [
+        "https://architecturephoto.net/192568/",
+        "https://igarchitects.jp/work1/1212/"
+      ]
+    }
+  ],
+  "mergedRecord": {
+    "id": "h253-mirai-shokudo-enbutai-house",
+    "n": 212,
+    "name": "Mirai Shokudo / Enbutai House",
+    "architect": "Niko Design Studio / Taketo Nishikubo",
+    "year": 2022,
+    "ward": "Setagaya",
+    "lotArea": 50.86,
+    "builtArea": 93.66,
+    "footprintArea": 33.04,
+    "floors": 3,
+    "bcr": 0.649626,
+    "far": 1.841526,
+    "sourceUrl": "https://www.niko-arch.com/niko-work2023/niko-work.kagami.2022/newwork.kagami_all_images_refined.html"
+  }
+}

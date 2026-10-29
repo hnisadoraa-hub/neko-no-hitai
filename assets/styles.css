@@ -152,8 +152,9 @@ input:focus, select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgb
 .ratio-value { padding-top: 0; border: 0; }
 .legal-reference { display: block; margin-top: 8px; color: var(--blue); font-size: .72rem; font-weight: 700; line-height: 1.25; }
 .legal-reference.muted { color: var(--muted); font-weight: 400; }
-.card-tags { display: flex; flex-wrap: wrap; gap: 4px; min-height: 22px; }
-.tag { padding: 4px 6px; border-radius: 4px; background: var(--mist); color: var(--navy); font-size: .7rem; }
+.drawer-data-notes { margin: 18px 0; padding: 14px 16px; border-radius: 6px; background: var(--mist); color: var(--navy); font-size: .85rem; line-height: 1.6; }
+.drawer-data-notes h4 { margin: 0 0 6px; }
+.drawer-data-notes ul { margin: 0; padding-left: 18px; }
 .compare-toggle { width: 100%; margin-top: 12px; padding: 9px 10px; border: 1px solid var(--navy); border-radius: 8px; color: var(--navy); background: transparent; font-size: .8rem; font-weight: 700; }
 .compare-toggle:hover, .house-card.selected .compare-toggle { color: white; background: var(--navy); }
 .compare-toggle:disabled { opacity: .4; cursor: not-allowed; }

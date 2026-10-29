@@ -44,8 +44,8 @@ window.NEKO_FINDINGS = {
       number: "04",
       claim: "Três pavimentos é a regra, não a exceção.",
       body: "Entre as {floorsN} fichas que registram pavimentos, {floors3} são de três pavimentos, {floorsShare}% do subconjunto. Somadas as de dois a quatro, chega-se a {floors234}. A verticalização do microlote é baixa e consistente, o que faz sentido sob a altura absoluta de 10 ou 12 m das zonas exclusivas de baixa altura, e sob o plano inclinado do lado norte.",
-      method: "contagem direta do número de pavimentos registrado na planilha, inteiro em {floorsN} de {n} fichas",
-      caveat: "Em {floorsMissing} fichas o campo está vazio ou descreve níveis que não se reduzem a um número inteiro, e essas ficam fora da conta. Quando a planilha separa subsolo (B1) ou loft, conta-se só o número de pavimentos e o resto fica anotado na ficha. Em {floorsOdd} fichas o empilhamento equivalente supera os pavimentos registrados, subsolo incluído, o que sugere mezanino ou nível não anotado; elas estão sinalizadas na lista.",
+      method: "contagem de pavimentos acima do solo, com as correções documentadas nas fontes; campo inteiro em {floorsN} de {n} fichas",
+      caveat: "Em {floorsMissing} fichas o campo está vazio ou descreve níveis sem uma contagem de pavimentos confirmada, e essas ficam fora da conta. Subsolos, lofts, depósitos intermediários e anexos na cobertura (PH) ficam registrados à parte. Em {floorsOdd} fichas a relação entre construída e projeção supera os níveis informados; a sinalização pede conferência de critérios de área e não comprova pavimentos adicionais.",
       chart: "floors",
     }
   ],

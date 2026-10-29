@@ -220,7 +220,7 @@
       }
     }
     if (p.get("ord")) { state.sort = p.get("ord"); $("sort").value = state.sort; }
-    if (p.get("sel")) p.get("sel").split(",").filter(Boolean).slice(0, 4).forEach((id) => state.selected.add(id));
+    if (p.get("sel")) p.get("sel").split(",").map((id) => core.canonicalHouseId(houses, id)).filter(Boolean).slice(0, 4).forEach((id) => state.selected.add(id));
     if (p.get("mapa")) { state.mapMetric = p.get("mapa"); $("map-metric").value = state.mapMetric; }
     restoring = false;
     return true;
@@ -239,17 +239,19 @@
 
   const stackOf = (h) => (h.footprintArea > 0 ? h.builtArea / h.footprintArea : NaN);
 
-  /* Pavimentos: o número registrado na planilha. Quando ela separa subsolo (B1)
-     ou loft, o número conta só os pavimentos e a anotação original fica em
-     floorsNote. Registro que não se reduz a inteiro (níveis escalonados, meio
-     pavimento) fica fora da contagem, mas aparece na ficha. */
-  const levelsOf = (h) => (Number.isFinite(h.floors) ? h.floors + (h.basement || 0) : NaN);
+  /* Pavimentos acima do solo, conforme a ficha técnica. Subsolos, lofts,
+     depósitos intermediários e anexos na cobertura ficam separados.
+     A checagem de área abaixo é apenas uma indicação para revisão. */
+  const levelsOf = (h) => (Number.isFinite(h.floors) ? h.floors + (h.basement || 0) + (h.loft || 0) + (h.penthouse || 0) + (h.storageLevel || 0) : NaN);
   const isFloorsOdd = (h) => Number.isFinite(h.floors) && stackOf(h) > levelsOf(h) + 0.35;
   function compactFloors(h) {
     if (!Number.isFinite(h.floors)) return "";
-    if (h.basement) return `B${h.basement}+${h.floors}`;
-    if (h.loft) return `${h.floors}+loft`;
-    return String(h.floors);
+    const parts = [];
+    if (h.basement) parts.push(`B${h.basement}`);
+    parts.push(String(h.floors));
+    if (h.loft) parts.push(h.loft === 1 ? "loft" : `${h.loft} lofts`);
+    if (h.penthouse) parts.push("PH");
+    return parts.join("+");
   }
   function floorsFull(h) {
     if (h.floorsNote) return escapeHtml(h.floorsNote);
@@ -476,21 +478,6 @@
       <article class="stat-card panel"><strong>${escapeHtml(c.value)}</strong><span>${escapeHtml(c.label)}</span>${c.extra || ""}</article>`).join("");
   }
 
-  function candidateTags(house) {
-    const tags = [];
-    const extreme = (field, mode) => {
-      const values = state.filtered.map((h) => h[field]).filter(Number.isFinite);
-      if (!values.length || house[field] == null) return false;
-      return house[field] === (mode === "min" ? Math.min(...values) : Math.max(...values));
-    };
-    if (extreme("lotArea", "min")) tags.push("menor lote do recorte");
-    if (extreme("far", "max")) tags.push("maior FAR do recorte");
-    if (extreme("bcr", "max")) tags.push("maior BCR do recorte");
-    if (extreme("year", "min")) tags.push("mais antiga do recorte");
-    if (extreme("year", "max")) tags.push("mais recente do recorte");
-    return tags.slice(0, 2);
-  }
-
   function wardRangeChip(ward, field) {
     const ref = wardLegal[ward];
     if (!ref || !ref.available) return '<span class="legal-reference muted">faixa do ward: ausente do A29-2019</span>';
@@ -654,10 +641,11 @@
           ${field("empilhamento equivalente", stack ? `${fmt(stack, 2)}×` : '<span class="lacuna">sem projeção</span>')}
           ${field("solo não coberto", Number.isFinite(house.bcr) ? `${fmt((1 - house.bcr) * 100, 1)}%` : "")}
         </div>
+        ${house.dataNotes?.length ? `<div class="drawer-data-notes"><h4>Notas da ficha</h4><ul>${house.dataNotes.map((note) => `<li>${escapeHtml(note)}</li>`).join("")}</ul></div>` : ""}
         <div class="drawer-dists">
           <h4>Onde esta casa cai, entre as ${houses.length} fichas</h4>
           ${["lotArea", "builtArea", "far", "bcr"].map((f) => distributionRow(f, house)).join("")}
-          <p class="muted drawer-src">Medidas e posição: aba 01 casas base. FAR e BCR são calculados aqui, construída e projeção sobre o lote.</p>
+          <p class="muted drawer-src">Base: aba 01 casas base, com correções documentadas nas fontes das obras. FAR e BCR observados dividem a área construída e a projeção pelo lote; não equivalem ao cálculo legal de aprovação.</p>
         </div>
         <div class="drawer-ward">
           ${drawerWardMap(house.ward)}
@@ -680,6 +668,7 @@
           <button type="button" class="primary-button" data-house-id="${escapeHtml(house.id)}">${state.selected.has(house.id) ? "Retirar da mesa" : "Levar para a mesa"}</button>
           ${house.sourceUrl ? `<a class="quiet-button" href="${escapeHtml(house.sourceUrl)}" target="_blank" rel="noreferrer">ver a obra na fonte ↗</a>` : '<span class="muted">fonte não registrada</span>'}
         </div>
+        ${house.dataReview?.sources?.length ? `<p class="muted drawer-src">Fontes da revisão: ${house.dataReview.sources.map((url, index) => `<a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">fonte ${index + 1} ↗</a>`).join(" · ")}</p>` : ""}
       </div>`;
   }
 
@@ -729,11 +718,10 @@
       $("house-list").innerHTML = visible.map((house) => {
         const selected = state.selected.has(house.id);
         const atLimit = state.selected.size >= 4 && !selected;
-        const tags = candidateTags(house);
         const floorsOdd = isFloorsOdd(house);
         const noteAttr = house.floorsNote ? ` title="${escapeHtml(house.floorsNote)}"` : "";
         const floors = Number.isFinite(house.floors)
-          ? `<div><span>pav.</span><strong${floorsOdd ? ' class="flagged" title="O empilhamento equivalente supera os pavimentos registrados, subsolo incluído. Conferir na planilha."' : noteAttr}>${escapeHtml(compactFloors(house))}${floorsOdd ? " ⚑" : ""}</strong></div>`
+          ? `<div><span>pav.</span><strong${floorsOdd ? ' class="flagged" title="A relação entre área construída e projeção pede conferência, considerando os níveis adicionais informados. Veja as notas e a fonte da ficha."' : noteAttr}>${escapeHtml(compactFloors(house))}${floorsOdd ? " ⚑" : ""}</strong></div>`
           : `<div><span>pav.</span><strong class="soft"${noteAttr}>—</strong></div>`;
         return `<article class="house-card ${selected ? "selected" : ""}" data-card-id="${escapeHtml(house.id)}">
           <div class="house-card-head">
@@ -752,7 +740,6 @@
               <div class="ratio-card"><div class="ratio-value"><span>FAR observado</span><strong>${formatMetric("far", house.far)}</strong></div>${wardRangeChip(house.ward, "far")}</div>
               <div class="ratio-card"><div class="ratio-value"><span>BCR observado</span><strong>${formatMetric("bcr", house.bcr)}</strong></div>${wardRangeChip(house.ward, "bcr")}</div>
             </div>
-            <div class="card-tags">${tags.map((t) => `<span class="tag">${escapeHtml(t)}</span>`).join("")}</div>
             ${house.sourceUrl
               ? `<a class="house-source" href="${escapeHtml(house.sourceUrl)}" target="_blank" rel="noreferrer">ver a obra e as fotos na fonte ↗</a>`
               : '<span class="house-source muted">fonte não registrada</span>'}
@@ -1474,7 +1461,7 @@
       const from = typeof cov === "object" && cov.from ? ` title="${escapeHtml(cov.from)}"` : "";
       return `<div class="coverage-row"${from}><span>${label}</span><div class="coverage-track"><div class="coverage-fill" style="width:${(count / base) * 100}%"></div></div><strong>${count}/${base}</strong></div>`;
     }).join("")
-      + `<div class="coverage-row highlight"><span>seis campos</span><div class="coverage-track"><div class="coverage-fill" style="width:${(metadata.eligibleRecords / total) * 100}%"></div></div><strong>${metadata.eligibleRecords}/${total}</strong></div>`
+      + `<div class="coverage-row highlight"><span>obras únicas com seis campos</span><div class="coverage-track"><div class="coverage-fill" style="width:${(metadata.eligibleRecords / total) * 100}%"></div></div><strong>${metadata.eligibleRecords}/${total}</strong></div>`
       + `<p class="coverage-split">dentro das ${metadata.eligibleRecords} fichas comparáveis</p>`
       + `<div class="coverage-row"><span>pavimentos</span><div class="coverage-track"><div class="coverage-fill" style="width:${(metadata.coverageInCorpus.floors / metadata.eligibleRecords) * 100}%"></div></div><strong>${metadata.coverageInCorpus.floors}/${metadata.eligibleRecords}</strong></div>`
       + `<div class="coverage-row"><span>fonte</span><div class="coverage-track"><div class="coverage-fill" style="width:${(metadata.coverageInCorpus.sourceUrl / metadata.eligibleRecords) * 100}%"></div></div><strong>${metadata.coverageInCorpus.sourceUrl}/${metadata.eligibleRecords}</strong></div>`;
@@ -1497,9 +1484,9 @@
       + (metadata.declaredRecords && metadata.declaredRecords !== metadata.sourceRecords
         ? `A base declara ${metadata.declaredRecords} registros; as abas consultadas contêm ${metadata.sourceRecords} obras distintas. `
         : "")
-      + `Entre as ${metadata.sourceRecords} obras, ${metadata.excludedIncomplete} foram excluídas por falta de algum dos seis campos usados na comparação${metadata.missingFromTarget ? `; outros ${metadata.missingFromTarget} registros do corpus-alvo de ${metadata.targetCorpus} não constam da planilha` : ""}. `
-      + `As barras abrangem as ${metadata.sourceRecords} linhas da aba <em>01 casas base</em>. Os valores de projeção e área construída foram aceitos quando coincidiram com os obtidos pela taxa de ocupação e pelo coeficiente de aproveitamento da aba <em>90 aux casas indicadores</em>.`;
-    $("footer-build").textContent = `corpus de ${metadata.sourceFile} · atlas reconstruído em ${new Date(metadata.rebuiltAt).toLocaleDateString("pt-BR")}`;
+      + `Entre os ${metadata.sourceRecords} registros, ${metadata.excludedIncomplete} foram excluídos por falta de algum dos seis campos usados na comparação${metadata.duplicateRecords ? ` e ${metadata.duplicateRecords} cadastro duplicado foi unificado` : ""}${metadata.missingFromTarget ? `; outros ${metadata.missingFromTarget} registros do corpus-alvo de ${metadata.targetCorpus} não constam da planilha` : ""}. `
+      + `As barras de cobertura por campo descrevem as ${metadata.sourceRecords} linhas da planilha original. As fichas e os cálculos do atlas incorporam as correções documentadas na <a href="docs/revisao_fichas_2026-10-29.md" target="_blank" rel="noreferrer">revisão de 29/10/2026 ↗</a>. As notas de cada ficha explicitam divergências ainda pendentes.`;
+    $("footer-build").textContent = `corpus de ${metadata.sourceFile} · fichas revistas em ${new Date(metadata.updatedAt || metadata.rebuiltAt).toLocaleDateString("pt-BR")}`;
     document.querySelectorAll('[data-count="eligible"]').forEach((node) => { node.textContent = String(houses.length); });
     const years = houses.map((h) => h.year).filter(Number.isFinite);
     if ($("findings-rule") && years.length) $("findings-rule").textContent = `${houses.length} fichas · ${Math.min(...years)} a ${Math.max(...years)}`;
@@ -1519,7 +1506,7 @@
   }
 
   function exportFilteredCsv() {
-    const columns = ["n", "id", "name", "architect", "year", "ward", "wardJa", "lotArea", "builtArea", "footprintArea", "floors", "floorsNote", "bcrObserved", "farObserved", "wardBcrRange2019", "wardFarRange2019", "wardPopulation", "wardAreaKm2", "wardDensity", "sourceUrl"];
+    const columns = ["n", "id", "name", "architect", "year", "ward", "wardJa", "lotArea", "builtArea", "footprintArea", "floors", "floorsNote", "bcrObserved", "farObserved", "wardBcrRange2019", "wardFarRange2019", "wardPopulation", "wardAreaKm2", "wardDensity", "sourceUrl", "basement", "loft", "penthouse", "storageLevel", "dataNotes", "reviewSources"];
     const rows = [columns.join(";"), ...state.filtered.map((h) => {
       const ref = wardLegal[h.ward] || {};
       const c = ctx(h.ward) || {};
@@ -1529,7 +1516,8 @@
         h.lotArea, h.builtArea, h.footprintArea, Number.isFinite(h.floors) ? h.floors : "", h.floorsNote || "",
         h.bcr, h.far, range(ref.bcrValues), range(ref.farValues),
         c.pop || "", c.area || "", Number.isFinite(density(h.ward)) ? Math.round(density(h.ward)) : "",
-        h.sourceUrl || "",
+        h.sourceUrl || "", h.basement || "", h.loft || "", h.penthouse || "", h.storageLevel || "",
+        (h.dataNotes || []).join(" | "), (h.dataReview?.sources || []).join(" | "),
       ].map(core.csvEscape).join(";");
     })];
     download("﻿" + rows.join("\n"), "neko-no-hitai-recorte.csv", "text/csv;charset=utf-8");

@@ -29,7 +29,7 @@
     const wards = new Set(filters.wards || []);
     return houses.filter((house) => {
       if (query) {
-        const haystack = normalizeSearch(`${house.name} ${house.architect || ""} ${house.ward}`);
+        const haystack = normalizeSearch(`${house.name} ${(house.aliases || []).join(" ")} ${house.architect || ""} ${house.ward}`);
         if (!haystack.includes(query)) return false;
       }
       if (wards.size && !wards.has(house.ward)) return false;
@@ -40,6 +40,11 @@
       }
       return true;
     });
+  }
+
+  function canonicalHouseId(houses, id) {
+    const house = houses.find((item) => item.id === id || (item.legacyIds || []).includes(id));
+    return house ? house.id : null;
   }
 
   function validateRanges(filters) {
@@ -141,6 +146,7 @@
   }
 
   return {
+    canonicalHouseId,
     csvEscape,
     filterHouses,
     inRange,
