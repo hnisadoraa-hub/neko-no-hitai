@@ -411,5 +411,6 @@ Os nomes anteriores continuam na busca e o ID anterior é convertido em seleçõ
 - FAR e BCR recalculados com seis casas decimais nas alterações de área.
 - Busca por aliases e conversão do ID retirado verificadas; notas e fontes da revisão disponíveis na ficha expandida.
 - Sem tags comparativas nas fichas, inclusive quando a busca retorna uma única casa.
+- O quadro de dados e as notas do jogo da Building Frame of the House também usam dois pavimentos, distinguindo as sete lajes e retirando a antiga pendência sobre essa contagem, em português e inglês.
 
 A [revisão anterior de autorias](revisao_autorias_2026-10-29.md) permanece como registro da primeira rodada e seus totais se referem aos 203 cadastros anteriores à deduplicação.
