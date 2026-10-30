@@ -1485,7 +1485,8 @@
         ? `A base declara ${metadata.declaredRecords} registros; as abas consultadas contêm ${metadata.sourceRecords} obras distintas. `
         : "")
       + `Entre os ${metadata.sourceRecords} registros, ${metadata.excludedIncomplete} foram excluídos por falta de algum dos seis campos usados na comparação${metadata.duplicateRecords ? ` e ${metadata.duplicateRecords} cadastro duplicado foi unificado` : ""}${metadata.missingFromTarget ? `; outros ${metadata.missingFromTarget} registros do corpus-alvo de ${metadata.targetCorpus} não constam da planilha` : ""}. `
-      + `As barras de cobertura por campo descrevem as ${metadata.sourceRecords} linhas da planilha original. As fichas e os cálculos do atlas incorporam as correções documentadas na <a href="docs/revisao_fichas_2026-10-29.md" target="_blank" rel="noreferrer">revisão de 29/10/2026 ↗</a>. As notas de cada ficha explicitam divergências ainda pendentes.`;
+      + `As barras de cobertura por campo descrevem as ${metadata.sourceRecords} linhas da planilha original. As fichas e os cálculos do atlas incorporam as correções documentadas na <a href="docs/revisao_fichas_2026-10-29.md" target="_blank" rel="noreferrer">revisão de 29/10/2026 ↗</a>. As notas de cada ficha explicitam divergências ainda pendentes.`
+      + (metadata.recordRecovery?.report ? ` A ficha recuperada e o retorno a ${metadata.eligibleRecords} obras comparáveis estão documentados no <a href="${escapeHtml(metadata.recordRecovery.report)}" target="_blank" rel="noreferrer">registro de inclusão ↗</a>.` : "");
     $("footer-build").textContent = `corpus de ${metadata.sourceFile} · fichas revistas em ${new Date(metadata.updatedAt || metadata.rebuiltAt).toLocaleDateString("pt-BR")}`;
     document.querySelectorAll('[data-count="eligible"]').forEach((node) => { node.textContent = String(houses.length); });
     const years = houses.map((h) => h.year).filter(Number.isFinite);

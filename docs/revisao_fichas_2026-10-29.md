@@ -1,8 +1,14 @@
 # Segunda revisão das fichas · 29/10/2026
 
-A varredura partiu de 203 cadastros. Após a unificação de uma duplicata confirmada, o atlas contém **202 obras únicas**. Foram atualizadas ou anotadas **45 fichas**, com **31 correções de contagem de pavimentos**. A planilha de origem mantém seus 249 registros históricos; 46 continuam fora do recorte por incompletude e 1 corresponde à duplicata agora unificada.
+A varredura partiu de 203 cadastros. Após a unificação de uma duplicata confirmada, o recorte ficou com **202 obras únicas** naquela etapa. Foram atualizadas ou anotadas **45 fichas**, com **31 correções de contagem de pavimentos**. A planilha de origem mantém seus 249 registros históricos; 46 ficaram fora do recorte por incompletude naquela etapa e 1 corresponde à duplicata agora unificada.
 
 A revisão combina conferência de duplicatas, integridade dos dados, fórmulas de FAR/BCR e consulta às fontes disponíveis. Não representa certificação de todos os campos das 202 fichas. Páginas sem ficha técnica e divergências de critério continuam pendentes, como listado abaixo.
+
+## Reincorporação posterior de uma ficha
+
+Após esta revisão, a ficha 012, Senkawa House (Architect Cafe), teve a área de projeção confirmada no portfólio do autor e voltou ao recorte. O estado atual é **203 obras únicas comparáveis**, **45 registros ainda incompletos** e **1 cadastro duplicado unificado**, a partir das mesmas 249 linhas de origem. Os totais da revisão abaixo registram a etapa anterior à reincorporação.
+
+A inclusão e suas fontes estão documentadas no [registro da Senkawa House](inclusao_senkawa_2026-10-29.md).
 
 ## Critérios aplicados
 
