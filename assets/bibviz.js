@@ -18,7 +18,7 @@
   const byId = new Map(B.works.map((w) => [w.id, w]));
   const eixoById = new Map(B.eixos.map((e) => [e.key, e]));
   const YEAR_MIN = 1950, YEAR_MAX = 2026;
-  const yearOf = (w) => (Number.isFinite(w.y) ? w.y : 2015);
+  const yearOf = (w) => (Number.isFinite(w.y) ? w.y : Infinity);
 
   /* pares vindos de terceiros citados em comum */
   const sharedPairs = [];
@@ -91,7 +91,7 @@
       const start = angle;
       g.works.forEach((w, i) => {
         const a = start + (span * (i + 0.5)) / g.works.length;
-        const r = rIn + ((yearOf(w) - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * (rOut - rIn);
+        const r = Number.isFinite(w.y) ? rIn + ((w.y - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * (rOut - rIn) : rIn - 30;
         pos.set(w.id, { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r, a, r });
       });
       const mid = start + span / 2;
@@ -146,10 +146,12 @@
     }).join("");
 
     panel.innerHTML = `
-      <p class="panel-lede">As obras estão agrupadas por eixo. A distância ao centro corresponde ao ano da edição, de 1950 a 2026. As linhas distinguem citações registradas no PDF, associações anotadas no fichamento, autoria em comum e referências a um mesmo terceiro autor. As ${bridges.size} obras com pontos maiores têm ligações com pelo menos dois outros eixos.</p>
+      <p class="panel-lede">As obras estão agrupadas por eixo. A distância ao centro corresponde ao ano da edição, de 1950 a 2026; obras sem data ficam no anel interno. As linhas mostram citações e relações presentes no trabalho, vínculos de autoria e obras que citam um mesmo terceiro autor. As ${bridges.size} obras com pontos maiores têm ligações com pelo menos dois outros eixos.</p>
       <div class="bib-legend">${legendHtml()}</div>
       <div class="plot-wrap bib-wrap">
         <svg id="chart-biblio-network" viewBox="0 0 ${W} ${H}" role="img" aria-label="Rede das ${B.works.length} obras por eixo temático">
+          <circle cx="${cx}" cy="${cy}" r="${rIn - 30}" class="grid-line" fill="none" stroke-dasharray="3 5"></circle>
+          <text x="${cx}" y="${cy - 12}" text-anchor="middle" class="axis-text">sem data</text>
           <g class="bib-edges">${edges}</g>
           ${ringLabels}
           <g class="bib-nodes">${nodes}</g>
@@ -207,7 +209,7 @@
 
   function arcs(panel) {
     const W = 980, H = 520, axisY = 268, m = { l: 40, r: 40 };
-    const X = (y) => m.l + ((y - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * (W - m.l - m.r);
+    const X = (y) => Number.isFinite(y) ? m.l + ((y - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * (W - m.l - m.r - 70) : W - m.r;
     const used = new Map();
     const pos = new Map();
     for (const w of B.works.slice().sort((a, b) => yearOf(a) - yearOf(b))) {
@@ -243,11 +245,12 @@
        <text x="${X(y)}" y="${H - 22}" text-anchor="middle" class="axis-text">${y}</text>`).join("");
 
     panel.innerHTML = `
-      <p class="panel-lede">O gráfico organiza as relações por ano. Acima da linha estão as citações registradas no PDF, as associações do fichamento e os vínculos de autoria. Abaixo aparecem obras que recorrem a um mesmo terceiro autor, como Nishiyama, Shinohara, Tange ou Taut.</p>
+      <p class="panel-lede">O gráfico organiza as relações por ano; obras sem data aparecem à direita do eixo. Acima da linha estão as citações e relações presentes no trabalho e os vínculos de autoria. Abaixo aparecem obras que citam um mesmo terceiro autor, como Nishiyama, Shinohara, Tange ou Taut.</p>
       <div class="bib-legend">${legendHtml()}</div>
       <div class="plot-wrap bib-wrap">
         <svg id="chart-biblio-arc" viewBox="0 0 ${W} ${H}" role="img" aria-label="Ligações entre as obras, de 1950 a 2026">
           ${grid}
+          <text x="${X(Infinity)}" y="${H - 22}" text-anchor="middle" class="axis-text">s.d.</text>
           <g class="arcs-up">${direct.map((l) => arcPath(l, true)).join("")}</g>
           <g class="arcs-down">${common.map((l) => arcPath(l, false)).join("")}</g>
           <line x1="${m.l}" x2="${W - m.r}" y1="${axisY}" y2="${axisY}" class="axis-line"></line>
@@ -295,7 +298,7 @@
     const rows = B.eixos.map((e) => ({ ...e, works: B.works.filter((w) => w.eixo === e.key).sort((a, b) => yearOf(a) - yearOf(b)) }))
       .filter((r) => r.works.length);
     const W = 960, rowH = 58, H = 60 + rows.length * rowH, m = { l: 215, r: 30, t: 40 };
-    const X = (y) => m.l + ((y - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * (W - m.l - m.r);
+    const X = (y) => Number.isFinite(y) ? m.l + ((y - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * (W - m.l - m.r - 65) : W - m.r;
     const decades = [];
     for (let y = 1950; y <= 2020; y += 10) decades.push(y);
 
@@ -311,21 +314,24 @@
           class="tl-dot${bridges.has(w.id) ? " bridge" : ""}" data-id="${esc(w.id)}" tabindex="0" role="button"
           aria-label="${esc(w.a)}, ${w.y || "sem ano"}, ${esc(r.label)}"></circle>`;
       }).join("");
-      const first = r.works[0], last = r.works[r.works.length - 1];
+      const dated = r.works.filter((w) => Number.isFinite(w.y));
+      const period = dated.length ? `${dated[0].y} a ${dated[dated.length - 1].y}` : "sem data";
+      const undated = r.works.length - dated.length;
       return `<g class="tl-row">
         <text x="${m.l - 14}" y="${y0 + 24}" text-anchor="end" class="tl-label" fill="${r.color}">${esc(r.label)}</text>
-        <text x="${m.l - 14}" y="${y0 + 40}" text-anchor="end" class="tl-sub">${r.works.length} obras · ${first.y || "s.d."} a ${last.y || "s.d."}</text>
+        <text x="${m.l - 14}" y="${y0 + 40}" text-anchor="end" class="tl-sub">${r.works.length} obras · ${period}${undated && dated.length ? ` · ${undated} s.d.` : ""}</text>
         <line x1="${m.l}" x2="${W - m.r}" y1="${y0 + 26}" y2="${y0 + 26}" class="tl-axis"></line>
         ${dots}
       </g>`;
     }).join("");
 
     panel.innerHTML = `
-      <p class="panel-lede">Cada linha reúne as obras de um eixo pelo ano da edição consultada. O livro de Teige, publicado originalmente em 1932, aparece em 2002, ano da tradução utilizada. Datas sem confirmação estão assinaladas nas fichas.</p>
+      <p class="panel-lede">Cada linha reúne as obras de um eixo pelo ano da edição consultada. O livro de Teige, publicado originalmente em 1932, aparece em 2002, ano da tradução utilizada. Obras sem data aparecem na coluna s.d., à direita.</p>
       <div class="plot-wrap bib-wrap">
         <svg id="chart-biblio-timeline" viewBox="0 0 ${W} ${H}" role="img" aria-label="Linha do tempo das obras por eixo, de 1950 a 2026">
           ${decades.map((y) => `<line x1="${X(y)}" x2="${X(y)}" y1="${m.t - 12}" y2="${H - 28}" class="grid-line"></line>
             <text x="${X(y)}" y="${m.t - 20}" text-anchor="middle" class="axis-text">${y}</text>`).join("")}
+          <text x="${X(Infinity)}" y="${m.t - 20}" text-anchor="middle" class="axis-text">s.d.</text>
           ${body}
         </svg>
       </div>`;
@@ -475,7 +481,7 @@
   function mount() {
     const lede = $("biblio-lede");
     if (lede) {
-      lede.textContent = `As ${B.nodes} obras estão organizadas por tema, ano e relações registradas nos textos ou fichamentos. ${bridges.size} têm ligações com obras de pelo menos dois outros eixos.`;
+      lede.textContent = `As ${B.nodes} obras estão organizadas por tema, ano e relações presentes no trabalho ou por citarem um mesmo terceiro autor. ${bridges.size} têm ligações com obras de pelo menos dois outros eixos.`;
     }
     const rule = $("biblio-rule");
     if (rule) rule.textContent = `${B.nodes} obras · ${B.eixos.length} eixos · ${allLinks.length} ligações`;

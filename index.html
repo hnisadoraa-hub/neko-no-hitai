@@ -182,8 +182,7 @@
           </details>
 
           <div class="quick-filters">
-            <button class="chip-button" type="button" id="filter-ch9">Casos do capítulo 9</button>
-            <button class="chip-button" type="button" id="filter-tiny">Lotes abaixo de 40 m²</button>
+            <button class="chip-button" type="button" id="filter-tiny">Lotes até 40 m²</button>
           </div>
 
           <label class="switch-field">
@@ -454,9 +453,9 @@
         <div id="zone-table" class="legal-matrix"></div>
         <div class="legal-actions">
           <a href="https://laws.e-gov.go.jp/law/325AC0000000201" target="_blank" rel="noreferrer">Texto japonês vigente · e-Gov ↗</a>
-          <a href="https://www.japaneselawtranslation.go.jp/en/laws/view/4024/en" target="_blank" rel="noreferrer">Tradução oficial em inglês ↗</a>
+          <a href="https://www.japaneselawtranslation.go.jp/en/laws/view/4024/en" target="_blank" rel="noreferrer">Tradução inglesa de referência · versão 2020 ↗</a>
           <a href="https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-A29-2019.html" target="_blank" rel="noreferrer">Referência A29-2019 ↗</a>
-          <a href="https://www.toshiseibi.metro.tokyo.lg.jp/web/keikaku/map/" target="_blank" rel="noreferrer">Mapa urbanístico de Tóquio ↗</a>
+          <a href="https://www2.wagmap.jp/tokyo_tokeizu/Portal" target="_blank" rel="noreferrer">Mapa urbanístico de Tóquio ↗</a>
         </div>
       </article>
         </div>
@@ -554,7 +553,6 @@
         <span class="data-rule">normas</span>
       </div>
       <div id="backstage-blocks" class="city-blocks"></div>
-      <p class="city-note" id="pending-tally"></p>
     </section>
   </main>
 
@@ -599,26 +597,27 @@
       return window.__nekoThree;
     };
   </script>
-  <script src="assets/data.js?v=20261029-senkawa"></script>
+  <script src="assets/data.js?v=20261104-revisao"></script>
   <script src="assets/geo.js"></script>
   <script src="assets/legal.js"></script>
-  <script src="assets/context.js?v=20261019-fontes"></script>
-  <script src="assets/findings.js?v=20261029-fichas"></script>
+  <script src="assets/context.js?v=20261104-revisao"></script>
+  <script src="assets/findings.js?v=20261104-revisao"></script>
   <script src="assets/law.js"></script>
   <script src="assets/draw.js"></script>
-  <script src="assets/rules.js"></script>
-  <script src="assets/typologies.js"></script>
+  <script src="assets/rules.js?v=20261104-revisao"></script>
+  <script src="assets/typologies.js?v=20261104-revisao"></script>
   <script src="assets/photos.js"></script>
   <script src="assets/city.js"></script>
-  <script src="assets/biblio.js?v=20261019-fontes"></script>
+  <script>window.NEKO_CITY.normsLibrary = window.NEKO_RULES.normsLibrary;</script>
+  <script src="assets/biblio.js?v=20261104-revisao"></script>
   <script src="assets/neko.js"></script>
   <script src="assets/core.js?v=20261029-fichas"></script>
-  <script src="assets/app.js?v=20261029-senkawa"></script>
+  <script src="assets/app.js?v=20261104-revisao"></script>
   <script src="assets/ui.js?v=20261019-fontes"></script>
-  <script src="assets/cityviz.js?v=20261019-fontes"></script>
+  <script src="assets/cityviz.js"></script>
   <script src="assets/relief-data.js"></script>
-  <script src="assets/relief.js"></script>
-  <script src="assets/mosaic.js"></script>
+  <script src="assets/relief.js?v=20261104-revisao"></script>
+  <script src="assets/mosaic.js?v=20261104-revisao"></script>
   <script src="assets/cats.js?v=20261019-fontes"></script>
   <script>
     /* o jogo da Building Frame (three.js, trilha e cena) só carrega quando a
@@ -654,8 +653,8 @@
     })();
   </script>
   <script src="assets/envelope.js"></script>
-  <script src="assets/lawline.js?v=20261019-fontes"></script>
-  <script src="assets/bibviz.js?v=20261019-fontes"></script>
+  <script src="assets/lawline.js?v=20261104-revisao"></script>
+  <script src="assets/bibviz.js?v=20261104-revisao"></script>
 
 
 </body></html>

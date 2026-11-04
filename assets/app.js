@@ -184,7 +184,6 @@
     if (f.query) p.set("q", f.query);
     if (f.wards.length) p.set("ward", f.wards.join(","));
     if (f.onlyFloors) p.set("pav", "1");
-    if (f.ids === CH9) p.set("cap9", "1");
     for (const field of rangeFields) {
       const r = f[field];
       if (!r) continue;
@@ -209,7 +208,6 @@
     if (p.get("q")) { state.filters.query = p.get("q"); $("query").value = p.get("q"); }
     if (p.get("ward")) state.filters.wards = p.get("ward").split(",").filter(Boolean);
     if (p.get("pav") === "1") { state.filters.onlyFloors = true; $("only-floors").checked = true; }
-    if (p.get("cap9") === "1") { state.filters.ids = CH9; $("filter-ch9").classList.add("active"); }
     for (const field of rangeFields) {
       const factor = rangeFactor[field] || 1;
       const mn = p.get(field + "Min"), mx = p.get(field + "Max");
@@ -231,11 +229,6 @@
   function metricValues(field) { return state.filtered.map((h) => h[field]).filter(Number.isFinite); }
 
   /* ---------- 01 achados ---------- */
-
-  const CH9 = ["h017-house-in-a-plum-grove", "h089-small-house-unemori-architects", "h094-tsubomi-house-tokyo-bud-house",
-    "h117-tunnel-house", "h124-1-8-m-width-house", "h192-milk-carton-house", "h203-open-sky-house",
-    "h202-love-house", "h206-6-tsubo-house", "h244-m-residence", "h217-flagpole-in-nakameguro",
-    "h256-building-frame-of-the-house", "h267-nakano-house"];
 
   const stackOf = (h) => (h.footprintArea > 0 ? h.builtArea / h.footprintArea : NaN);
 
@@ -380,7 +373,7 @@
           <div>
             <p class="finding-text">${escapeHtml(fill(f.body, t))}</p>
             <p class="finding-method"><span>método</span>${escapeHtml(fill(f.method, t))}</p>
-            <p class="finding-caveat"><span>ressalva</span>${escapeHtml(fill(f.caveat, t))}</p>
+            ${f.caveat ? `<p class="finding-caveat"><span>ressalva</span>${escapeHtml(fill(f.caveat, t))}</p>` : ""}
           </div>
           <div class="finding-chart">${findingChart(f.chart)}</div>
         </div>
@@ -404,8 +397,8 @@
       <div class="scale-row ${escapeHtml(r.kind)}">
         <span class="scale-label">${escapeHtml(r.label)}</span>
         <span class="scale-track"><span class="scale-fill" style="width:${(r.value / max) * 100}%"></span></span>
-        <strong class="scale-value">${fmt(r.value, r.value < 25 ? 2 : 1)} m²</strong>
-        <span class="scale-note">${escapeHtml(r.note)}</span>
+        <strong class="scale-value">${r.approximate ? "≈ " : ""}${fmt(r.value, r.approximate ? 0 : r.value < 25 ? 2 : 1)} m²</strong>
+        <span class="scale-note">${escapeHtml(r.note)}${r.sourceUrl ? ` <a href="${escapeHtml(r.sourceUrl)}" target="_blank" rel="noopener">${escapeHtml(r.sourceLabel || "fonte")}</a>` : ""}</span>
       </div>`).join("");
     $("scale-cat").textContent = fill(sc.catNote, {
       minLot: fmt(minLot, 2),
@@ -666,7 +659,7 @@
         </div>
         <div class="drawer-actions">
           <button type="button" class="primary-button" data-house-id="${escapeHtml(house.id)}">${state.selected.has(house.id) ? "Retirar da mesa" : "Levar para a mesa"}</button>
-          ${house.sourceUrl ? `<a class="quiet-button" href="${escapeHtml(house.sourceUrl)}" target="_blank" rel="noreferrer">ver a obra na fonte ↗</a>` : '<span class="muted">fonte não registrada</span>'}
+          ${house.sourceUrl ? `<a class="quiet-button" href="${escapeHtml(house.sourceUrl)}" target="_blank" rel="noreferrer">${houseSourceLabel(house)} ↗</a>` : '<span class="muted">fonte não registrada</span>'}
         </div>
         ${house.dataReview?.sources?.length ? `<p class="muted drawer-src">Fontes da revisão: ${house.dataReview.sources.map((url, index) => `<a href="${escapeHtml(url)}" target="_blank" rel="noreferrer">fonte ${index + 1} ↗</a>`).join(" · ")}</p>` : ""}
       </div>`;
@@ -698,6 +691,18 @@
       const bar = document.querySelector(`#ward-bars [data-ward="${CSS.escape(house.ward)}"]`);
       if (bar) bar.classList.toggle("linked", on);
     }
+  }
+
+  const sourceLabels = {
+    project: "Página da obra no escritório",
+    publication: "Publicação da obra",
+    catalog: "Ficha da obra no acervo",
+    portfolio: "Portfólio do escritório",
+  };
+
+  function houseSourceLabel(house) {
+    if (house.sourceArchived) return "Fonte arquivada";
+    return sourceLabels[house.sourceKind] || "Fonte da obra";
   }
 
   function renderList() {
@@ -741,7 +746,7 @@
               <div class="ratio-card"><div class="ratio-value"><span>BCR observado</span><strong>${formatMetric("bcr", house.bcr)}</strong></div>${wardRangeChip(house.ward, "bcr")}</div>
             </div>
             ${house.sourceUrl
-              ? `<a class="house-source" href="${escapeHtml(house.sourceUrl)}" target="_blank" rel="noreferrer">ver a obra e as fotos na fonte ↗</a>`
+              ? `<a class="house-source" href="${escapeHtml(house.sourceUrl)}" target="_blank" rel="noreferrer">${houseSourceLabel(house)} ↗</a>`
               : '<span class="house-source muted">fonte não registrada</span>'}
           </div>
           <div class="house-card-actions">
@@ -1116,7 +1121,7 @@
           <div><span>FAR</span><strong>${fmt(house.far, 2)}×</strong></div>
         </div>` : "";
       const link = house && house.sourceUrl
-        ? `<a class="typology-source" href="${escapeHtml(house.sourceUrl)}" target="_blank" rel="noreferrer">fonte da obra ↗</a>` : "";
+        ? `<a class="typology-source" href="${escapeHtml(house.sourceUrl)}" target="_blank" rel="noreferrer">${houseSourceLabel(house)} ↗</a>` : "";
       const tid = `typ-${escapeHtml(t.romaji || t.en || house?.id || "x").replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`;
       return `<article class="typology-card panel compact" data-typology="${tid}">
         <div class="typology-head">
@@ -1137,7 +1142,7 @@
           ${photoFor(house)}
           ${stats}
           <p class="typology-basis"><span>critério</span>${escapeHtml(t.basis)}</p>
-          <p class="typology-reading">${escapeHtml(t.reading.replace("{medBcr}", `${fmt(medianBcr * 100, 1)}%`))}</p>
+          <p class="typology-reading">${escapeHtml(fill(t.reading, { medBcr: `${fmt(medianBcr * 100, 1)}%`, lot: fmt(house.lotArea, 2), bcr: fmt(house.bcr * 100, 1), far: fmt(house.far, 2), floors: String(house.floors) }))}</p>
           ${link}
         </div>` : `<p class="typology-basis">Caso não localizado no recorte comparável.</p>`}
         </div>
@@ -1402,7 +1407,7 @@
       ["Faixa de FAR no ward · A29-2019", (h) => rangeCell(h.ward, "far")],
       ["Faixa de BCR no ward · A29-2019", (h) => rangeCell(h.ward, "bcr")],
       ["Densidade do ward", (h) => { const d = density(h.ward); return Number.isFinite(d) ? `${fmt(d, 0)} hab./km²` : '<span class="lacuna">sem dado</span>'; }],
-      ["Fonte da casa", (h) => h.sourceUrl ? `<a href="${escapeHtml(h.sourceUrl)}" target="_blank" rel="noreferrer">abrir fonte ↗</a>` : '<span class="lacuna">não registrada</span>'],
+      ["Fonte da casa", (h) => h.sourceUrl ? `<a href="${escapeHtml(h.sourceUrl)}" target="_blank" rel="noreferrer">${houseSourceLabel(h)} ↗</a>` : '<span class="lacuna">não registrada</span>'],
     ];
     renderCompareChart(selected);
     $("comparison-table").innerHTML = `<tbody>${rows.map(([label, render]) =>
@@ -1599,24 +1604,12 @@
       state.filters.wards = [];
       state.filters.ids = null;
       state.wardFocus = null;
-      QUICK.forEach((id) => $(id).classList.remove("active"));
+      $("filter-tiny").classList.remove("active");
       syncFiltersFromInputs();
     });
     $("load-more").addEventListener("click", () => { state.visibleLimit += 24; renderList(); });
-    const QUICK = ["filter-ch9", "filter-tiny"];
-    const quickOnly = (keep) => QUICK.filter((id) => id !== keep).forEach((id) => $(id).classList.remove("active"));
-    const idsChip = (chipId, ids) => () => {
-      const on = $(chipId).classList.toggle("active");
-      quickOnly(chipId);
-      for (const field of rangeFields) { $(`${field}-min`).value = ""; $(`${field}-max`).value = ""; }
-      state.filters.wards = [];
-      state.filters.ids = on ? ids : null;
-      syncFiltersFromInputs();
-    };
-    $("filter-ch9").addEventListener("click", idsChip("filter-ch9", CH9));
     $("filter-tiny").addEventListener("click", () => {
       const on = $("filter-tiny").classList.toggle("active");
-      quickOnly("filter-tiny");
       state.filters.ids = null;
       $("lotArea-min").value = ""; $("lotArea-max").value = on ? "40" : "";
       syncFiltersFromInputs();

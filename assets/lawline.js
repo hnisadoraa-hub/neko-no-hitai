@@ -47,7 +47,7 @@
       article: "art. 52 e art. 56",
       does: "O coeficiente de aproveitamento (容積率) passa a valer em toda a área urbana, e entra o plano inclinado norte (北側斜線).",
       micro: "Daqui vem a cobertura cortada em diagonal tão frequente nas casas estreitas: a casa cresce até onde o plano norte deixa.",
-      src: { label: "Keiyaku Watch, histórico da lei", url: "https://keiyaku-watch.jp/media/hourei/kenchikukijunho/" },
+      src: { label: "MLIT, histórico das normas de edificação", url: "https://www.mlit.go.jp/common/000029131.pdf#page=5" },
     },
     {
       year: 1976, when: "1976",
@@ -55,7 +55,7 @@
       article: "art. 56-2",
       does: "Limita as horas de sombra que um edifício pode projetar sobre o vizinho no solstício de inverno. A lei nacional deixa às ordenanças locais a escolha das zonas e dos limites.",
       micro: "Em zona residencial de baixa altura atinge edifícios com mais de 7 m ou três pavimentos: justamente a altura que a casa de três andares no microlote quer ter.",
-      src: { label: "Keiyaku Watch, histórico da lei", url: "https://keiyaku-watch.jp/media/hourei/kenchikukijunho/" },
+      src: { label: "MLIT, histórico das normas de edificação", url: "https://www.mlit.go.jp/common/000029131.pdf#page=5" },
     },
     {
       year: 1978, when: "14/7/1978",
@@ -66,12 +66,12 @@
       src: { label: "Reiki de Tóquio", url: "https://www.reiki.metro.tokyo.lg.jp/reiki/reiki_honbun/g101RG00001307.html" },
     },
     {
-      year: 1980, when: "1980",
+      year: 1981, when: "1980, em vigor em 25/4/1981",
       ja: "地区計画", title: "Planos de distrito",
       article: "Lei de Planejamento Urbano, art. 12-4",
       does: "Permite regras finas por quadra sobre o zoneamento, entre elas uma área mínima de lote.",
       micro: "É por esse caminho que parte dos wards (regime B do mapa) impõe lote mínimo só em áreas delimitadas.",
-      src: { label: "Governo Metropolitano, planos de distrito", url: "https://www.toshiseibi.metro.tokyo.lg.jp/web/keikaku/chiku/" },
+      src: { label: "MLIT, entrada em vigor da revisão de 1980", url: "https://www.mlit.go.jp/notice/noticedata/sgml/028/76000027/76000027.html" },
     },
     {
       year: 1993, when: "1992, em vigor em 25/6/1993",
@@ -79,15 +79,15 @@
       article: "Lei nº 82/1992",
       does: "O plano urbano passa a poder fixar uma área mínima de lote nas zonas residenciais exclusivas de baixa altura.",
       micro: "É a primeira ferramenta nacional contra a subdivisão em microlotes, restrita às zonas de casas baixas.",
-      src: { label: "Setagaya, nota técnica sobre o lote mínimo", url: "https://www.city.setagaya.lg.jp/documents/3852/4-6_.pdf" },
+      src: { label: "Câmara dos Representantes, Lei nº 82/1992", url: "https://www.shugiin.go.jp/internet/itdb_housei.nsf/html/houritsu/12319920626082.htm" },
     },
     {
-      year: 2002, when: "2002",
+      year: 2003, when: "2002, em vigor em 1/1/2003",
       ja: "建築基準法改正", title: "Lote mínimo em todas as zonas e 天空率",
       article: "art. 53-2 e art. 56 § 7",
       does: "O lote mínimo pode ser fixado em qualquer zona de uso, sem ultrapassar 200 m². Na mesma revisão entra o 天空率: um projeto que deixe tanto céu visível quanto o envelope inclinado pode dispensar os planos inclinados.",
       micro: "Uma revisão abre caminho para proibir o microlote, a outra dá ao arquiteto uma saída geométrica dentro dele.",
-      src: { label: "NILIM, estudo sobre o 天空率", url: "https://www.nilim.go.jp/lab/bcg/siryou/kpr/prn0032pdf/kh0032009.pdf" },
+      src: { label: "MLIT, revisão de 2002 e sua entrada em vigor", url: "https://www.mlit.go.jp/notice/noticedata/sgml/106/81000296/81000296.html" },
     },
     {
       year: 2004, when: "24/6/2004", ward: true,
@@ -147,11 +147,11 @@
     },
     {
       year: 2025, when: "abril de 2025",
-      ja: "4号特例の縮小 · 省エネ基準適合義務化", title: "Fim da isenção para casas pequenas de madeira",
+      ja: "4号特例の縮小 · 省エネ基準適合義務化", title: "Redução da dispensa de revisão para casas de madeira",
       article: "revisão da Lei de Padrões de Construção",
-      does: "A casa de madeira de dois pavimentos deixa de ter a revisão estrutural dispensada na aprovação (建築確認), e todo edifício novo passa a ter de cumprir o padrão de eficiência energética.",
-      micro: "Atinge a produção corrente de casas pequenas de madeira: mais cálculo e mais documentação por projeto. Se o isolamento exigido também custa espessura de parede num lote em que cada centímetro conta é uma inferência a verificar nos casos.",
-      src: { label: "Keiyaku Watch, revisão de 2025", url: "https://keiyaku-watch.jp/media/hourei/kenchikukijunho-202504/" },
+      does: "Edificações de madeira com dois ou mais pavimentos ou área superior a 200 m² deixam de ter a revisão estrutural dispensada na aprovação (建築確認). A dispensa permanece para casas de madeira de um pavimento e até 200 m². A conformidade energética passa a ser exigida, em regra, nas novas edificações, com exceções como as de até 10 m².",
+      micro: "Atinge a produção corrente de casas pequenas de madeira de dois ou mais pavimentos, com revisão de estrutura e documentação adicional. O efeito do isolamento na área útil depende de cada projeto e não foi estimado no atlas.",
+      src: { label: "MLIT, mudanças em vigor em abril de 2025", url: "https://www.mlit.go.jp/report/press/content/001841001.pdf" },
     },
   ];
 
@@ -194,7 +194,7 @@
       <p class="lawline-lede">Só as normas que tocam diretamente o lote pequeno ou a casa que cabe nele: acesso à via, recuo, coeficientes, planos inclinados, sombra, lote mínimo e aprovação da obra. Os pontos azul-escuros são normas nacionais e metropolitanas. Os claros são as datas em que cada ward adotou um lote mínimo.</p>
       ${axis}
       <ol class="ll-list">${cards}</ol>
-      <p class="plot-note">As datas nacionais e metropolitanas seguem os textos oficiais e os comentários indicados em cada item. Para os wards, foram usadas as datas e áreas mínimas da aba 11 normas wards. Regras que variam por plano de distrito, sem data única de adoção, ficaram fora do eixo. Em Adachi, a aba 10 normas tempo registra uma alteração de 2023 que estendeu a ordenança a certas divisões sem construção [VERIFICAR a data exata].</p>
+      <p class="plot-note">As datas nacionais e metropolitanas seguem os textos oficiais indicados em cada item. Para os wards, foram usadas as datas e áreas mínimas da aba 11 normas wards. Regras que variam por plano de distrito, sem data única de adoção, ficaram fora do eixo. Em Adachi, a alteração que estendeu a ordenança a certas divisões sem construção entrou em vigor em 1/7/2023, conforme o <a href="https://www.city.adachi.tokyo.jp/documents/44110/takuchikaihatujyourei-tebiki-r0507koushin.pdf" target="_blank" rel="noopener">manual oficial da ordenança</a>.</p>
     </article>`;
 
   const list = host.querySelector(".ll-list");

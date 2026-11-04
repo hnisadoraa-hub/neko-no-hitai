@@ -9,7 +9,7 @@
    mostrar. Onde isso importa, o achado traz a ressalva junto. */
 
 window.NEKO_FINDINGS = {
-  lede: "Quatro leituras que saem das {n} fichas comparáveis da aba 01 casas base. Cada uma traz o método e a ressalva, porque um corpus de casas publicadas mede o arquivo e não a frequência urbana. As correlações são de postos, de Spearman, e descrevem associação monotônica: não estabelecem causa.",
+  lede: "Quatro leituras que saem das {n} fichas comparáveis da aba 01 casas base. Um corpus de casas publicadas mede o arquivo e não a frequência urbana. As correlações são de postos, de Spearman, e descrevem associação monotônica: não estabelecem causa.",
 
   items: [
     {
@@ -45,7 +45,6 @@ window.NEKO_FINDINGS = {
       claim: "Três pavimentos é a regra, não a exceção.",
       body: "Entre as {floorsN} fichas que registram pavimentos, {floors3} são de três pavimentos, {floorsShare}% do subconjunto. Somadas as de dois a quatro, chega-se a {floors234}. A verticalização do microlote é baixa e consistente, o que faz sentido sob a altura absoluta de 10 ou 12 m das zonas exclusivas de baixa altura, e sob o plano inclinado do lado norte.",
       method: "contagem de pavimentos acima do solo, com as correções documentadas nas fontes; campo inteiro em {floorsN} de {n} fichas",
-      caveat: "Em {floorsMissing} fichas o campo está vazio ou descreve níveis sem uma contagem de pavimentos confirmada, e essas ficam fora da conta. Subsolos, lofts, depósitos intermediários e anexos na cobertura (PH) ficam registrados à parte. Em {floorsOdd} fichas a relação entre construída e projeção supera os níveis informados; a sinalização pede conferência de critérios de área e não comprova pavimentos adicionais.",
       chart: "floors",
     }
   ],
@@ -56,12 +55,12 @@ window.NEKO_FINDINGS = {
     title: "O tamanho de que estamos falando",
     lede: "Metro quadrado não diz nada sozinho, então aqui estão as medidas ao lado das quais o corpus deve ser lido.",
     items: [
-      { label: "1K inicial da JHC, Aichi", value: 12.12, note: "1955 a 1960, banho e sanitário coletivos · Miyazaki, 1993, p. 33", kind: "ref" },
+      { label: "1K inicial da JHC, Aichi", value: 12.12, note: "1955 a 1960, banho e sanitário coletivos · Miyazaki, s.d., p. 33", kind: "ref" },
       { label: "Vaga de garagem", value: 12.0, note: "2,40 × 5,00 m · medida corrente", kind: "ref" },
       { label: "Seis tsubo", value: 19.83, note: "6 × 3,3058 m² · unidade japonesa", kind: "ref" },
       { label: "Menor lote do corpus", value: null, field: "minLot", note: "{minLotName}", kind: "corpus" },
       { label: "Modelo 51C, 1951", value: 35.0, note: "área privativa aproximada · DK, pais e filhos", kind: "ref" },
-      { label: "Referência do Jūseikatsu Kihon Keikaku", value: 40.0, note: "acima de aproximadamente 40 m² · MLIT, 2026 [VERIFICAR]", kind: "ref" },
+      { label: "Jūseikatsu Kihon Keikaku · porte da moradia", value: 40.0, approximate: true, note: "O plano nacional de 27/3/2026 orienta estimular a oferta e a circulação de moradias que ultrapassem cerca de 40 m² de área construída.", sourceUrl: "https://www.mlit.go.jp/report/press/content/001991226.pdf#page=33", sourceLabel: "MLIT, 2026 · anexo 1, § 1(1)④", kind: "ref" },
       { label: "Lote mediano do corpus", value: null, field: "medLot", note: "{n} fichas comparáveis · aba 01 casas base", kind: "corpus" },
       { label: "Corte do recorte", value: 100.0, note: "limite operacional da pesquisa", kind: "cut" },
     ],

@@ -189,7 +189,7 @@ window.WARD_CONTEXT = {
       belt: "shitamachi",
       profile: "Pequeno, denso e industrial em escala miúda. Nippori concentra o comércio têxtil e Machiya mantém tecido de machikoba com lotes muito pequenos, herdados do parcelamento do início do século XX.",
       notes: [
-        "Entre os wards com maior proporção de lotes abaixo de 100 m² no tecido comum, condição a confirmar em fonte fundiária. [VERIFICAR]",
+        "Na série fundiária de 2016 a 2024, a contagem de microlotes usa proprietários de áreas abaixo de 100 m² como unidade. Ela não permite afirmar diretamente a proporção de parcelas desse tamanho no ward.",
       ],
     },
     Itabashi: {

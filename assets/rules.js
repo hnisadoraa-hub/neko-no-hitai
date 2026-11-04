@@ -11,8 +11,65 @@ window.NEKO_RULES = {
   sources: {
     egov: "https://laws.e-gov.go.jp/law/325AC0000000201",
     translation: "https://www.japaneselawtranslation.go.jp/en/laws/view/4024/en",
-    tokyoMap: "https://www.toshiseibi.metro.tokyo.lg.jp/web/keikaku/map/",
+    tokyoMap: "https://www2.wagmap.jp/tokyo_tokeizu/Portal",
   },
+
+  normsLibrary: [
+    {
+      "name": "Building Standards Act",
+      "ja": "建築基準法",
+      "level": "Nacional",
+      "year": "Lei nº 201/1950",
+      "role": "Base técnica: estrutura, incêndio, saneamento, FAR, BCR, altura, shasen, recuos",
+      "portal": "e-Gov · texto japonês vigente",
+      "url": "https://laws.e-gov.go.jp/law/325AC0000000201"
+    },
+    {
+      "name": "City Planning Act",
+      "ja": "都市計画法",
+      "level": "Nacional",
+      "year": "Lei nº 100/1968",
+      "role": "Sistema de planejamento: senbiki, 13 zonas de uso (a 13ª desde 2018), planos de distrito",
+      "portal": "e-Gov · texto japonês vigente",
+      "url": "https://laws.e-gov.go.jp/law/343AC0000000100"
+    },
+    {
+      "name": "Tokyo Building Safety Ordinance",
+      "ja": "東京都建築安全条例",
+      "level": "Metrópole",
+      "year": "Ordenança",
+      "role": "Código de obras local: incêndio, sismo, ventilação, luz",
+      "portal": "Tokyo Metropolitan Government – Reiki",
+      "url": "https://www.reiki.metro.tokyo.lg.jp/reiki/reiki_honbun/g101RG00001306.html"
+    },
+    {
+      "name": "Ordenança de sombreamento",
+      "ja": "日影条例",
+      "level": "Metrópole",
+      "year": "Ordenança",
+      "role": "Horas máximas de sombra sobre vizinhos por zona",
+      "portal": "Tokyo Metropolitan Government – Reiki",
+      "url": "https://www.reiki.metro.tokyo.lg.jp/reiki/reiki_honbun/g101RG00001307.html"
+    },
+    {
+      "name": "District Plans",
+      "ja": "地区計画",
+      "level": "Municipal",
+      "year": "CPA art. 12-4",
+      "role": "Regras finas por quadra sobre o zoneamento",
+      "portal": "e-Gov · Lei de Planejamento Urbano",
+      "url": "https://laws.e-gov.go.jp/law/343AC0000000100"
+    },
+    {
+      "name": "Tokyo Urban Planning Map",
+      "ja": "都市計画図",
+      "level": "Documento",
+      "year": "Consulta",
+      "role": "Mapa oficial de zoneamento e distritos",
+      "portal": "Tokyo Metropolitan Government – Urban Planning Map",
+      "url": "https://www2.wagmap.jp/tokyo_tokeizu/Portal"
+    }
+  ],
 
   defs: `<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute"><defs>
     <pattern id="hatchGround" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -87,8 +144,8 @@ window.NEKO_RULES = {
     {
       ja: "接道義務と路地状敷地", romaji: "setsudō gimu / rojijō shikichi", pt: "Testada mínima e lote em corredor",
       article: "Lei de Padrões de Construção, arts. 42, 43 e 40, e Regulamento de Segurança Construtiva de Tóquio, art. 3",
-      summary: "A lei nacional exige que o lote confronte por pelo menos 2 m uma via reconhecida. Em Tóquio o regulamento local aperta a regra em função do comprimento do corredor: até 20 m bastam 2 m de largura; acima disso são exigidos 3 m. Para edificação não resistente ao fogo com mais de 200 m² de área construída, os valores sobem para 3 m e 4 m.",
-      micro: "O corredor nasce colado a uma divisa, porque é recortado da parcela da frente quando um lote profundo é desmembrado. Ele entra na área do lote e divide BCR e FAR, mas não pode ser edificado. E a exigência é municipal, não nacional: Yokohama, Nagoya e Osaka usam limiares diferentes, então o número não se transporta de uma cidade para outra. [VERIFICAR no ward]",
+      summary: "A lei nacional exige que o lote confronte por pelo menos 2 m uma via reconhecida. Em Tóquio a ordenança metropolitana aperta a regra em função do comprimento do corredor: até 20 m bastam 2 m de largura; acima disso são exigidos 3 m. Para edificações com mais de 200 m² que não sejam resistentes nem quase resistentes ao fogo, os valores sobem para 3 m e 4 m.",
+      micro: "O corredor pode ser recortado da parcela da frente quando um lote profundo é desmembrado. Ele integra a área do lote usada como denominador de BCR e FAR e deve preservar a faixa livre de acesso exigida. As larguras descritas aqui são estabelecidas em Tóquio pela ordenança metropolitana, art. 3; sua aplicação depende das condições da edificação e do acesso.",
       figure: {
         kind: "parcel", caption: "planta · desmembramento que produz o corredor", scaleMeters: 5,
         mx: 31, my: 21,
