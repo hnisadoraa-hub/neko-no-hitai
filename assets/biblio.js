@@ -1,9 +1,9 @@
 /* Bibliografia do TCC, exportada da base do Notion
    "📚 Bibliografia (PDFs) — TCC Domesticidade/Microlotes" em 22/09/2026.
 
-   O que veio da base, sem alteração: autoria, ano, tipo e link
-   público quando existe. Links do Drive e endereços de páginas do Notion não
-   entram aqui: são privados.
+   Autoria, tipo e vínculos vieram da base. Os anos foram revistos em
+   04/11/2026 conforme a edição ou versão citada. A data de defesa orienta
+   a referência a teses. Links do Drive e do Notion ficam na base privada.
 
    As ligações entre obras têm três origens, declaradas em cada uma:
      citacao     citação conferida no PDF da obra que cita
@@ -70,7 +70,7 @@ window.NEKO_BIBLIO = {
   },
 
   works: [
-    { id: "mlit-padroes", y: null, yNote: "Documento sem data explícita, relativo aos níveis anteriores ao plano de 2026", a: "MLIT", t: "Standards in the Basic Plan for Housing Life", ja: "住生活基本計画における「水準」について", type: "Relatório", eixo: "minimo", link: "https://www.mlit.go.jp/common/001098415.pdf" },
+    { id: "mlit-padroes", y: 2015, yNote: "Material de referência da 39ª reunião do comitê de habitação e solo residencial do MLIT, em 28/07/2015", a: "MLIT", t: "Standards in the Basic Plan for Housing Life", ja: "住生活基本計画における「水準」について", type: "Relatório", eixo: "minimo", link: "https://www.mlit.go.jp/common/001098415.pdf" },
     { id: "bsa1950", y: 1950, a: "Governo do Japão", t: "Building Standards Act", ja: "建築基準法", type: "Norma/Legislação", eixo: "regulacao", link: "https://www.japaneselawtranslation.go.jp/en/laws/view/4024/en" },
     { id: "jakobson1959", y: 1959, yNote: "Ensaio de 1959; a edição brasileira consultada não está identificada na base", a: "Jakobson", t: "On Linguistic Aspects of Translation", type: "Capítulo de livro", eixo: "linguagem" },
     { id: "ishimoto1963", y: 1963, a: "Ishimoto & Ishimoto", t: "The Japanese House: Its Interior and Exterior", type: "Livro", eixo: "domesticidade" },
@@ -79,8 +79,8 @@ window.NEKO_BIBLIO = {
     { id: "fawcett1980", y: 1980, a: "Fawcett", t: "The New Japanese House", type: "Livro", eixo: "domesticidade", link: "https://archive.org/details/newjapanesehouse00fawc" },
     { id: "nishi1985", y: 1985, a: "Nishi & Hozumi", t: "What is Japanese Architecture?", type: "Livro", eixo: "historia" },
     { id: "omata1992", y: 1992, a: "Omata", t: "Spatial Organization of Activities of Japanese Families", type: "Artigo", eixo: "domesticidade" },
-    { id: "miyazaki1993", y: null, yNote: "A data de publicação não foi identificada no documento disponível", a: "Miyazaki", t: "Changes in Dwelling Unit Scale and Type in Japan Housing Corporation Dwellings for Rent", ja: "公団賃貸住宅の住宅規模ならびに型形式の変遷について", type: "Artigo", eixo: "minimo" },
-    { id: "carver1993", y: 1993, a: "Carver", t: "Form and Space in Japanese Architecture", type: "Livro", eixo: "historia" },
+    { id: "miyazaki1993", y: null, yNote: "Ano de publicação não identificado. O arquivo e a referência bibliográfica indicam anos diferentes", a: "Miyazaki", t: "Changes in Dwelling Unit Scale and Type in Japan Housing Corporation Dwellings for Rent", ja: "公団賃貸住宅の住宅規模ならびに型形式の変遷について", type: "Artigo", eixo: "minimo" },
+    { id: "carver1993", y: 1993, yNote: "Edição de 1993. A primeira edição saiu em 1955, com outro título", a: "Carver", t: "Form and Space in Japanese Architecture", type: "Livro", eixo: "historia" },
     { id: "maniruzzaman1994", y: 1994, a: "Maniruzzaman, Asami & Okabe", t: "Land Use and the Geometry of Lots in Setagaya Ward", type: "Artigo", eixo: "morfologia" },
     { id: "okuyama1994", y: 1994, a: "Okuyama, Yamada & Sakamoto", t: "Spatial Conceptions of Architects on Contemporary Houses", type: "Artigo", eixo: "morfologia", link: "https://doi.org/10.3130/aija.59.123_1" },
     { id: "jinnai1995", y: 1995, a: "Jinnai", t: "Tokyo: A Spatial Anthropology", type: "Livro", eixo: "historia" },
@@ -91,17 +91,17 @@ window.NEKO_BIBLIO = {
     { id: "madeintokyo2001", y: 2001, a: "Kaijima, Kuroda & Tsukamoto", t: "Made in Tokyo", type: "Livro", eixo: "morfologia" },
     { id: "teige2002", y: 2002, yNote: "tradução; original tcheco de 1932", a: "Teige", t: "The Minimum Dwelling", type: "Livro", eixo: "minimo" },
     { id: "sand2003", y: 2003, a: "Sand", t: "House and Home in Modern Japan", type: "Livro", eixo: "domesticidade" },
-    { id: "mlit2003", y: 2003, a: "MLIT", t: "Introduction of Urban Land Use Planning System in Japan", type: "Relatório", eixo: "regulacao" },
+    { id: "mlit2003", y: 2003, yNote: "Janeiro de 2003 é a data de publicação informada no expediente do folheto", a: "MLIT", t: "Introduction of Urban Land Use Planning System in Japan", type: "Relatório", eixo: "regulacao", link: "https://www.mlit.go.jp/common/001050453.pdf" },
     { id: "sugiyama2005", y: 2005, a: "Sugiyama e outros", t: "Revisão do zoneamento de Tóquio em 2004", ja: "東京都における2004年用途地域見直しの実態的考察", type: "Artigo", eixo: "regulacao", note: "duas linhas da base, em japonês e em inglês, são o mesmo artigo" },
     { id: "kitaura2006", y: 2006, a: "Kitaura, Miyazaki & Fujino", t: "Information for Children About the Dwelling on Children's Books (1)", type: "Artigo", eixo: "domesticidade" },
-    { id: "nakagawa2006", y: 2006, a: "Nakagawa", t: "The Japanese House: In Space, Memory, and Language", type: "Livro", eixo: "domesticidade" },
+    { id: "nakagawa2006", y: 2006, yNote: "Edição inglesa ampliada de 2006. O original japonês saiu em 2002", a: "Nakagawa", t: "The Japanese House: In Space, Memory, and Language", type: "Livro", eixo: "domesticidade", link: "https://program.ihj.global/en/publications/ihousepress/2006-02/" },
     { id: "graphicanatomy2007", y: 2007, a: "Atelier Bow-Wow", t: "Graphic Anatomy", type: "Livro", eixo: "micro" },
     { id: "carvalho2008", y: 2008, a: "Carvalho", t: "Gênero e artefato", type: "Livro", eixo: "domesticidade" },
     { id: "koo2008", y: 2008, a: "Koo & Sasaki", t: "Obstacles to Affluence: Thoughts on Japanese Housing", type: "Relatório", eixo: "solo" },
     { id: "kitaura2008", y: 2008, a: "Kitaura & Fujino", t: "The Spirit of Dwelling and Interior Drawings on Children's Books (2)", type: "Artigo", eixo: "domesticidade", link: "https://www.jstage.jst.go.jp/article/aija/73/625/73_625_495/_article/-char/en" },
     { id: "daniell2008", y: 2008, a: "Daniell", t: "After the Crash: Architecture in Post-Bubble Japan", type: "Livro", eixo: "historia" },
     { id: "jodidio2009", y: 2009, a: "Jodidio", t: "Architecture Now! Houses", type: "Livro", eixo: "outros", link: "https://archive.org/details/architecturenowh0000jodi" },
-    { id: "sorensen2010", y: 2010, a: "Sorensen, Okata & Fujii", t: "Urban Renaissance as Intensification", type: "Artigo", eixo: "morfologia", link: "https://doi.org/10.1177/0042098009349775" },
+    { id: "sorensen2010", y: 2010, yNote: "Edição da revista de março de 2010. Publicação online em 2009", a: "Sorensen, Okata & Fujii", t: "Urban Renaissance as Intensification", type: "Artigo", eixo: "morfologia", link: "https://doi.org/10.1177/0042098009349775" },
     { id: "tsukamoto2010", y: 2010, a: "Tsukamoto", t: "Escaping the Spiral of Intolerance: Fourth-Generation Houses and Void Metabolism", type: "Capítulo de livro", eixo: "micro" },
     { id: "hein2010", y: 2010, a: "Hein", t: "Shaping Tokyo: Land Development and Planning Practice", type: "Artigo", eixo: "historia", link: "https://doi.org/10.1177/0096144209347737" },
     { id: "iwatate2011", y: 2011, a: "Iwatate & Mehta", t: "Japan Houses: Ideas for 21st Century Living", type: "Livro", eixo: "domesticidade" },
@@ -110,19 +110,19 @@ window.NEKO_BIBLIO = {
     { id: "nuijsink2012", y: 2012, a: "Nuijsink", t: "How to Make a Japanese House", type: "Livro", eixo: "domesticidade" },
     { id: "azuma2014", y: 2014, a: "Azuma", t: "The Implications and Possibilities of Big Events in Tokyo", ja: "東京におけるイベントの力とその将来性", type: "Artigo", eixo: "historia", link: "https://doi.org/10.5026/jgeography.123.587" },
     { id: "nuijsink2017", y: 2017, a: "Nuijsink", t: "What Is a House? Architects Redesigning the Domestic Sphere in Contemporary Japan", type: "Tese/Dissertação", eixo: "domesticidade", link: "https://repository.upenn.edu/edissertations/2472/" },
-    { id: "cpc2017", y: 2017, a: "Brito, Mello, Lira & Rubino", t: "Domesticidade, Gênero e Cultura Material", type: "Livro", eixo: "domesticidade", link: "https://www.edusp.com.br/loja/produto/1823/domesticidade-genero-e-cultura-material-ed--2" },
-    { id: "fieve2018", y: 2018, a: "Fiévé", t: "A Critical History of Japanese Housing", type: "Capítulo de livro", eixo: "historia" },
-    { id: "tmgprogress2019", y: 2019, a: "Governo Metropolitano de Tóquio", t: "Progress Report: Urban Development Grand Design", type: "Relatório", eixo: "regulacao" },
+    { id: "cpc2017", y: 2017, yNote: "Primeira edição em 2017. O link da Edusp é da segunda edição, de 2025", a: "Brito, Mello, Lira & Rubino", t: "Domesticidade, Gênero e Cultura Material", type: "Livro", eixo: "domesticidade", link: "https://www.edusp.com.br/loja/produto/1823/domesticidade-genero-e-cultura-material-ed--2" },
+    { id: "fieve2018", y: 2018, a: "Fiévé", t: "A Critical History of Japanese Housing", type: "Capítulo de livro", eixo: "historia", link: "https://doi.org/10.30687/978-88-6969-264-2/001" },
+    { id: "tmgprogress2019", y: 2019, yNote: "Relatório de acompanhamento de 30/09/2019. O plano Grand Design é de 2017", a: "Governo Metropolitano de Tóquio", t: "Progress Report: Urban Development Grand Design", type: "Relatório", eixo: "regulacao", ja: "主要事業の進行状況報告書：東京の都市整備に関する基本的な方針", link: "https://www.soumu.metro.tokyo.lg.jp/documents/d/soumu/9549_r1-1-26" },
     { id: "casakin2019", y: 2019, a: "Casakin", t: "Metaphors as Discourse Interaction Devices in Architectural Design", type: "Artigo", eixo: "linguagem" },
     { id: "nute2019", y: 2019, a: "Nute", t: "Changing Interpretations of Otherness in English-Language Accounts of Japanese Architecture", type: "Artigo", eixo: "historia" },
     { id: "tmgzoning2019", y: 2019, a: "Governo Metropolitano de Tóquio", t: "Designation Policy and Criteria for Zoning Districts", ja: "用途地域等に関する指定方針及び指定基準", type: "Norma/Legislação", eixo: "regulacao" },
     { id: "tardits2019", y: 2019, yNote: "Mostra de Yale de 21/2 a 4/5/2019; o ano se refere à exposição", a: "Hours, Mauduit, Souteyrat & Tardits", t: "Japan: Archipelago of the House", type: "Exposição", eixo: "historia", link: "https://www.architecture.yale.edu/exhibitions/57-japan-archipelago-of-the-house" },
     { id: "cho2019", y: 2019, a: "Cho", t: "“Smallness” in Japanese Houses: From Postwar to Post-postwar Architecture", type: "Artigo", eixo: "minimo" },
-    { id: "sakaushi2019", y: 2019, a: "Sakaushi & Kanebako", t: "Movement and Scenery", type: "Livro", eixo: "domesticidade" },
+    { id: "sakaushi2019", y: 2019, yNote: "O.F.D.A. associates, 1º de junho de 2019", a: "Sakaushi & Kanebako", t: "Movement and Scenery", type: "Livro", eixo: "domesticidade" },
     { id: "usui2019", y: 2019, a: "Usui", t: "Statistical distribution of building lot depth", type: "Artigo", eixo: "morfologia", link: "https://doi.org/10.1177/2399808319840366" },
     { id: "matsuda2020", y: 2020, a: "Matsuda", t: "A brief history of architectural planning research in Japan", type: "Artigo", eixo: "historia", link: "https://doi.org/10.1002/2475-8876.12160" },
     { id: "harris2020", y: 2020, a: "Harris & Nowicki", t: "“GET SMALLER”? Emerging Geographies of Micro-living", type: "Artigo", eixo: "minimo", link: "https://doi.org/10.1111/area.12625" },
-    { id: "usui2020", y: 2020, a: "Usui & Asami", t: "Size Distribution of Building Lots and Density of Buildings and Road Networks", type: "Artigo", eixo: "lote", link: "https://doi.org/10.1177/0160017619826270" },
+    { id: "usui2020", y: 2020, yNote: "Edição da revista de maio de 2020. Publicação online em 2019", a: "Usui & Asami", t: "Size Distribution of Building Lots and Density of Buildings and Road Networks", type: "Artigo", eixo: "lote", link: "https://doi.org/10.1177/0160017619826270" },
     { id: "klasto2020", y: 2020, a: "Klasto", t: "Tōkyō’s Kyōshō Jūtaku: Engaging Feminist Sensory Creative Practice", type: "Tese/Dissertação", eixo: "micro" },
     { id: "kubo2020", y: 2020, a: "Kubo", t: "Divided Tokyo: Housing Policy, the Ideology of Homeownership", type: "Capítulo de livro", eixo: "solo", link: "https://doi.org/10.1007/978-981-15-4202-2_2" },
     { id: "beath2021", y: 2021, a: "Beath & Price", t: "Never Too Small", type: "Livro", eixo: "minimo", link: "https://archive.org/details/nevertoosmallrei0000joel" },
@@ -130,10 +130,10 @@ window.NEKO_BIBLIO = {
     { id: "gomezlobo2021", y: 2021, a: "Gómez Lobo & Martín Sánchez", t: "Daidokoro Monogatari: Stories of the Japanese House from the Kitchen", type: "Artigo", eixo: "domesticidade", link: "https://doi.org/10.20868/cpa.2021.11.4829" },
     { id: "studart2021", y: 2021, a: "Costa", t: "Modos de Morar nos Apartamentos Duplex", type: "Livro", eixo: "domesticidade", link: "https://atelie.com.br/produto/modos-de-morar-nos-apartamentos-duplex/" },
     { id: "nuijsink2021", y: 2021, a: "Nuijsink", t: "From “container” to “lifestyle”: Sejima, Fujimoto and the nuclear family box", type: "Artigo", eixo: "domesticidade", link: "https://doi.org/10.1080/20419112.2021.1943190" },
-    { id: "huebner2022", y: 2022, a: "Huebner", t: "Earth’s Amphibious Transformation: Tange, Fuller and Marine Urbanization", type: "Artigo", eixo: "historia", link: "https://doi.org/10.1017/S0026749X21000251" },
+    { id: "huebner2022", y: 2022, yNote: "Edição da revista de julho de 2022. Publicação online em 2021", a: "Huebner", t: "Earth’s Amphibious Transformation: Tange, Fuller and Marine Urbanization", type: "Artigo", eixo: "historia", link: "https://doi.org/10.1017/S0026749X21000251" },
     { id: "almazan2022", y: 2022, a: "Almazán, McReynolds & Saito", t: "Emergent Tokyo: Designing the Spontaneous City", type: "Livro", eixo: "morfologia" },
-    { id: "mcreynolds2022", y: 2022, a: "McReynolds", t: "Understanding Tokyo’s Land Use: The Power of Microspaces", type: "Artigo", eixo: "solo", link: "https://doi.org/10.2139/ssrn.4327413" },
-    { id: "arnold2023", y: 2023, a: "Arnold", t: "Micro-Apartments: A Movement to Smaller Living Spaces in Japan", type: "Artigo", eixo: "minimo", link: "https://doi.org/10.62543/msj.v1i2.30" },
+    { id: "mcreynolds2022", y: 2022, yNote: "Publicado pelo Mercatus Center em dezembro de 2022. A versão do SSRN saiu em 2023", a: "McReynolds", t: "Understanding Tokyo’s Land Use: The Power of Microspaces", type: "Artigo", eixo: "solo", link: "https://www.mercatus.org/research/working-papers/understanding-tokyos-land-use-power-microspaces" },
+    { id: "arnold2023", y: 2024, yNote: "Macalester Street Journal, v. 1, n. 2, publicado em 02/02/2024", a: "Arnold", t: "Micro-Apartments: A Movement to Smaller Living Spaces in Japan", type: "Artigo", eixo: "minimo", link: "https://doi.org/10.62543/msj.v1i2.30" },
     { id: "naganuma2023", y: 2023, a: "Naganuma e outros", t: "Wooden houses designed by Tsuchiura Kameki before WWII", type: "Artigo", eixo: "historia", link: "https://doi.org/10.3130/aija.88.1157" },
     { id: "oesterdiekhoff2024", y: 2024, a: "Oesterdiekhoff", t: "Family Patterns in the Western and the Eastern World", type: "Artigo", eixo: "domesticidade", link: "https://doi.org/10.32388/9E8XH1" },
     { id: "castillejos2024", y: 2024, a: "Martín Castillejos e outras", t: "Challenging Domesticity", type: "Artigo", eixo: "domesticidade", link: "https://doi.org/10.6018/ijes.532881" },
@@ -141,7 +141,7 @@ window.NEKO_BIBLIO = {
     { id: "tamura2024", y: 2024, a: "Tamura", t: "Between Tradition and Modernity: Japanese Residential Architecture", type: "Artigo", eixo: "domesticidade", link: "https://doi.org/10.3390/architecture4040042" },
     { id: "aoki2024", y: 2024, a: "Aoki, Nakajima & Nagano", t: "Application and Issues of Minimum Lot Size Regulation in the Wards of Tokyo", ja: "敷地面積の最低限度", type: "Artigo", eixo: "regulacao" },
     { id: "tac2024", y: 2024, a: "TAC", t: "建築基準関係法令集（抜粋版）", type: "Norma/Legislação", eixo: "regulacao" },
-    { id: "magalhaes2025", y: 2025, a: "Magalhães", t: "Retórica, Coreografia, Ficção: Japão 1961–1985", type: "Tese/Dissertação", eixo: "historia" },
+    { id: "magalhaes2025", y: 2025, yNote: "Defesa em 19/12/2025. A entrega da tese foi registrada em 27/02/2026", a: "Magalhães", t: "Retórica, Coreografia, Ficção: Japão 1961–1985", type: "Tese/Dissertação", eixo: "historia", link: "https://sigarra.up.pt/faup/pt/teses.tese?p_aluno_id=103883&p_lang=1&p_processo=17780" },
     { id: "ringrose2025", y: 2025, a: "Ringrose e outros", t: "A World of Windows: Domestic Spaces in Japan and Norway", type: "Artigo", eixo: "domesticidade", link: "https://doi.org/10.1080/17406315.2025.2511533" },
     { id: "kogan2025", y: 2025, a: "Kogan", t: "Os debates sobre a tradição na arquitetura japonesa", type: "Tese/Dissertação", eixo: "historia" },
     { id: "larahernandez2026", y: 2026, a: "Lara-Hernandez & Melis", t: "Plot Subdivision Heterogeneity and Urban Resilience", type: "Artigo", eixo: "morfologia", link: "https://doi.org/10.3390/land15040540" },
