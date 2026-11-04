@@ -19,6 +19,7 @@
   const eixoById = new Map(B.eixos.map((e) => [e.key, e]));
   const YEAR_MIN = 1950, YEAR_MAX = 2026;
   const yearOf = (w) => (Number.isFinite(w.y) ? w.y : Infinity);
+  const dateLabel = (w) => (Number.isFinite(w.y) ? w.y : "s.d.");
 
   /* pares vindos de terceiros citados em comum */
   const sharedPairs = [];
@@ -65,7 +66,7 @@
 
   function workTip(w, extra) {
     const e = eixoById.get(w.eixo);
-    return `<strong>${esc(w.a)}${w.y ? `, ${w.y}` : ""}</strong>${esc(w.t)}<br>
+    return `<strong>${esc(w.a)}, ${dateLabel(w)}</strong>${esc(w.t)}<br>
       <em style="color:${e.color}">${esc(e.label)}</em> · ${esc(w.type)}
       ${w.yNote ? `<br><span class="tip-flag">${esc(w.yNote)}</span>` : ""}
       ${bridges.has(w.id) ? '<br><span class="tip-flag">ponte entre eixos</span>' : ""}
@@ -79,6 +80,10 @@
   function network(panel) {
     const W = 1120, H = 780, cx = W / 2, cy = H / 2 - 6;
     const rIn = 120, rOut = 300;
+    const radiusForYear = (year) => rIn + ((year - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * (rOut - rIn);
+    const years = [YEAR_MIN, 1980, 2000, YEAR_MAX];
+    const undated = B.works.filter((w) => !Number.isFinite(w.y));
+    const undatedX = cx + rOut + 38, undatedTop = cy + rOut - 40;
     const groups = B.eixos.map((e) => ({ ...e, works: B.works.filter((w) => w.eixo === e.key).sort((a, b) => yearOf(a) - yearOf(b)) }))
       .filter((g) => g.works.length);
     const total = groups.reduce((s, g) => s + g.works.length, 0);
@@ -90,14 +95,21 @@
       const span = (Math.PI * 2 - gap * groups.length) * (g.works.length / total);
       const start = angle;
       g.works.forEach((w, i) => {
+        if (!Number.isFinite(w.y)) return;
         const a = start + (span * (i + 0.5)) / g.works.length;
-        const r = Number.isFinite(w.y) ? rIn + ((w.y - YEAR_MIN) / (YEAR_MAX - YEAR_MIN)) * (rOut - rIn) : rIn - 30;
-        pos.set(w.id, { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r, a, r });
+        const r = radiusForYear(w.y);
+        pos.set(w.id, { x: cx + Math.cos(a) * r, y: cy + Math.sin(a) * r, a });
       });
       const mid = start + span / 2;
       arcs.push({ g, start, end: start + span, mid });
       angle = start + span + gap;
     }
+    undated.forEach((w, i) => {
+      pos.set(w.id, { x: undatedX, y: undatedTop + 24 * (i + 1), a: 0 });
+    });
+
+    const yearRings = years.map((y) => `<circle cx="${cx}" cy="${cy}" r="${radiusForYear(y).toFixed(1)}" class="grid-line" fill="none"></circle>`).join("");
+    const yearLabels = years.map((y) => `<text x="${cx}" y="${(cy - radiusForYear(y)).toFixed(1)}" text-anchor="middle" dominant-baseline="central" class="axis-text bib-year">${y}</text>`).join("");
 
     const ringLabels = arcs.map(({ g, start, end, mid }) => {
       const r = rOut + 42;
@@ -120,7 +132,7 @@
     /* etiquetas das pontes: empurradas para não se sobreporem */
     const labelY = new Map();
     for (const side of ["right", "left"]) {
-      const list = B.works.filter((w) => bridges.has(w.id))
+      const list = B.works.filter((w) => bridges.has(w.id) && Number.isFinite(w.y))
         .map((w) => ({ w, p: pos.get(w.id) }))
         .filter(({ p }) => (Math.cos(p.a) > 0 ? "right" : "left") === side)
         .sort((a, b) => a.p.y - b.p.y);
@@ -136,24 +148,33 @@
       const p = pos.get(w.id);
       const e = eixoById.get(w.eixo);
       const isBridge = bridges.has(w.id);
+      const date = dateLabel(w);
+      const label = `${esc(w.a)}, ${date}`;
+      if (!Number.isFinite(w.y)) {
+        return `<g class="bib-node" data-id="${esc(w.id)}" tabindex="0" role="button" aria-label="${label}">
+          <circle cx="${p.x}" cy="${p.y}" r="4.6" class="bib-undated-dot" style="--node-color:${e.color}"></circle>
+          <text x="${p.x + 13}" y="${p.y + 4}" class="bib-node-label">${label}</text>
+        </g>`;
+      }
       const right = Math.cos(p.a) > 0;
       const ly = labelY.get(w.id);
-      return `<g class="bib-node${isBridge ? " bridge" : ""}" data-id="${esc(w.id)}" tabindex="0" role="button" aria-label="${esc(w.a)}, ${w.y || "sem ano"}">
+      return `<g class="bib-node${isBridge ? " bridge" : ""}" data-id="${esc(w.id)}" tabindex="0" role="button" aria-label="${label}">
         ${isBridge ? `<line x1="${(p.x + (right ? 8 : -8)).toFixed(1)}" y1="${p.y.toFixed(1)}" x2="${(p.x + (right ? 11 : -11)).toFixed(1)}" y2="${(ly - 4).toFixed(1)}" class="bib-label-leader"></line>` : ""}
         <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${isBridge ? 7.5 : 4.6}" fill="${e.color}"></circle>
-        ${isBridge ? `<text x="${(p.x + (right ? 13 : -13)).toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${right ? "start" : "end"}" class="bib-node-label">${esc(w.a)}${w.y ? `, ${w.y}` : ""}</text>` : ""}
+        ${isBridge ? `<text x="${(p.x + (right ? 13 : -13)).toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${right ? "start" : "end"}" class="bib-node-label">${label}</text>` : ""}
       </g>`;
     }).join("");
 
     panel.innerHTML = `
-      <p class="panel-lede">As obras estão agrupadas por eixo. A distância ao centro corresponde ao ano da edição, de 1950 a 2026; obras sem data ficam no anel interno. As linhas mostram citações e relações presentes no trabalho, vínculos de autoria e obras que citam um mesmo terceiro autor. As ${bridges.size} obras com pontos maiores têm ligações com pelo menos dois outros eixos.</p>
+      <p class="panel-lede">As obras estão agrupadas por eixo. Os anéis marcam os anos de referência da escala, de ${YEAR_MIN} a ${YEAR_MAX}. A distância ao centro indica o ano registrado para cada obra. As referências sem data aparecem à direita. As linhas mostram citações e relações presentes no trabalho, vínculos de autoria e obras que citam um mesmo terceiro autor. As ${bridges.size} obras com pontos maiores têm ligações com pelo menos dois outros eixos.</p>
       <div class="bib-legend">${legendHtml()}</div>
-      <div class="plot-wrap bib-wrap">
-        <svg id="chart-biblio-network" viewBox="0 0 ${W} ${H}" role="img" aria-label="Rede das ${B.works.length} obras por eixo temático">
-          <circle cx="${cx}" cy="${cy}" r="${rIn - 30}" class="grid-line" fill="none" stroke-dasharray="3 5"></circle>
-          <text x="${cx}" y="${cy - 12}" text-anchor="middle" class="axis-text">sem data</text>
+      <div class="plot-wrap bib-wrap bib-network-wrap">
+        <svg id="chart-biblio-network" viewBox="0 0 ${W} ${H}" role="img" aria-label="Rede das ${B.works.length} obras por eixo temático, com escala de ${YEAR_MIN} a ${YEAR_MAX}">
+          <g aria-hidden="true">${yearRings}</g>
           <g class="bib-edges">${edges}</g>
           ${ringLabels}
+          <g aria-hidden="true">${yearLabels}</g>
+          ${undated.length ? `<text x="${undatedX}" y="${undatedTop}" class="axis-text">Sem data · fora da escala de anos</text>` : ""}
           <g class="bib-nodes">${nodes}</g>
         </svg>
       </div>
@@ -177,7 +198,7 @@
       const w = byId.get(id);
       const links = allLinks.filter((l) => l.s === id || l.t === id);
       detail.innerHTML = `
-        <h4>${esc(w.a)}${w.y ? `, ${w.y}` : ""}</h4>
+        <h4>${esc(w.a)}, ${dateLabel(w)}</h4>
         <p class="bib-detail-title">${esc(w.t)}${w.ja ? ` <span class="ja">${esc(w.ja)}</span>` : ""}</p>
         <p class="bib-detail-meta"><span style="color:${eixoById.get(w.eixo).color}">${esc(eixoById.get(w.eixo).label)}</span> · ${esc(w.type)}${w.link ? ` · <a href="${esc(w.link)}" target="_blank" rel="noreferrer">abrir ↗</a>` : ""}</p>
         ${w.yNote ? `<p class="bib-flag">${esc(w.yNote)}</p>` : ""}
@@ -465,7 +486,7 @@
         const weight = valueOf(eixo, chap);
         detail.innerHTML = `<h4>${esc(e.label)} no capítulo ${c.n}</h4>
           <p class="bib-detail-meta">${weight === 2 ? "capítulo que se apoia neste eixo" : weight === 1 ? "entrada de apoio" : "não previsto"} · ${esc(c.label)}</p>
-          <ul class="bib-works">${works.map((w) => `<li><strong>${esc(w.a)}${w.y ? `, ${w.y}` : ""}</strong> ${esc(w.t)}</li>`).join("")}</ul>`;
+          <ul class="bib-works">${works.map((w) => `<li><strong>${dateLabel(w)}</strong> · ${esc(w.a)}. ${esc(w.t)}</li>`).join("")}</ul>`;
       };
       cell.addEventListener("click", open);
       cell.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); open(); } });

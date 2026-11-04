@@ -961,6 +961,10 @@ body.presenting { overflow: hidden; }
 
 /* ---------- bibliografia ---------- */
 .bib-wrap { position: relative; }
+.bib-network-wrap { overflow-x: auto; }
+.bib-network-wrap svg { min-width: 740px; }
+.bib-year { font-size: 14px; paint-order: stroke; stroke: var(--white); stroke-width: 5px; stroke-linejoin: round; }
+.present-stage .bib-year { stroke: var(--navy-deep); }
 .bib-legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 14px; font-size: .78rem; color: var(--muted); }
 .kind-dot { display: inline-block; width: 10px; height: 10px; margin-right: 6px; border-radius: 50%; vertical-align: -1px; }
 .kind-dot.kind-citacao { background: #10264a; }
@@ -975,6 +979,7 @@ body.presenting { overflow: hidden; }
 .bib-edge.on { opacity: 1; stroke-width: 2.4; }
 .bib-edge.off { opacity: .07; }
 .bib-node circle { stroke: #fff; stroke-width: 1.5; cursor: pointer; }
+.bib-node .bib-undated-dot { fill: var(--white); stroke: var(--node-color); }
 .bib-node.bridge circle { stroke-width: 2.4; }
 .bib-node.on circle { stroke: var(--ink); }
 .bib-node.off { opacity: .25; }
