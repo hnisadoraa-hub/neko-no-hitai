@@ -880,7 +880,7 @@
     const residentCard = (r) => `
       <article class="resident-card">
         <p class="resident-house">${esc(r.house)}</p>
-        <p class="resident-meta">${esc(r.ward || "ward não registrado")}${r.year ? ` · ${r.year}` : ""}</p>
+        <p class="resident-meta">${esc(r.ward || "ward não registrado")}${r.yearLabel ? ` · <a href="${esc(r.yearSource)}" title="${esc(r.yearNote)}" target="_blank" rel="noopener noreferrer">${esc(r.yearLabel)}</a>` : (r.year ? ` · ${r.year}` : "")}</p>
         <p class="resident-relation">${esc(r.relation)}${r.architectResident ? ' <span class="badge">arquiteto morador</span>' : ""}</p>
         <p class="resident-type">${esc(r.responseType)}</p>
       </article>`;
