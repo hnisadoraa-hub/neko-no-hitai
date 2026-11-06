@@ -9,9 +9,13 @@
     detail: "Residência dos próprios arquitetos. Resposta recebida em 06/11/2026; publicação dos trechos aguarda autorização."
   });
 
+  const canonicalHouseName = (name) => name === "Kenyu Fujii Residence (own house)" ? "Kenyu Fujii Residence" : name;
+  for (const record of city.clientela) record.name = canonicalHouseName(record.name);
+  for (const record of city.residents) record.house = canonicalHouseName(record.house);
+
   const records = [
     {
-      house: "Kenyu Fujii Residence (own house)",
+      house: "Kenyu Fujii Residence",
       relation: "Arquiteto + morador",
       architectResident: true,
       responseType: "Resposta direta registrada na pesquisa.",
