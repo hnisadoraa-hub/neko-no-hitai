@@ -877,13 +877,16 @@
     }).join("");
 
     const res = C.residents;
-    const cards = res.map((r) => `
+    const residentCard = (r) => `
       <article class="resident-card">
         <p class="resident-house">${esc(r.house)}</p>
         <p class="resident-meta">${esc(r.ward || "ward não registrado")}${r.year ? ` · ${r.year}` : ""}</p>
         <p class="resident-relation">${esc(r.relation)}${r.architectResident ? ' <span class="badge">arquiteto morador</span>' : ""}</p>
         <p class="resident-type">${esc(r.responseType)}</p>
-      </article>`).join("");
+        ${r.responseDate ? `<p class="resident-meta">Resposta de ${esc(r.responseDate)}</p>` : ""}
+      </article>`;
+    const cards = res.filter((r) => r.publicationStatus !== "pending").map(residentCard).join("");
+    const pendingCards = res.filter((r) => r.publicationStatus === "pending").map(residentCard).join("");
 
     const body = `
       <div class="waffle-wrap">
@@ -897,9 +900,10 @@
         </ul>
       </div>
       <h4 class="sub-head">Relatos de moradores já autorizados</h4>
-      <div class="resident-grid">${cards}</div>`;
+      <div class="resident-grid">${cards}</div>
+      ${pendingCards ? `<h4 class="sub-head">Novas respostas recebidas</h4><div class="resident-grid">${pendingCards}</div>` : ""}`;
 
-    const note = `Há informação sobre moradores em ${known.length} das ${cl.length} obras do corpus. Os relatos são apresentados sem nomes e dentro das autorizações recebidas. Por serem depoimentos individuais, não permitem generalizar os modos de morar no Japão. Fontes: ${esc(C.source.clientela)} para o quadro de clientela; ${esc(C.source.residents)} para os relatos.`;
+    const note = `Há informação sobre moradores em ${known.length} das ${cl.length} obras do corpus. As respostas estão registradas em ${res.length} casas. Os relatos são apresentados sem nomes e dentro das autorizações recebidas; novas respostas com publicação de trechos ainda pendente aparecem identificadas à parte. Por serem depoimentos individuais, não permitem generalizar os modos de morar no Japão. Fontes: ${esc(C.source.clientela)} para o quadro de clientela; ${esc(C.source.residents)} para os relatos.`;
     return { html: block("residents", "quem mora", "O arquivo sabe pouco sobre quem mora", body, note), init: () => {
       document.querySelectorAll(".waffle-cell").forEach((node) => {
         const c = cl[Number(node.dataset.i)];
@@ -1032,4 +1036,5 @@
 
   mount();
 })();
+
 
