@@ -877,12 +877,13 @@
     }).join("");
 
     const res = C.residents;
+    const residentText = (value) => String(value || "").replace(/Resposta\s+direta\s+registrada\s+na\s+pesquisa\.?\s*/gi, "").trim();
     const residentCard = (r) => `
       <article class="resident-card">
         <p class="resident-house">${esc(r.house)}</p>
         <p class="resident-meta">${esc(r.ward || "ward não registrado")}${r.yearLabel ? ` · <a href="${esc(r.yearSource)}" title="${esc(r.yearNote)}" target="_blank" rel="noopener noreferrer">${esc(r.yearLabel)}</a>` : (r.year ? ` · ${r.year}` : "")}</p>
         <p class="resident-relation">${esc(r.relation)}${r.architectResident ? ' <span class="badge">arquiteto morador</span>' : ""}</p>
-        <p class="resident-type">${esc(r.responseType)}</p>
+        <p class="resident-type">${esc(residentText(r.responseType))}</p>
       </article>`;
     const cards = res.map(residentCard).join("");
 
@@ -905,7 +906,7 @@
       document.querySelectorAll(".waffle-cell").forEach((node) => {
         const c = cl[Number(node.dataset.i)];
         if (!c.classification || c.classification === "sem dados") return;
-        const show = (e) => tip(node, e, `<strong>${esc(c.name)}</strong>${esc(c.office || "")}${c.ward ? `<br>${esc(c.ward)}` : ""}${c.year ? ` · ${c.year}` : ""}<br>${esc(c.detail || c.classification)}`);
+        const show = (e) => tip(node, e, `<strong>${esc(c.name)}</strong>${esc(c.office || "")}${c.ward ? `<br>${esc(c.ward)}` : ""}${c.year ? ` · ${c.year}` : ""}<br>${esc(residentText(c.detail || c.classification))}`);
         node.addEventListener("mousemove", show);
         node.addEventListener("focus", (e) => show({ clientX: node.getBoundingClientRect().left, clientY: node.getBoundingClientRect().top }));
         node.addEventListener("mouseleave", hideTip);
