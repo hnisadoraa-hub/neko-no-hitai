@@ -6,7 +6,7 @@
   const client = city.clientela.find((record) => record.name === house);
   if (client) Object.assign(client, {
     classification: "Autoria-habitação",
-    detail: "Residência dos próprios arquitetos. Resposta recebida em 06/11/2026; publicação dos trechos aguarda autorização."
+    detail: "Residência dos próprios arquitetos. Resposta direta registrada na pesquisa."
   });
 
   const canonicalHouseName = (name) => name === "Kenyu Fujii Residence (own house)" ? "Kenyu Fujii Residence" : name;
@@ -18,19 +18,22 @@
       house: "Kenyu Fujii Residence",
       relation: "Arquiteto + morador",
       architectResident: true,
-      responseType: "Resposta direta registrada na pesquisa.",
+      responseType: "Resposta direta registrada na pesquisa. Dimensões úteis do lote, escada como vazio para luz e ventilação, convivência com animais, adaptação cotidiana e avaliação da experiência de morar.",
       responseDate: "21/09/2026",
       publicationStatus: "authorized",
       ward: "Nakano",
-      year: null
+      year: null,
+      yearLabel: "ocupação c. 2005",
+      yearSource: "https://www.kenyufujii.com/info-1",
+      yearNote: "Início da ocupação estimado pela referência a dez anos de moradia em nota do escritório de 01/05/2015. O ano exato de conclusão não está confirmado."
     },
     {
       house,
       relation: "Arquiteto + morador",
       architectResident: true,
-      responseType: "Resposta recebida; publicação dos trechos aguarda autorização.",
+      responseType: "Resposta direta registrada na pesquisa. Banho e escadas com múltiplos usos, privacidade entre pavimentos, trabalho doméstico e armazenamento, circulação vertical e cuidado, luz natural, bairro como extensão da casa e organização em corte.",
       responseDate: "06/11/2026",
-      publicationStatus: "pending",
+      publicationStatus: "authorized",
       ward: "Shinjuku",
       year: 2024
     }
